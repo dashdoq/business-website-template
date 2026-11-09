@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="nl-BE">
+<head>
+  <meta charset="utf-8">
+  <title>Poster renderer</title>
+  <style>html, body { margin: 0 !important; background: transparent !important; padding: 0 !important; } .roof-stage::before { display: none !important; } /* Posters are shown at roughly half size, so labels are drawn twice as large. */ .annotation { font-size: 21px !important; gap: 12px !important; } .annotation::before { width: 9px !important; height: 9px !important; } .annotation > span { padding: 4px 10px !important; } .annotation i { width: calc(var(--leader) * 1.6) !important; height: 2px !important; } #stage { width: 1380px; height: 1200px; aspect-ratio: auto; background: transparent; }</style>
+</head>
+<body>
+  <!-- Dev-only page used by scripts/render-posters.mjs; not part of the production build. -->
+  <div id="stage" class="roof-stage is-live"><canvas id="canvas"></canvas><div class="roof-stage__annotations" id="labels"></div></div>
+  <script type="module" src="./poster-entry.ts"></script>
+</body>
+</html>

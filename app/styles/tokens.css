@@ -1,0 +1,59 @@
+/*
+ * INGBELG design tokens.
+ * Palette: limestone paper, stone surfaces, ink text, one brand red. The red marks only what is
+ * active or actionable (primary CTA, current nav item, the selected roof layer).
+ */
+:root {
+  color-scheme: light;
+  --bg: #f3f0ea;            /* limestone */
+  --surface: #eae6de;       /* stone, ~3% darker */
+  --surface-2: #e3ded5;     /* second level, ~3% darker again */
+  --ink: #1d2125;           /* 14:1 on --bg */
+  --ink-muted: #565b60;     /* 6.0:1 on --bg, 5.5:1 on --surface */
+  --accent: #c41e26;        /* INGBELG red, 5.2:1 on --bg */
+  --accent-hover: #a8191f;
+  --accent-ink: #fbf8f3;    /* text on red, 5.6:1 */
+  --on-dark: #eeeae3;       /* text on ink, 13:1 */
+  --on-dark-muted: #b4b0a9; /* 7.4:1 on ink */
+
+  --line: rgb(29 33 37 / 0.12);
+  --line-strong: rgb(29 33 37 / 0.28);
+  --line-dark: rgb(238 234 227 / 0.16);
+
+  --shadow-1: 0 1px 2px rgb(29 33 37 / 0.05), 0 2px 8px rgb(29 33 37 / 0.04);
+  --shadow-2: 0 1px 2px rgb(29 33 37 / 0.06), 0 16px 40px -12px rgb(29 33 37 / 0.18);
+
+  --radius: 2px;
+
+  --font-head: 'Archivo Variable', 'Archivo', 'Arial Narrow', Arial, sans-serif;
+  --font-body: 'Source Sans 3 Variable', 'Source Sans 3', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-1: 200ms;
+  --dur-2: 400ms;
+
+  --max: 1360px;
+  --gutter: 16px;
+  --header-h: 64px;
+  --mobile-bar-h: 64px;
+  --section-y: 72px;
+}
+
+@media (min-width: 760px) {
+  :root { --gutter: 32px; --section-y: 104px; }
+}
+@media (min-width: 1100px) {
+  :root { --gutter: 48px; --header-h: 76px; --mobile-bar-h: 0px; --section-y: 128px; }
+}
+
+/* Optional high-contrast mode from the display settings. */
+:root[data-contrast='high'] {
+  --ink: #0e1113;
+  --ink-muted: #2c3034;
+  --line: rgb(14 17 19 / 0.38);
+  --line-strong: rgb(14 17 19 / 0.7);
+  --accent: #a3141b;
+  --accent-hover: #87101a;
+  --on-dark-muted: #e2ded7;
+}

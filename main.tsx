@@ -1,10 +1,10 @@
-import React from 'react';
-import {createRoot,hydrateRoot} from 'react-dom/client';
-import Experience from './app/experience';
-import {PolicyPage} from './app/policy-page';
-import {languageFromPath,pageFromPath} from './app/seo-data';
+import {createRoot, hydrateRoot} from 'react-dom/client';
+import {renderPage} from './app/render-page';
+import {languageFromPath, pageFromPath} from './app/seo-data';
 import './app/globals.css';
-const id=pageFromPath(location.pathname),language=languageFromPath(location.pathname);
-const page=id==='privacy'||id==='cookies'||id==='accessibility'?<PolicyPage kind={id} language={language}/>:<Experience initialLanguage={language} initialTool={id&&id!=='home'?id:undefined}/>;
-const root=document.getElementById('root')!;
-if(root.hasChildNodes())hydrateRoot(root,page);else createRoot(root).render(page);
+
+const root = document.getElementById('root')!;
+// The 404 page is pre-rendered with data-page="404" so it hydrates as itself on any unknown URL.
+const id = root.dataset.page === '404' ? null : pageFromPath(location.pathname);
+const page = renderPage(id, languageFromPath(location.pathname));
+if (root.hasChildNodes()) hydrateRoot(root, page); else createRoot(root).render(page);

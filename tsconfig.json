@@ -24,7 +24,6 @@
     "main.tsx",
     "app",
     "components",
-    "lib",
     "vite.config.ts",
     "scripts/prerender-entry.tsx",
     "vite.prerender.config.ts"
