@@ -18,7 +18,7 @@ export type ServiceCopy = {
   signsTitle: string;
   signs: string[];
   faq: Faq[];
-  tip: {category: string; title: string; text: string};
+  tip: {title: string; text: string};
   /** schema.org serviceType */
   serviceType: string;
 };
@@ -39,7 +39,7 @@ export const SERVICES: Record<ServiceId, Service> = {
     id: 'pitched', projects: ['work-02', 'work-01', 'work-06'], tools: ['renculator', 'premculator'],
     copy: {
       nl: {
-        name: 'Hellende daken', short: 'De eerste beschermingslaag.',
+        name: 'Hellende daken', short: 'Dakpannen, leien en dakramen',
         summary: 'Dakpannen, leien, houten dakconstructies, dakkapellen en dakramen, met de details die je woning weerbestendig houden.',
         lead: 'Dakpannen, leien, houtconstructies en dakramen: INGBELG vernieuwt en herstelt hellende daken in Zottegem en omgeving, met aandacht voor elke laag onder de pannen.',
         intro: [
@@ -66,11 +66,11 @@ export const SERVICES: Record<ServiceId, Service> = {
           {q: 'Moet het hele dak vervangen worden bij een lek?', a: 'Niet altijd. Een goede herstelling begint bij de oorzaak van het vocht. Tijdens het plaatsbezoek bekijken we of een gerichte herstelling volstaat of dat een vernieuwing van het dakpakket beter is.'},
           {q: 'Hoe krijg ik een prijs voor mijn hellend dak?', a: 'Een precieze offerte vraagt een beoordeling van je woning, de materialen, de bereikbaarheid en de werkomvang. Met Renculator maak je vooraf een indicatieve budgetraming; vraag daarna een plaatsbezoek aan.'},
         ],
-        tip: {category: 'MATERIALEN TELLEN', title: 'Een dak is meer dan dakpannen.', text: 'Het zichtbare oppervlak werkt samen met constructie, isolatie, membranen, verluchting en afwatering.'},
+        tip: {title: 'Een dak is meer dan dakpannen.', text: 'Het zichtbare oppervlak werkt samen met constructie, isolatie, membranen, verluchting en afwatering.'},
         serviceType: 'Hellende daken: dakpannen, leien en houten dakconstructies',
       },
       fr: {
-        name: 'Toitures inclinées', short: 'La première protection.',
+        name: 'Toitures inclinées', short: 'Tuiles, ardoises et fenêtres de toit',
         summary: 'Tuiles, ardoises, charpentes en bois, lucarnes et fenêtres de toit, avec les finitions qui protègent votre maison des intempéries.',
         lead: 'Tuiles, ardoises, charpentes et fenêtres de toit : INGBELG rénove et répare les toitures inclinées à Zottegem et dans les environs, avec une attention à chaque couche sous les tuiles.',
         intro: [
@@ -97,7 +97,7 @@ export const SERVICES: Record<ServiceId, Service> = {
           {q: 'Faut-il remplacer toute la toiture en cas de fuite ?', a: 'Pas toujours. Une bonne réparation commence par la cause de l’humidité. Lors de la visite, nous évaluons si une réparation ciblée suffit ou si une rénovation de la toiture est préférable.'},
           {q: 'Comment obtenir un prix pour ma toiture inclinée ?', a: 'Un devis précis nécessite une évaluation du logement, des matériaux, de l’accès et de l’étendue des travaux. Avec Renculator, faites d’abord une estimation indicative, puis demandez une visite.'},
         ],
-        tip: {category: 'LES MATÉRIAUX COMPTENT', title: 'Un toit est plus que ses tuiles.', text: 'La surface visible fonctionne avec la structure, l’isolation, les membranes, la ventilation et les évacuations.'},
+        tip: {title: 'Un toit est plus que ses tuiles.', text: 'La surface visible fonctionne avec la structure, l’isolation, les membranes, la ventilation et les évacuations.'},
         serviceType: 'Toitures inclinées : tuiles, ardoises et charpentes en bois',
       },
     },
@@ -106,7 +106,7 @@ export const SERVICES: Record<ServiceId, Service> = {
     id: 'flat', projects: ['work-03', 'work-01'], tools: ['renculator', 'premculator'],
     copy: {
       nl: {
-        name: 'Platte daken', short: 'Strakke lijnen. Volledige bescherming.',
+        name: 'Platte daken', short: 'EPDM en bitumen',
         summary: 'EPDM- en bitumineuze daksystemen, zorgvuldig afgewerkt aan dakranden, afvoeren en opstanden.',
         lead: 'EPDM of bitumen, nieuw of hersteld: INGBELG legt en vernieuwt platte daken in Zottegem en omgeving, met bijzondere zorg voor dakranden, afvoeren en opstanden.',
         intro: [
@@ -133,11 +133,11 @@ export const SERVICES: Record<ServiceId, Service> = {
           {q: 'Kan ik mijn plat dak isoleren bij de vernieuwing?', a: 'Een vernieuwing is een goed moment om ook de isolatie te bekijken. Wat mogelijk is, hangt af van de bestaande opbouw en de hoogte van de dakranden en aansluitingen.'},
           {q: 'Wat kost een nieuw plat dak?', a: 'Dat hangt af van de oppervlakte, de bestaande toestand, de afwerking en de bereikbaarheid. Renculator geeft een indicatieve raming exclusief btw; een offerte volgt na een plaatsbezoek.'},
         ],
-        tip: {category: 'KLEINE DETAILS', title: 'Water heeft altijd een uitweg nodig.', text: 'Schone goten en afvoeren horen bij dakonderhoud. Laat moeilijk bereikbare plaatsen veilig door een vakman inspecteren.'},
+        tip: {title: 'Water heeft altijd een uitweg nodig.', text: 'Schone goten en afvoeren horen bij dakonderhoud. Laat moeilijk bereikbare plaatsen veilig door een vakman inspecteren.'},
         serviceType: 'Platte daken: EPDM en bitumen',
       },
       fr: {
-        name: 'Toitures plates', short: 'Des lignes nettes. Une protection complète.',
+        name: 'Toitures plates', short: 'EPDM et bitume',
         summary: 'Systèmes EPDM et bitumineux, avec des finitions soignées aux rives, aux évacuations et aux relevés.',
         lead: 'EPDM ou bitume, neuve ou réparée : INGBELG pose et rénove les toitures plates à Zottegem et dans les environs, avec un soin particulier pour les rives, les évacuations et les relevés.',
         intro: [
@@ -164,7 +164,7 @@ export const SERVICES: Record<ServiceId, Service> = {
           {q: 'Puis-je isoler ma toiture plate lors de sa rénovation ?', a: 'Une rénovation est le bon moment pour examiner aussi l’isolation. Les possibilités dépendent de la composition existante et de la hauteur des rives et des raccords.'},
           {q: 'Combien coûte une nouvelle toiture plate ?', a: 'Cela dépend de la surface, de l’état existant, de la finition et de l’accès. Renculator donne une estimation indicative hors TVA ; un devis suit après une visite.'},
         ],
-        tip: {category: 'LES PETITS DÉTAILS', title: 'L’eau doit toujours pouvoir s’évacuer.', text: 'Des gouttières et évacuations dégagées font partie de l’entretien. Faites inspecter par un professionnel les zones difficiles d’accès.'},
+        tip: {title: 'L’eau doit toujours pouvoir s’évacuer.', text: 'Des gouttières et évacuations dégagées font partie de l’entretien. Faites inspecter par un professionnel les zones difficiles d’accès.'},
         serviceType: 'Toitures plates : EPDM et bitume',
       },
     },
@@ -173,7 +173,7 @@ export const SERVICES: Record<ServiceId, Service> = {
     id: 'insulation', projects: ['work-04', 'work-06', 'work-03'], tools: ['premculator', 'renculator'],
     copy: {
       nl: {
-        name: 'Dakisolatie', short: 'Comfort begint onder het dak.',
+        name: 'Dakisolatie', short: 'Isolatie, dampscherm en luchtdichting',
         summary: 'Dakisolatie laag voor laag, met aandacht voor vocht, luchtdichtheid en de bestaande constructie.',
         lead: 'Een goed geïsoleerd dak houdt warmte binnen en vocht buiten. INGBELG isoleert hellende en platte daken in Zottegem en omgeving, met aandacht voor luchtdichtheid en de bestaande constructie.',
         intro: [
@@ -199,11 +199,11 @@ export const SERVICES: Record<ServiceId, Service> = {
           {q: 'Isoleer ik van binnenuit of bij het vernieuwen van de dakbedekking?', a: 'Beide kan, afhankelijk van de staat van de dakbedekking en van de afwerking binnen. Als de pannen toch vernieuwd worden, kan isoleren van buitenaf de afwerking binnen sparen. We bespreken de opties tijdens het plaatsbezoek.'},
           {q: 'Waarom is een dampscherm belangrijk?', a: 'Een dampscherm aan de warme kant beperkt dat vochtige binnenlucht in de isolatie en het hout terechtkomt. Zo blijft de isolatie droog en presteert ze zoals bedoeld.'},
         ],
-        tip: {category: 'GEBOUWBEHOUD', title: 'Goed herstellen begint bij de oorzaak.', text: 'Zoek eerst waar het vocht binnenkomt voordat je een vochtplek afwerkt. Een nieuwe afwerking verhelpt de oorzaak niet.'},
+        tip: {title: 'Goed herstellen begint bij de oorzaak.', text: 'Zoek eerst waar het vocht binnenkomt voordat je een vochtplek afwerkt. Een nieuwe afwerking verhelpt de oorzaak niet.'},
         serviceType: 'Dakisolatie',
       },
       fr: {
-        name: 'Isolation de toiture', short: 'Le confort commence sous le toit.',
+        name: 'Isolation de toiture', short: 'Isolation, pare-vapeur et étanchéité à l’air',
         summary: 'Une isolation par couches, attentive à l’humidité, à l’étanchéité à l’air et à la structure existante.',
         lead: 'Une toiture bien isolée garde la chaleur à l’intérieur et l’humidité dehors. INGBELG isole les toitures inclinées et plates à Zottegem et dans les environs, avec une attention à l’étanchéité à l’air et à la structure existante.',
         intro: [
@@ -229,7 +229,7 @@ export const SERVICES: Record<ServiceId, Service> = {
           {q: 'Isoler par l’intérieur ou lors du renouvellement de la couverture ?', a: 'Les deux sont possibles, selon l’état de la couverture et des finitions intérieures. Si les tuiles sont de toute façon remplacées, isoler par l’extérieur peut préserver les finitions intérieures. Nous discutons des options lors de la visite.'},
           {q: 'Pourquoi le pare-vapeur est-il important ?', a: 'Un pare-vapeur du côté chaud limite la pénétration de l’air intérieur humide dans l’isolation et le bois. L’isolation reste ainsi sèche et performante.'},
         ],
-        tip: {category: 'PRÉSERVATION DU BÂTIMENT', title: 'Une bonne réparation commence par la cause.', text: 'Avant de recouvrir une trace d’humidité, cherchez son origine. Une nouvelle finition ne résout pas la cause.'},
+        tip: {title: 'Une bonne réparation commence par la cause.', text: 'Avant de recouvrir une trace d’humidité, cherchez son origine. Une nouvelle finition ne résout pas la cause.'},
         serviceType: 'Isolation de toiture',
       },
     },
@@ -238,7 +238,7 @@ export const SERVICES: Record<ServiceId, Service> = {
     id: 'renovation', projects: ['work-13', 'work-06', 'work-02'], tools: ['renculator', 'wijculator'],
     copy: {
       nl: {
-        name: 'Renovatie', short: 'Geef goede gebouwen een toekomst.',
+        name: 'Renovatie', short: 'Herstellingen, timmerwerk en gevelbekleding',
         summary: 'Dakherstellingen, timmerwerk en gevelbekleding, door één team van inspectie tot afwerking.',
         lead: 'Dakherstellingen, timmerwerk, dakkapellen en gevelbekleding: INGBELG renoveert woningen in Zottegem en omgeving met één team, van de eerste inspectie tot de afwerking.',
         intro: [
@@ -264,11 +264,11 @@ export const SERVICES: Record<ServiceId, Service> = {
           {q: 'Wie coördineert de verschillende werken?', a: 'INGBELG werkt met één team en één aanspreekpunt, van het eerste gesprek tot de oplevering.'},
           {q: 'Hoe lang duurt een renovatie?', a: 'Dat hangt af van de werkomvang, het weer, leveringen en de bereikbaarheid. Met Wijculator maak je een indicatieve planning van werkuren en teamgrootte; de echte planning volgt na het plaatsbezoek.'},
         ],
-        tip: {category: 'TOEN EN NU', title: 'Behoud wat nog goed is.', text: 'Laat bestaand hout inspecteren vóór vervanging. Afzonderlijke elementen herstellen kan het karakter van een dak bewaren.'},
+        tip: {title: 'Behoud wat nog goed is.', text: 'Laat bestaand hout inspecteren vóór vervanging. Afzonderlijke elementen herstellen kan het karakter van een dak bewaren.'},
         serviceType: 'Renovatie: dakherstellingen, timmerwerk en gevelbekleding',
       },
       fr: {
-        name: 'Rénovation', short: 'Offrez un avenir aux bâtiments.',
+        name: 'Rénovation', short: 'Réparations, menuiserie et bardage',
         summary: 'Réparations, menuiserie et bardage, coordonnés par une seule équipe du diagnostic aux finitions.',
         lead: 'Réparations de toiture, menuiserie, lucarnes et bardage : INGBELG rénove les habitations à Zottegem et dans les environs avec une seule équipe, du premier diagnostic aux finitions.',
         intro: [
@@ -294,7 +294,7 @@ export const SERVICES: Record<ServiceId, Service> = {
           {q: 'Qui coordonne les différents travaux ?', a: 'INGBELG travaille avec une seule équipe et un seul interlocuteur, du premier échange à la réception.'},
           {q: 'Combien de temps dure une rénovation ?', a: 'Cela dépend de l’étendue des travaux, de la météo, des livraisons et de l’accès. Avec Wijculator, établissez un planning indicatif des heures et de l’équipe ; le planning réel suit la visite.'},
         ],
-        tip: {category: 'AVANT ET AUJOURD’HUI', title: 'Conservez ce qui fonctionne encore.', text: 'Inspectez le bois existant avant de le remplacer. Réparer certains éléments peut préserver le caractère du toit.'},
+        tip: {title: 'Conservez ce qui fonctionne encore.', text: 'Inspectez le bois existant avant de le remplacer. Réparer certains éléments peut préserver le caractère du toit.'},
         serviceType: 'Rénovation : réparations de toiture, menuiserie et bardage',
       },
     },
@@ -303,7 +303,7 @@ export const SERVICES: Record<ServiceId, Service> = {
     id: 'asbestos', projects: ['work-04', 'work-03'], tools: ['premculator', 'renculator'],
     copy: {
       nl: {
-        name: 'Asbestverwijdering', short: 'Een zorgvuldig begeleide nieuwe start.',
+        name: 'Asbestverwijdering', short: 'Golfplaten en leien, met een nieuw dak',
         summary: 'Beoordeling en aangepaste asbestverwijdering, afgestemd op de vervanging van je dak.',
         lead: 'Asbesthoudende golfplaten of leien op je dak of bijgebouw? INGBELG beoordeelt de situatie en stemt de verwijdering af op de vervanging van je dak, in Zottegem en omgeving.',
         intro: [
@@ -329,11 +329,11 @@ export const SERVICES: Record<ServiceId, Service> = {
           {q: 'Bestaat er een premie bij asbestverwijdering op het dak?', a: 'Bij Mijn VerbouwPremie voor het dak kan, onder voorwaarden, een asbestbonus van € 8/m² gelden wanneer asbesthoudende dakbedekking verwijderd wordt en het dak nieuw geïsoleerd wordt. Het totaal is begrensd tot 50% van de subsidiabele dakfactuur. Premculator raamt dit voor aanvragen van maart tot december 2026.'},
           {q: 'Kunnen de verwijdering en het nieuwe dak samen gebeuren?', a: 'Ja. De verwijdering wordt afgestemd op de vervanging van je dak, met één team en één aanspreekpunt.'},
         ],
-        tip: {category: 'VEILIGHEID', title: 'Eerst beoordelen, dan verwijderen.', text: 'Breek, boor of schuur niet in materiaal waarvan je vermoedt dat het asbest bevat. Laat het eerst beoordelen.'},
+        tip: {title: 'Eerst beoordelen, dan verwijderen.', text: 'Breek, boor of schuur niet in materiaal waarvan je vermoedt dat het asbest bevat. Laat het eerst beoordelen.'},
         serviceType: 'Asbestverwijdering en dakvervanging',
       },
       fr: {
-        name: 'Désamiantage', short: 'Un nouveau départ bien encadré.',
+        name: 'Désamiantage', short: 'Plaques et ardoises, avec une nouvelle toiture',
         summary: 'Diagnostic et retrait adapté de l’amiante, coordonnés avec le remplacement de votre toiture.',
         lead: 'Des plaques ondulées ou des ardoises contenant de l’amiante sur votre toit ou votre annexe ? INGBELG évalue la situation et coordonne le retrait avec le remplacement de votre toiture, à Zottegem et dans les environs.',
         intro: [
@@ -359,7 +359,7 @@ export const SERVICES: Record<ServiceId, Service> = {
           {q: 'Existe-t-il une prime pour le désamiantage de la toiture ?', a: 'Avec Mijn VerbouwPremie pour la toiture, un bonus amiante de 8 €/m² peut s’appliquer, sous conditions, lorsque la couverture amiantée est retirée et la toiture nouvellement isolée. Le total est plafonné à 50 % de la facture toiture admissible. Premculator l’estime pour les demandes de mars à décembre 2026.'},
           {q: 'Le retrait et la nouvelle toiture peuvent-ils être combinés ?', a: 'Oui. Le retrait est coordonné avec le remplacement de votre toiture, avec une seule équipe et un seul interlocuteur.'},
         ],
-        tip: {category: 'SÉCURITÉ', title: 'Évaluer d’abord, retirer ensuite.', text: 'Ne cassez, ne percez et ne poncez jamais un matériau susceptible de contenir de l’amiante. Faites-le d’abord évaluer.'},
+        tip: {title: 'Évaluer d’abord, retirer ensuite.', text: 'Ne cassez, ne percez et ne poncez jamais un matériau susceptible de contenir de l’amiante. Faites-le d’abord évaluer.'},
         serviceType: 'Désamiantage et remplacement de toiture',
       },
     },

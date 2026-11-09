@@ -1,6 +1,6 @@
 'use client';
 import {useState} from 'react';
-import {ArrowRight, BadgeEuro, ChevronLeft, ChevronRight, Ruler, Users} from 'lucide-react';
+import {BadgeEuro, ChevronLeft, ChevronRight, Ruler, Users} from 'lucide-react';
 import {Dialog, DialogContent, DialogTitle, DialogDescription} from '@/components/ui/dialog';
 import {UI} from '../content/common';
 import {COMPANY, REVIEW} from '../content/home';
@@ -25,22 +25,21 @@ export function FaqList({items}: {items: Faq[]}) {
   );
 }
 
-export function ToolCards({language, tools = [...TOOL_IDS], headingLevel = 3}: {language: SiteLanguage; tools?: ToolId[]; headingLevel?: 2 | 3}) {
-  const Heading = headingLevel === 2 ? 'h2' : 'h3';
+/** The three calculators as plain rows: name, what it does, where to open it. */
+export function ToolList({language, tools = [...TOOL_IDS]}: {language: SiteLanguage; tools?: ToolId[]}) {
   return (
-    <div className={`card-grid ${tools.length > 2 ? 'card-grid--3' : ''}`}>
+    <ul className="tool-list" role="list">
       {tools.map(tool => {
         const copy = TOOLS[tool][language], Icon = TOOL_ICONS[tool];
         return (
-          <a key={tool} className="card tool-card" href={pagePath(tool, language)}>
-            <span className="label"><Icon size={16} aria-hidden="true" />{copy.kicker}</span>
-            <Heading>{copy.name}</Heading>
+          <li key={tool} className="tool-row">
+            <h3><Icon size={22} aria-hidden="true" />{copy.name}</h3>
             <p>{copy.card}</p>
-            <span className="link-arrow">{language === 'nl' ? 'Open calculator' : 'Ouvrir le calculateur'}<ArrowRight size={16} aria-hidden="true" /></span>
-          </a>
+            <a className="text-link" href={pagePath(tool, language)}>{language === 'nl' ? 'Open' : 'Ouvrir'} {copy.name}</a>
+          </li>
         );
       })}
-    </div>
+    </ul>
   );
 }
 
@@ -48,11 +47,9 @@ export function Rating({language}: {language: SiteLanguage}) {
   const ui = UI[language];
   return (
     <a className="rating" href={COMPANY.maps} target="_blank" rel="noopener">
-      <span className="rating-mark" aria-hidden="true">G</span>
-      <span>
-        <span className="rating-stars" role="img" aria-label={ui.ratingStars}>★★★★★</span>
-        <small>{ui.rating} · {ui.reviews} <span className="sr-only">{ui.opensNewTab}</span></small>
-      </span>
+      <span className="rating-stars" role="img" aria-label={ui.ratingStars}>★★★★★</span>
+      <span className="rating-text">{ui.rating}</span>
+      <small>({ui.reviews}) <span className="sr-only">{ui.opensNewTab}</span></small>
     </a>
   );
 }
@@ -60,15 +57,10 @@ export function Rating({language}: {language: SiteLanguage}) {
 export function ReviewQuote({language}: {language: SiteLanguage}) {
   return (
     <figure className="review">
-      <p className="eyebrow">{language === 'nl' ? 'Wat klanten zeggen' : 'Ce que disent nos clients'}</p>
-      <div>
-        <blockquote lang={REVIEW.quoteLang}><p>{REVIEW.quote}</p></blockquote>
-        {language === 'fr' && <p className="translation">{REVIEW.translation.fr}</p>}
-        <footer style={{marginTop: 24}}>
-          <figcaption className="label"><b style={{color: 'var(--ink)', fontWeight: 500}}>{REVIEW.author}</b> · {REVIEW.source[language]}</figcaption>
-          <Rating language={language} />
-        </footer>
-      </div>
+      <blockquote lang={REVIEW.quoteLang}><p>"{REVIEW.quote}"</p></blockquote>
+      {language === 'fr' && <p className="translation">{REVIEW.translation.fr}</p>}
+      <figcaption><strong>{REVIEW.author}</strong>, {REVIEW.source[language].toLowerCase()}</figcaption>
+      <Rating language={language} />
     </figure>
   );
 }
@@ -84,7 +76,7 @@ export function WorkGrid({language, projects = PROJECTS, variant = 'all', headin
   const step = (delta: number) => setIndex(current => current === null ? null : (current + delta + projects.length) % projects.length);
   const open = index === null ? null : projects[index];
   const Caption = headingLevel === 2 ? 'h2' : 'h3';
-  const sizes = variant === 'related' ? '(min-width: 760px) 33vw, 100vw' : '(min-width: 1100px) 50vw, (min-width: 760px) 50vw, 100vw';
+  const sizes = variant === 'related' ? '(min-width: 760px) 33vw, 100vw' : '(min-width: 760px) 50vw, 100vw';
   return (
     <>
       <ul className={variant === 'related' ? 'related-photos' : `work-grid work-grid--${variant}`} role="list">
@@ -92,9 +84,9 @@ export function WorkGrid({language, projects = PROJECTS, variant = 'all', headin
           <li key={project.id} className="work-item">
             <figure>
               <button type="button" onClick={() => setIndex(i)} aria-label={(language === 'nl' ? 'Vergroot foto: ' : 'Agrandir la photo : ') + project.copy[language].title}>
-                <div className="frame"><ProjectImage project={project} language={language} sizes={sizes} /></div>
+                <ProjectImage project={project} language={language} sizes={sizes} />
               </button>
-              <figcaption><Caption className="h3" style={{fontSize: '1.125rem'}}>{project.copy[language].title}</Caption><span className="label">{project.copy[language].tag}</span></figcaption>
+              <figcaption><Caption style={{display: 'inline', font: 'inherit'}}><strong>{project.copy[language].title}</strong></Caption><span>, {project.copy[language].tag.toLowerCase()}</span></figcaption>
             </figure>
           </li>
         ))}
@@ -104,11 +96,11 @@ export function WorkGrid({language, projects = PROJECTS, variant = 'all', headin
           <figure>
             <ProjectImage project={open} language={language} sizes="(min-width: 1200px) 1200px, 100vw" eager />
             <figcaption>
-              <span><DialogTitle className="h3" style={{fontSize: '1.375rem', margin: 0, padding: 0}}>{open.copy[language].title}</DialogTitle><DialogDescription className="muted">{open.copy[language].alt}</DialogDescription></span>
+              <span><DialogTitle className="h3" style={{margin: 0, padding: 0}}>{open.copy[language].title}</DialogTitle><DialogDescription className="muted">{open.copy[language].alt}</DialogDescription></span>
               <span className="lightbox-nav">
-                <button type="button" className="icon-button" onClick={() => step(-1)} aria-label={language === 'nl' ? 'Vorige foto' : 'Photo précédente'}><ChevronLeft size={20} aria-hidden="true" /></button>
+                <button type="button" className="icon-button" onClick={() => step(-1)} aria-label={language === 'nl' ? 'Vorige foto' : 'Photo précédente'}><ChevronLeft size={22} aria-hidden="true" /></button>
                 <span aria-live="polite">{(index ?? 0) + 1} / {projects.length}</span>
-                <button type="button" className="icon-button" onClick={() => step(1)} aria-label={language === 'nl' ? 'Volgende foto' : 'Photo suivante'}><ChevronRight size={20} aria-hidden="true" /></button>
+                <button type="button" className="icon-button" onClick={() => step(1)} aria-label={language === 'nl' ? 'Volgende foto' : 'Photo suivante'}><ChevronRight size={22} aria-hidden="true" /></button>
               </span>
             </figcaption>
           </figure>

@@ -1,6 +1,6 @@
 'use client';
 import {useEffect, useId, useState, type FormEvent} from 'react';
-import {Layers3, Mail, MapPin, MessageCircle, Phone, X, ArrowUpRight} from 'lucide-react';
+import {Layers3, Mail, X} from 'lucide-react';
 import {UI} from '../content/common';
 import {COMPANY} from '../content/home';
 import {SERVICES} from '../content/services';
@@ -35,7 +35,6 @@ export function ContactForm({language, service, headingLevel = 3}: {language: Si
   const id = (name: string) => formId + name;
   return (
     <div className="form-card" id="aanvraag">
-      <p className="eyebrow">{f.eyebrow}</p>
       <Heading>{f.title}</Heading>
       <p className="form-note">{f.required}</p>
       <form onSubmit={submit} noValidate={false}>
@@ -68,16 +67,17 @@ export function ContactForm({language, service, headingLevel = 3}: {language: Si
   );
 }
 
+/** Phone first, in large type: most people with a leaking roof would rather call. */
 export function DirectContact({language}: {language: SiteLanguage}) {
   const ui = UI[language];
   return (
     <>
-      <ul className="contact-direct" role="list">
-        <li><a href={COMPANY.phoneHref}><Phone size={20} aria-hidden="true" /><span><strong>{ui.callText}</strong><small>{COMPANY.phone}</small></span><ArrowUpRight size={18} aria-hidden="true" /></a></li>
-        <li><a href={COMPANY.whatsapp} target="_blank" rel="noopener"><MessageCircle size={20} aria-hidden="true" /><span><strong>WhatsApp</strong><small>{ui.whatsappText} <span className="sr-only">{ui.opensNewTab}</span></small></span><ArrowUpRight size={18} aria-hidden="true" /></a></li>
-        <li><a href={'mailto:' + COMPANY.email}><Mail size={20} aria-hidden="true" /><span><strong>{ui.mailText}</strong><small>{COMPANY.email}</small></span><ArrowUpRight size={18} aria-hidden="true" /></a></li>
+      <a className="phone-big" href={COMPANY.phoneHref}>{COMPANY.phone}</a>
+      <ul className="contact-links" role="list">
+        <li><a href={COMPANY.whatsapp} target="_blank" rel="noopener">{ui.whatsappText} via WhatsApp<span className="sr-only"> {ui.opensNewTab}</span></a></li>
+        <li><a href={'mailto:' + COMPANY.email}>{COMPANY.email}</a></li>
       </ul>
-      <address className="contact-address"><MapPin size={18} aria-hidden="true" />{COMPANY.address}</address>
+      <address className="contact-address">{COMPANY.address}. <a href={COMPANY.maps} target="_blank" rel="noopener">{ui.route}<span className="sr-only"> {ui.opensNewTab}</span></a></address>
     </>
   );
 }
@@ -89,7 +89,6 @@ export function ContactBand({language, service}: {language: SiteLanguage; servic
     <section className="contact-band on-dark" aria-labelledby="contact-band-title">
       <div className="container contact-band__grid">
         <div>
-          <p className="eyebrow">{ui.nav.contact}</p>
           <h2 id="contact-band-title">{ui.band.title}</h2>
           <p className="lead">{ui.band.text}</p>
           <DirectContact language={language} />

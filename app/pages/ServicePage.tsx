@@ -1,9 +1,9 @@
-import {ArrowRight, Check, Phone} from 'lucide-react';
+import {Check, Phone} from 'lucide-react';
 import {Breadcrumbs, Shell} from '../layout/Shell';
 import {posterFor, posterSrcSet, POSTER_SIZE} from '../scene/RoofStage';
 import type {SceneFocus} from '../scene/roof-scene';
 import {ContactBand} from '../sections/ContactForm';
-import {FaqList, ToolCards, WorkGrid} from '../sections/Blocks';
+import {FaqList, ToolList, WorkGrid} from '../sections/Blocks';
 import {UI} from '../content/common';
 import {COMPANY, PROCESS} from '../content/home';
 import {projectById} from '../content/projects';
@@ -12,8 +12,8 @@ import {SERVICE_IDS, type ServiceId} from '../content/service-ids';
 import {SERVICE_PAGE, pageCopy, pagePath, type SiteLanguage} from '../seo-data';
 
 const T = {
-  nl: {service: 'Dienst', approach: 'Waar we op letten', scope: 'Wat we doen', process: 'Hoe we werken', projects: 'Uit onze realisaties', tools: 'Plan vooraf met ZotteTools', faq: 'Veelgestelde vragen', related: 'Andere diensten', tip: 'Goed om te weten'},
-  fr: {service: 'Service', approach: 'Ce à quoi nous veillons', scope: 'Ce que nous faisons', process: 'Notre méthode', projects: 'Quelques réalisations', tools: 'Préparez avec ZotteTools', faq: 'Questions fréquentes', related: 'Autres services', tip: 'Bon à savoir'},
+  nl: {approach: 'Waar we op letten', scope: 'Wat we doen', process: 'Hoe we werken', projects: 'Realisaties', allProjects: 'Alle realisaties bekijken', tools: 'Reken vooraf met ZotteTools', faq: 'Veelgestelde vragen', related: 'Andere diensten', tip: 'Tip', layersNote: 'Van buiten naar binnen.'},
+  fr: {approach: 'Ce à quoi nous veillons', scope: 'Ce que nous faisons', process: 'Notre façon de travailler', projects: 'Réalisations', allProjects: 'Voir toutes les réalisations', tools: 'Calculer avec ZotteTools', faq: 'Questions fréquentes', related: 'Autres services', tip: 'Conseil', layersNote: 'De l’extérieur vers l’intérieur.'},
 };
 
 export function ServicePage({id, language}: {id: ServiceId; language: SiteLanguage}) {
@@ -25,11 +25,10 @@ export function ServicePage({id, language}: {id: ServiceId; language: SiteLangua
       <div className="container page-head page-head--split">
         <div>
           <Breadcrumbs id={page} language={language} />
-          <p className="eyebrow">0{index + 1} — {t.service}</p>
           <h1>{copy.h1}</h1>
           <p className="lead">{content.lead}</p>
           <div className="btn-row">
-            <a className="btn btn-primary" href={pagePath('contact', language) + '#aanvraag'}>{ui.cta}<ArrowRight size={18} aria-hidden="true" /></a>
+            <a className="btn btn-primary" href={pagePath('contact', language) + '#aanvraag'}>{ui.cta}</a>
             <a className="btn btn-secondary" href={COMPANY.phoneHref}><Phone size={18} aria-hidden="true" />{COMPANY.phone}</a>
           </div>
         </div>
@@ -41,7 +40,7 @@ export function ServicePage({id, language}: {id: ServiceId; language: SiteLangua
 
       <section className="section" aria-labelledby="approach-title">
         <div className="container split">
-          <div><p className="eyebrow">{content.short}</p><h2 id="approach-title">{t.approach}</h2></div>
+          <h2 id="approach-title">{t.approach}</h2>
           <div className="prose">{content.intro.map(paragraph => <p key={paragraph.slice(0, 24)} className="lead">{paragraph}</p>)}</div>
         </div>
       </section>
@@ -50,7 +49,7 @@ export function ServicePage({id, language}: {id: ServiceId; language: SiteLangua
         <div className="container">
           <div className="section-head"><h2 id="scope-title">{t.scope}</h2></div>
           <ul className="scope-list" role="list">
-            {content.scope.map((item, i) => <li key={item.title}><span className="label">0{i + 1}</span><h3>{item.title}</h3><p>{item.text}</p></li>)}
+            {content.scope.map(item => <li key={item.title}><h3>{item.title}</h3><p>{item.text}</p></li>)}
           </ul>
         </div>
       </section>
@@ -60,7 +59,6 @@ export function ServicePage({id, language}: {id: ServiceId; language: SiteLangua
           <div>
             <h2 id="layers-title">{content.layersTitle}</h2>
             <aside className="tip" style={{marginTop: 32}} aria-label={t.tip}>
-              <span className="label">{content.tip.category}</span>
               <h3>{content.tip.title}</h3>
               <p>{content.tip.text}</p>
             </aside>
@@ -77,20 +75,20 @@ export function ServicePage({id, language}: {id: ServiceId; language: SiteLangua
         </div>
       </section>
 
-      <section className="section" aria-labelledby="process-title">
+      <section className="section band" aria-labelledby="process-title">
         <div className="container">
           <div className="section-head"><h2 id="process-title">{t.process}</h2></div>
           <ol className="process-steps" role="list">
-            {PROCESS[language].map((step, i) => <li key={step.title}><span className="label">0{i + 1}</span><h3>{step.title}</h3><p>{step.text}</p></li>)}
+            {PROCESS[language].map(step => <li key={step.title}><h3>{step.title}</h3><p>{step.text}</p></li>)}
           </ol>
         </div>
       </section>
 
       <section className="section" aria-labelledby="projects-title">
         <div className="container">
-          <div className="section-head">
+          <div className="head-row">
             <h2 id="projects-title">{t.projects}</h2>
-            <a className="link-arrow" href={pagePath('projects', language)}>{ui.nav.projects}<ArrowRight size={16} aria-hidden="true" /></a>
+            <a className="text-link" href={pagePath('projects', language)}>{t.allProjects}</a>
           </div>
           <WorkGrid language={language} projects={service.projects.map(projectById)} variant="related" />
         </div>
@@ -99,11 +97,11 @@ export function ServicePage({id, language}: {id: ServiceId; language: SiteLangua
       <section className="section" aria-labelledby="tools-title">
         <div className="container">
           <div className="section-head"><h2 id="tools-title">{t.tools}</h2></div>
-          <ToolCards language={language} tools={service.tools} />
+          <ToolList language={language} tools={service.tools} />
         </div>
       </section>
 
-      <section className="section" aria-labelledby="faq-title">
+      <section className="section band" aria-labelledby="faq-title">
         <div className="container split">
           <h2 id="faq-title">{t.faq}</h2>
           <FaqList items={content.faq} />

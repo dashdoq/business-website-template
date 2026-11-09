@@ -76,13 +76,13 @@ After launch: verify the domain in Google Search Console, submit `/sitemap.xml`,
 
 ## Design
 
-- **Palette.** Limestone `#F3F0EA`, stone surfaces `#EAE6DE`/`#E3DED5`, ink `#1D2125`, muted ink `#565B60` and INGBELG red `#C41E26`. Red is used only for primary actions, the current navigation item and the highlighted roof layer. All text pairs meet 4.5:1 or better, and there is a high-contrast mode.
-- **Type.** Self-hosted, no CDN:
-  - Archivo (variable, condensed width) for headings, which suits long Dutch compounds.
-  - Source Sans 3 at 17 px for body text.
-  - IBM Plex Mono for drawing-style labels.
-- **Layout.** A strict 2 px radius, hairline rules and asymmetric 5/7 grids. Designed mobile-first and checked at 375 px and 1440 px.
-- **Removed clutter.** The chapter rail, ambient sound, timed mascot and fact pop-ups, and the floating widget stack are gone. Phones get one bottom bar instead: Call · WhatsApp · Quote.
+The look comes from the company's own material, not from a template: the white van with red lettering, the logo red, anthracite roof tiles and zinc gutters.
+
+- Colours: white, zinc grey `#F0F2F3` for bands, anthracite `#2A2E32` for text and the footer, slate `#5C646A` for secondary text, and the exact logo red `#D83030` for buttons, the current page and the highlighted roof layer. All text pairs meet 4.5:1 or better; there is a high-contrast mode.
+- Type: Barlow Condensed for headings and the large phone number, Barlow for text. Self-hosted, no CDN. Sentence case everywhere, no capitals labels, no monospace.
+- Structure only where it carries information: numbers for the three work steps, a stacked list for the roof layers. No section labels above headings, no icon cards, no decorative grids.
+- The homepage opens with the team's own photo. The 3D cutaway sits next to "Wat we doen" and changes as you scroll through the services.
+- One bottom bar on phones: Bel, WhatsApp, Offerte.
 
 ## 3D roof cutaway (`app/scene/`)
 
@@ -101,7 +101,7 @@ After launch: verify the domain in Google Search Console, submit `/sitemap.xml`,
   - Stops rendering offscreen or in hidden tabs, and follows `prefers-reduced-motion` and the pause control.
   - Projects HTML labels from 3D anchors.
   - Software-only WebGL (SwiftShader/llvmpipe) keeps the poster. For testing, run `localStorage.setItem('ingbelg-force-3d', '1')`.
-- **Home behaviour.** On desktop the stage stays sticky and its focus follows the service you scroll to. On phones each service shows its own poster.
+- **Home behaviour.** The stage sits beside "Wat we doen". On desktop it stays sticky and its focus follows the service you scroll to. On phones each service shows its own poster.
 
 ### Regenerating images
 

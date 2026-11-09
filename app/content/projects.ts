@@ -14,33 +14,33 @@ export type Project = {
 export const PROJECTS: Project[] = [
   {id: 'work-02', image: '/images/work-02.webp', width: 1600, height: 1649, services: ['pitched', 'renovation'],
     copy: {
-      nl: {title: 'Elk detail telt.', tag: 'Vakmanschap op het dak', alt: 'Een nieuw donker pannendak met het INGBELG-team en de bestelwagen voor de woning.'},
-      fr: {title: 'Chaque détail compte.', tag: 'Savoir-faire en toiture', alt: 'Un nouveau toit de tuiles foncées avec l’équipe et la camionnette INGBELG devant la maison.'},
+      nl: {title: 'Nieuw pannendak', tag: 'Hellend dak', alt: 'Een nieuw donker pannendak met het INGBELG-team en de bestelwagen voor de woning.'},
+      fr: {title: 'Nouvelle toiture en tuiles', tag: 'Toiture inclinée', alt: 'Un nouveau toit de tuiles foncées avec l’équipe et la camionnette INGBELG devant la maison.'},
     }},
   {id: 'work-01', image: '/images/work-01.webp', width: 1600, height: 900, services: ['pitched', 'flat'],
     copy: {
-      nl: {title: 'Het dak, vernieuwd.', tag: 'Hellend dak', alt: 'Luchtbeeld van drie woningen met grijze hellende daken en zonnepanelen.'},
-      fr: {title: 'Le toit, renouvelé.', tag: 'Toiture inclinée', alt: 'Vue aérienne de trois maisons aux toits inclinés gris avec panneaux solaires.'},
+      nl: {title: 'Grijze daken met zonnepanelen', tag: 'Luchtbeeld', alt: 'Luchtbeeld van drie woningen met grijze hellende daken en zonnepanelen.'},
+      fr: {title: 'Toits gris avec panneaux solaires', tag: 'Vue aérienne', alt: 'Vue aérienne de trois maisons aux toits inclinés gris avec panneaux solaires.'},
     }},
   {id: 'work-03', image: '/images/work-03.webp', width: 1600, height: 900, services: ['flat', 'pitched', 'insulation'],
     copy: {
-      nl: {title: 'Een nieuw perspectief.', tag: 'Luchtbeeld', alt: 'Een pannendak met dakramen, een plat dak met lichtkoepel en een aanbouw met piramidedak.'},
-      fr: {title: 'Une nouvelle perspective.', tag: 'Vue aérienne', alt: 'Un toit en tuiles avec fenêtres, un toit plat avec lanterneau et une extension au toit pyramidal.'},
+      nl: {title: 'Pannendak, plat dak en piramidedak', tag: 'Luchtbeeld', alt: 'Een pannendak met dakramen, een plat dak met lichtkoepel en een aanbouw met piramidedak.'},
+      fr: {title: 'Tuiles, toit plat et toit pyramidal', tag: 'Vue aérienne', alt: 'Un toit en tuiles avec fenêtres, un toit plat avec lanterneau et une extension au toit pyramidal.'},
     }},
   {id: 'work-04', image: '/images/work-04.webp', width: 1600, height: 900, services: ['pitched', 'insulation', 'asbestos'],
     copy: {
-      nl: {title: 'Gebouwd om te beschermen.', tag: 'Dakrenovatie', alt: 'Een andere hoek van hetzelfde afgewerkte dak op het luchtbeeld.'},
-      fr: {title: 'Conçu pour protéger.', tag: 'Rénovation de toiture', alt: 'Un autre angle du même toit terminé présenté en vue aérienne.'},
+      nl: {title: 'Hetzelfde dak, van opzij', tag: 'Dakrenovatie', alt: 'Een andere hoek van hetzelfde afgewerkte dak op het luchtbeeld.'},
+      fr: {title: 'Le même toit, vu de côté', tag: 'Rénovation de toiture', alt: 'Un autre angle du même toit terminé présenté en vue aérienne.'},
     }},
   {id: 'work-06', image: '/images/work-06.webp', width: 1600, height: 1200, services: ['pitched', 'renovation', 'insulation'],
     copy: {
-      nl: {title: 'Een vertrouwd dak, vernieuwd.', tag: 'Dakconstructie', alt: 'Een bruin pannendak met dakraam en de INGBELG-bestelwagen ervoor.'},
-      fr: {title: 'Un toit familier, renouvelé.', tag: 'Construction de toiture', alt: 'Un toit de tuiles brunes avec fenêtre de toit et camionnette INGBELG devant.'},
+      nl: {title: 'Bruin pannendak met dakraam', tag: 'Hellend dak', alt: 'Een bruin pannendak met dakraam en de INGBELG-bestelwagen ervoor.'},
+      fr: {title: 'Toit en tuiles brunes avec fenêtre', tag: 'Toiture inclinée', alt: 'Un toit de tuiles brunes avec fenêtre de toit et camionnette INGBELG devant.'},
     }},
   {id: 'work-13', image: '/images/work-13.webp', width: 1600, height: 1242, services: ['renovation'],
     copy: {
-      nl: {title: 'Vakwerk van dichtbij.', tag: 'Projectdetail', alt: 'Een houten kroonlijst met decoratieve tandlijst langs de dakrand.'},
-      fr: {title: 'Le savoir-faire de près.', tag: 'Détail du projet', alt: 'Une corniche en bois ornée de denticules le long de la rive.'},
+      nl: {title: 'Houten kroonlijst met tandlijst', tag: 'Timmerwerk', alt: 'Een houten kroonlijst met decoratieve tandlijst langs de dakrand.'},
+      fr: {title: 'Corniche en bois à denticules', tag: 'Menuiserie', alt: 'Une corniche en bois ornée de denticules le long de la rive.'},
     }},
 ];
 

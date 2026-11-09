@@ -1,21 +1,21 @@
 'use client';
 import {useEffect, useRef, useState} from 'react';
-import {ArrowRight, Phone} from 'lucide-react';
+import {Phone} from 'lucide-react';
 import {Shell} from '../layout/Shell';
 import {RoofStage, posterFor, posterSrcSet} from '../scene/RoofStage';
 import type {SceneFocus} from '../scene/roof-scene';
 import {ContactBand} from '../sections/ContactForm';
-import {FaqList, Rating, ReviewQuote, ToolCards, WorkGrid} from '../sections/Blocks';
+import {FaqList, Rating, ReviewQuote, ToolList, WorkGrid} from '../sections/Blocks';
 import {UI} from '../content/common';
 import {COMPANY, HOME, HOME_FAQ, PROCESS} from '../content/home';
-import {PROJECTS} from '../content/projects';
+import {projectById} from '../content/projects';
 import {SERVICES} from '../content/services';
 import {SERVICE_IDS} from '../content/service-ids';
 import {SERVICE_PAGE, pageCopy, pagePath, type SiteLanguage} from '../seo-data';
 
 /**
- * Picks the service step crossing the middle of the viewport; the hero maps to the overview (-1).
- * Only on wide screens, where the roof stage is sticky beside the steps.
+ * Picks the service crossing the middle of the viewport; the section heading maps to the overview (-1).
+ * Only on wide screens, where the roof stage is sticky beside the list.
  */
 function useScrollFocus(container: React.RefObject<HTMLElement | null>) {
   const [focus, setFocus] = useState<SceneFocus>(-1);
@@ -34,92 +34,89 @@ function useScrollFocus(container: React.RefObject<HTMLElement | null>) {
 
 export function HomePage({language}: {language: SiteLanguage}) {
   const ui = UI[language], home = HOME[language], copy = pageCopy('home', language);
-  const stage = useRef<HTMLDivElement>(null);
-  const focus = useScrollFocus(stage);
-  const caption = focus === -1 ? ui.scene.caption : SERVICES[SERVICE_IDS[focus]].copy[language].short;
+  const services = useRef<HTMLElement>(null);
+  const focus = useScrollFocus(services);
+  const heroPhoto = projectById('work-02');
   return (
     <Shell id="home" language={language}>
-      <div className="container home-stage" ref={stage}>
-        <section className="hero" aria-labelledby="hero-title" data-focus="-1">
-          <p className="eyebrow">{home.eyebrow}</p>
-          <h1 id="hero-title">{copy.h1}. <span className="hero-tagline">{home.tagline}</span></h1>
+      <section className="container hero" aria-labelledby="hero-title">
+        <div>
+          <h1 id="hero-title">{copy.h1}</h1>
           <p className="lead">{home.lead}</p>
           <div className="btn-row">
-            <a className="btn btn-primary" href={pagePath('contact', language) + '#aanvraag'}>{ui.cta}<ArrowRight size={18} aria-hidden="true" /></a>
+            <a className="btn btn-primary" href={pagePath('contact', language) + '#aanvraag'}>{ui.cta}</a>
             <a className="btn btn-secondary" href={COMPANY.phoneHref}><Phone size={18} aria-hidden="true" />{COMPANY.phone}</a>
           </div>
-          <div className="trust-row">
-            <Rating language={language} />
-            <span className="label">{COMPANY.street}, {COMPANY.town}</span>
-          </div>
-        </section>
-        <div className="home-visual">
-          <RoofStage language={language} focus={focus} caption={caption} eager
+          <Rating language={language} />
+        </div>
+        <figure className="hero-photo">
+          <img src="/images/hero-1200.webp" srcSet="/images/hero-800.webp 800w, /images/hero-1200.webp 1200w" sizes="(min-width: 900px) 50vw, 100vw" width={1200} height={990}
+            alt={heroPhoto.copy[language].alt} fetchPriority="high" decoding="async" />
+          <figcaption>{home.heroCaption}</figcaption>
+        </figure>
+      </section>
+
+      <section className="container section services" id="diensten" ref={services} aria-labelledby="services-title">
+        <div className="services-head" data-focus="-1">
+          <h2 id="services-title">{home.servicesTitle}</h2>
+          <p className="lead" style={{marginTop: 12}}>{home.servicesText}</p>
+        </div>
+        <div className="services-visual">
+          <RoofStage language={language} focus={focus}
             alt={language === 'nl' ? 'Doorsnede van een dak met kepers, isolatie, onderdak, panlatten en dakpannen, naast een aanbouw met plat dak.' : 'Coupe d’une toiture avec chevrons, isolation, sous-toiture, liteaux et tuiles, à côté d’une extension à toit plat.'} />
         </div>
-        <div className="services-intro" id="diensten" data-focus="-1">
-          <p className="eyebrow">{home.servicesEyebrow}</p>
-          <h2>{home.servicesTitle}</h2>
-          <p>{home.servicesText}</p>
-        </div>
-        <ol className="service-steps" role="list">
+        <ul className="service-list" role="list">
           {SERVICE_IDS.map((id, index) => {
             const service = SERVICES[id].copy[language];
             return (
-              <li key={id} className={`service-step${focus === index ? ' is-active' : ''}`} data-focus={index}>
-                <p className="label"><span className="step-marker" aria-hidden="true" /><b>0{index + 1}</b>{service.short}</p>
-                <img className="service-step__poster" src={posterFor(index as SceneFocus, language)} srcSet={posterSrcSet(posterFor(index as SceneFocus, language))} sizes="(min-width: 560px) 520px, calc(100vw - 32px)" width={1380} height={1200} alt="" loading="lazy" decoding="async" />
+              <li key={id} className={`service-item${focus === index ? ' is-active' : ''}`} data-focus={index}>
+                <img className="service-item__poster" src={posterFor(index as SceneFocus, language)} srcSet={posterSrcSet(posterFor(index as SceneFocus, language))}
+                  sizes="(min-width: 560px) 520px, calc(100vw - 40px)" width={1380} height={1200} alt="" loading="lazy" decoding="async" />
                 <h3>{service.name}</h3>
                 <p>{service.summary}</p>
-                <ul className="service-tags" role="list">{service.scope.map(item => <li key={item.title}>{item.title}</li>)}</ul>
-                <a className="link-arrow" href={pagePath(SERVICE_PAGE[id], language)}>{ui.readMore} {service.name.toLowerCase()}<ArrowRight size={16} aria-hidden="true" /></a>
+                <a className="text-link" href={pagePath(SERVICE_PAGE[id], language)}>{ui.readMore} {service.name.toLowerCase()}</a>
               </li>
             );
           })}
-        </ol>
-      </div>
+        </ul>
+      </section>
 
-      <section className="section" aria-labelledby="process-title">
+      <section className="section band" aria-labelledby="process-title">
         <div className="container">
-          <div className="section-head">
-            <div><p className="eyebrow">{home.processEyebrow}</p><h2 id="process-title">{home.processTitle}</h2></div>
-            <p className="lead">{home.processText}</p>
-          </div>
+          <div className="section-head"><h2 id="process-title">{home.processTitle}</h2><p>{home.processText}</p></div>
           <ol className="process-steps" role="list">
-            {PROCESS[language].map((step, index) => (
-              <li key={step.title}><span className="label">0{index + 1}</span><h3>{step.title}</h3><p>{step.text}</p></li>
-            ))}
+            {PROCESS[language].map(step => <li key={step.title}><h3>{step.title}</h3><p>{step.text}</p></li>)}
           </ol>
         </div>
       </section>
 
       <section className="section" aria-labelledby="work-title">
         <div className="container">
-          <div className="section-head">
-            <div><p className="eyebrow">{home.workEyebrow}</p><h2 id="work-title">{home.workTitle}</h2></div>
-            <a className="link-arrow" href={pagePath('projects', language)}>{home.workLink}<ArrowRight size={16} aria-hidden="true" /></a>
+          <div className="head-row">
+            <h2 id="work-title">{home.workTitle}</h2>
+            <a className="text-link" href={pagePath('projects', language)}>{home.workLink}</a>
           </div>
-          <WorkGrid language={language} projects={PROJECTS.slice(0, 3)} variant="home" />
+          <WorkGrid language={language} projects={['work-06', 'work-01', 'work-13'].map(projectById)} variant="home" />
         </div>
       </section>
 
-      <section className="section" aria-label={home.reviewEyebrow}>
-        <div className="container"><ReviewQuote language={language} /></div>
+      <section className="section band" aria-labelledby="review-title">
+        <div className="container">
+          <h2 id="review-title" className="sr-only">{home.reviewTitle}</h2>
+          <ReviewQuote language={language} />
+        </div>
       </section>
 
       <section className="section" aria-labelledby="tools-title">
         <div className="container">
-          <div className="section-head">
-            <div><p className="eyebrow">{home.toolsEyebrow}</p><h2 id="tools-title">{home.toolsTitle}</h2></div>
-            <p className="lead">{home.toolsText}</p>
-          </div>
-          <ToolCards language={language} />
+          <div className="section-head"><h2 id="tools-title">{home.toolsTitle}</h2><p>{home.toolsText}</p></div>
+          <ToolList language={language} />
         </div>
       </section>
 
-      <section className="section" aria-labelledby="faq-title">
+      <section className="section band" aria-labelledby="faq-title">
         <div className="container split">
-          <div><p className="eyebrow">{home.faqEyebrow}</p><h2 id="faq-title">{home.faqTitle}</h2></div>
+          <h2 id="faq-title">{home.faqTitle}</h2>
           <FaqList items={HOME_FAQ[language]} />
         </div>
       </section>

@@ -22,6 +22,10 @@ const sceneDir = dir + 'scene/';
 for (const name of (await readdir(sceneDir)).filter(file => /^roof-[\w-]+\.webp$/.test(file) && !file.endsWith('-690.webp'))) {
   await sharp(sceneDir + name).resize({width: 690}).webp({quality: 82, alphaQuality: 90, effort: 6}).toFile(sceneDir + name.replace(/\.webp$/, '-690.webp'));
 }
+// Homepage hero: work-02 without most of the sky, cropped to 6:5 around the house, team and van.
+for (const width of [800, 1200]) {
+  await sharp(dir + 'work-02.webp').extract({left: 0, top: 329, width: 1600, height: 1320}).resize({width}).webp({quality: 60, effort: 6}).toFile(`${dir}hero-${width}.webp`);
+}
 // Logo at 2× its largest display width.
 await sharp(dir + 'logo.png').resize({width: 240}).png({compressionLevel: 9, palette: true}).toFile(dir + 'logo-240.png');
 console.log(`Optimised ${photos.length} photos, scene posters and logo`);

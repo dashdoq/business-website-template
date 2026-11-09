@@ -1,6 +1,6 @@
 'use client';
 import {useEffect, useId, useRef, useState} from 'react';
-import {ChevronDown, Menu, Phone, ArrowRight} from 'lucide-react';
+import {ChevronDown, Menu, Phone} from 'lucide-react';
 import {Sheet, SheetContent, SheetTitle, SheetDescription} from '@/components/ui/sheet';
 import {UI} from '../content/common';
 import {COMPANY} from '../content/home';
@@ -72,7 +72,6 @@ export function SiteHeader({id, language}: Props) {
       <div className="container">
         <a className="brand" href={pagePath('home', language)} aria-label={ui.homeLabel}>
           <img src="/images/logo-240.png" width={240} height={116} alt="INGBELG" />
-          <span className="brand-note">{language === 'nl' ? <>Dakwerken &amp;<br />renovatie</> : <>Toiture &amp;<br />rénovation</>}</span>
         </a>
         <nav className="primary-nav" aria-label={ui.mainNav}>
           <ul>
@@ -97,21 +96,21 @@ export function SiteHeader({id, language}: Props) {
           <SheetDescription className="muted">{ui.menuDescription}</SheetDescription>
           <nav aria-label={ui.mainNav}>
             <ul>
-              <li><a href={pagePath('home', language)} aria-current={current('home')}>{language === 'nl' ? 'Home' : 'Accueil'}<ArrowRight size={18} aria-hidden="true" /></a></li>
+              <li><a href={pagePath('home', language)} aria-current={current('home')}>{language === 'nl' ? 'Home' : 'Accueil'}</a></li>
               <li>
-                <a href={pagePath('home', language) + '#diensten'}>{ui.nav.services}<ArrowRight size={18} aria-hidden="true" /></a>
+                <a href={pagePath('home', language) + '#diensten'}>{ui.nav.services}</a>
                 <ul className="menu-sub">
                   {SERVICE_IDS.map(service => <li key={service}><a href={pagePath(SERVICE_PAGE[service], language)} aria-current={current(SERVICE_PAGE[service])}>{SERVICES[service].copy[language].name}</a></li>)}
                 </ul>
               </li>
-              <li><a href={pagePath('projects', language)} aria-current={current('projects')}>{ui.nav.projects}<ArrowRight size={18} aria-hidden="true" /></a></li>
+              <li><a href={pagePath('projects', language)} aria-current={current('projects')}>{ui.nav.projects}</a></li>
               <li>
-                <a href={pagePath('renculator', language)}>{ui.nav.tools}<ArrowRight size={18} aria-hidden="true" /></a>
+                <a href={pagePath('renculator', language)}>{ui.nav.tools}</a>
                 <ul className="menu-sub">
-                  {TOOL_IDS.map(tool => <li key={tool}><a href={pagePath(tool, language)} aria-current={current(tool)}>{TOOLS[tool][language].name} · {TOOLS[tool][language].kicker}</a></li>)}
+                  {TOOL_IDS.map(tool => <li key={tool}><a href={pagePath(tool, language)} aria-current={current(tool)}>{TOOLS[tool][language].name}</a></li>)}
                 </ul>
               </li>
-              <li><a href={pagePath('contact', language)} aria-current={current('contact')}>{ui.nav.contact}<ArrowRight size={18} aria-hidden="true" /></a></li>
+              <li><a href={pagePath('contact', language)} aria-current={current('contact')}>{ui.nav.contact}</a></li>
             </ul>
           </nav>
           <a className="btn btn-primary" href={pagePath('contact', language) + '#aanvraag'}>{ui.cta}</a>

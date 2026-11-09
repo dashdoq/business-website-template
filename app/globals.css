@@ -1,8 +1,12 @@
-/* Self-hosted fonts (no CDN): Archivo for headings, Source Sans 3 for body, IBM Plex Mono for labels. */
-@import '@fontsource-variable/archivo/wdth.css';
-@import '@fontsource-variable/source-sans-3/index.css';
-@import '@fontsource/ibm-plex-mono/latin-400.css';
-@import '@fontsource/ibm-plex-mono/latin-500.css';
+/* Self-hosted fonts (no CDN): Barlow Condensed for headings, Barlow for text. Latin-ext covers œ and other French/Dutch glyphs. */
+@import '@fontsource/barlow/latin-400.css';
+@import '@fontsource/barlow/latin-ext-400.css';
+@import '@fontsource/barlow/latin-500.css';
+@import '@fontsource/barlow/latin-600.css';
+@import '@fontsource/barlow/latin-ext-600.css';
+@import '@fontsource/barlow-condensed/latin-600.css';
+@import '@fontsource/barlow-condensed/latin-700.css';
+@import '@fontsource/barlow-condensed/latin-ext-700.css';
 @import './styles/tokens.css';
 @import './styles/base.css';
 @import './styles/components.css';

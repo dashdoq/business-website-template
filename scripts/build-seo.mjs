@@ -8,9 +8,10 @@ const template = await readFile(new URL('index.html', dist), 'utf8');
 const escape = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const assets = [...template.matchAll(/<(?:script\b[^>]*>[\s\S]*?<\/script>|link\b[^>]*(?:stylesheet|modulepreload)[^>]*>)/g)].map(m => m[0]).join('');
 
-// Preload only the body font: it renders the LCP paragraph. Headings swap in when Archivo arrives.
+// Preload the two fonts above the fold, the condensed heading face and the body face, so the hero
+// renders once with its final fonts and does not reflow.
 const files = await readdir(new URL('assets/', dist));
-const fontPreloads = [/^source-sans-3-latin-wght-normal.*\.woff2$/]
+const fontPreloads = [/^barlow-condensed-latin-700-normal.*\.woff2$/, /^barlow-latin-400-normal.*\.woff2$/]
   .map(pattern => files.find(file => pattern.test(file)))
   .filter(Boolean)
   .map(file => `<link rel="preload" href="/assets/${file}" as="font" type="font/woff2" crossorigin>`).join('');

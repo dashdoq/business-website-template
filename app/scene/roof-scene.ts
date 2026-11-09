@@ -45,7 +45,7 @@ const FOCUS: Record<SceneFocus, FocusDef> = {
     labels: ['sheets', 'shedDeck'], active: 'sheets'},
 };
 
-const ACCENT = new Color('#c41e26');
+const ACCENT = new Color('#d83030');
 const easeOut = (x: number) => 1 - Math.pow(1 - x, 3);
 const easeInOut = (x: number) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
 /** Ease-out with a very small settle (~1.5%), used when a tile lands. */
@@ -117,11 +117,11 @@ export class RoofScene {
     this.renderer = renderer;
     options.canvas.addEventListener('webglcontextlost', this.contextLost);
 
-    const background = new Color(options.background ?? '#f3f0ea');
+    const background = new Color(options.background ?? '#ffffff');
     this.scene.fog = new Fog(background, 34, 70);
 
     // Lighting: weak sky fill, one warm low sun with soft shadows, one cool rim from behind.
-    this.scene.add(new HemisphereLight('#fbf6ee', '#c4bbad', 0.75));
+    this.scene.add(new HemisphereLight('#f6f8fa', '#c2c6c8', 0.75));
     const sun = new DirectionalLight('#fff0da', 2.7);
     sun.position.set(-8, 12, 9);
     sun.castShadow = !coarse || this.still;
@@ -302,7 +302,7 @@ export class RoofScene {
       this.emphasis.set(key, e);
       for (const material of layer.materials) {
         if (e >= 0) {material.emissive.copy(ACCENT); material.emissiveIntensity = 0.2 * e}
-        else {material.emissive.setRGB(0.9, 0.88, 0.84); material.emissiveIntensity = 0.5 * -e}
+        else {material.emissive.setRGB(0.86, 0.88, 0.9); material.emissiveIntensity = 0.5 * -e}
       }
     }
     for (const key of SLOPE_KEYS) {

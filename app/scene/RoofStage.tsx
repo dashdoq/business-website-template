@@ -52,7 +52,7 @@ const cancelIdle = (handle: number) => (hasIdle() ? window.cancelIdleCallback(ha
  * The 3D roof cutaway. Renders a poster first (fast LCP, no-WebGL fallback), then lazy-loads
  * three.js once the stage is visible and the browser is idle. Rendering stops when offscreen.
  */
-export function RoofStage({language, focus, caption, eager = false, alt}: {language: SiteLanguage; focus: SceneFocus; caption: string; eager?: boolean; alt: string}) {
+export function RoofStage({language, focus, eager = false, alt}: {language: SiteLanguage; focus: SceneFocus; eager?: boolean; alt: string}) {
   const root = useRef<HTMLDivElement>(null), canvas = useRef<HTMLCanvasElement>(null), labels = useRef<HTMLDivElement>(null);
   const scene = useRef<RoofScene | null>(null);
   const {reduced, paused, ready, setComfort} = useComfort();
@@ -123,15 +123,12 @@ export function RoofStage({language, focus, caption, eager = false, alt}: {langu
       <div className="roof-stage__annotations" ref={labels} aria-hidden="true">
         {(Object.keys(LABELS) as AnchorId[]).map(id => <span key={id} className="annotation" data-anchor={id}><i /><span>{LABELS[id][language]}</span></span>)}
       </div>
-      <div className="roof-stage__bar">
-        <p className="label" aria-hidden="true"><b>{focus === -1 ? '00' : '0' + (focus + 1)}</b>{caption}</p>
-        {live && !reduced && (
-          <button type="button" className="icon-button roof-stage__toggle" aria-pressed={paused} onClick={() => setComfort({paused: !paused})}
-            aria-label={paused ? ui.play : ui.pause} title={paused ? ui.play : ui.pause}>
-            {paused ? <Play size={18} aria-hidden="true" /> : <Pause size={18} aria-hidden="true" />}
-          </button>
-        )}
-      </div>
+      {live && !reduced && (
+        <button type="button" className="icon-button roof-stage__toggle" aria-pressed={paused} onClick={() => setComfort({paused: !paused})}
+          aria-label={paused ? ui.play : ui.pause} title={paused ? ui.play : ui.pause}>
+          {paused ? <Play size={18} aria-hidden="true" /> : <Pause size={18} aria-hidden="true" />}
+        </button>
+      )}
     </div>
   );
 }
