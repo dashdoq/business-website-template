@@ -1,6 +1,6 @@
 # INGBELG — website (NL/FR)
 
-Version 2.0.0 · 9 November 2026. A redesign of the INGBELG roofing and renovation web app (export 1.0.9):
+Version 2.0.1 · 9 November 2026. A redesign of the INGBELG roofing and renovation web app (export 1.0.9):
 
 - **SEO.** One page per service, inline calculator pages and full metadata per URL.
 - **Design.** A calmer, light architectural design.

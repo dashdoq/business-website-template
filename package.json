@@ -1,6 +1,6 @@
 {
   "name": "ingbelg-website",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "INGBELG NL/FR — roofing and renovation website with ZotteTools calculators",
   "private": true,
   "type": "module",
