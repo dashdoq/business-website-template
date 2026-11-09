@@ -71,7 +71,7 @@ export function SiteHeader({id, language}: Props) {
     <header className="site-header">
       <div className="container">
         <a className="brand" href={pagePath('home', language)} aria-label={ui.homeLabel}>
-          <img src="/images/logo.png" width={430} height={207} alt="INGBELG" />
+          <img src="/images/logo-240.png" width={240} height={116} alt="INGBELG" />
           <span className="brand-note">{language === 'nl' ? <>Dakwerken &amp;<br />renovatie</> : <>Toiture &amp;<br />rénovation</>}</span>
         </a>
         <nav className="primary-nav" aria-label={ui.mainNav}>

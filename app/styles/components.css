@@ -22,7 +22,7 @@
 .on-dark .btn-secondary { color: var(--on-dark); border-color: var(--line-dark); }
 .on-dark .btn-secondary:hover { border-color: var(--on-dark); }
 .btn-block { width: 100%; }
-.btn:disabled { opacity: 0.45; }
+.btn:disabled { opacity: 1; background: var(--surface-2); color: var(--ink-muted); border-color: transparent; }
 .btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
 
 .icon-button {

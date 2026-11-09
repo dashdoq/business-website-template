@@ -2,7 +2,7 @@
 import {useEffect, useRef, useState} from 'react';
 import {ArrowRight, Phone} from 'lucide-react';
 import {Shell} from '../layout/Shell';
-import {RoofStage, posterFor} from '../scene/RoofStage';
+import {RoofStage, posterFor, posterSrcSet} from '../scene/RoofStage';
 import type {SceneFocus} from '../scene/roof-scene';
 import {ContactBand} from '../sections/ContactForm';
 import {FaqList, Rating, ReviewQuote, ToolCards, WorkGrid} from '../sections/Blocks';
@@ -13,12 +13,15 @@ import {SERVICES} from '../content/services';
 import {SERVICE_IDS} from '../content/service-ids';
 import {SERVICE_PAGE, pageCopy, pagePath, type SiteLanguage} from '../seo-data';
 
-/** Picks the service step crossing the middle of the viewport; the hero maps to the overview (-1). */
+/**
+ * Picks the service step crossing the middle of the viewport; the hero maps to the overview (-1).
+ * Only on wide screens, where the roof stage is sticky beside the steps.
+ */
 function useScrollFocus(container: React.RefObject<HTMLElement | null>) {
   const [focus, setFocus] = useState<SceneFocus>(-1);
   useEffect(() => {
     const root = container.current;
-    if (!root) return;
+    if (!root || !matchMedia('(min-width: 1100px)').matches) return;
     const targets = Array.from(root.querySelectorAll<HTMLElement>('[data-focus]'));
     const observer = new IntersectionObserver(entries => {
       for (const entry of entries) if (entry.isIntersecting) setFocus(Number((entry.target as HTMLElement).dataset.focus) as SceneFocus);
@@ -65,7 +68,7 @@ export function HomePage({language}: {language: SiteLanguage}) {
             return (
               <li key={id} className={`service-step${focus === index ? ' is-active' : ''}`} data-focus={index}>
                 <p className="label"><span className="step-marker" aria-hidden="true" /><b>0{index + 1}</b>{service.short}</p>
-                <img className="service-step__poster" src={posterFor(index as SceneFocus, language)} width={1380} height={1200} alt="" loading="lazy" decoding="async" />
+                <img className="service-step__poster" src={posterFor(index as SceneFocus, language)} srcSet={posterSrcSet(posterFor(index as SceneFocus, language))} sizes="(min-width: 560px) 520px, calc(100vw - 32px)" width={1380} height={1200} alt="" loading="lazy" decoding="async" />
                 <h3>{service.name}</h3>
                 <p>{service.summary}</p>
                 <ul className="service-tags" role="list">{service.scope.map(item => <li key={item.title}>{item.title}</li>)}</ul>

@@ -46,7 +46,7 @@ button:disabled { cursor: not-allowed; }
   font-family: var(--font-head);
   font-stretch: 82%;
   font-weight: 680;
-  font-size: clamp(2.5rem, 1.55rem + 4.4vw, 5.25rem);
+  font-size: clamp(2.5rem, 1.6rem + 3.9vw, 4.75rem);
   line-height: 1.05;
   letter-spacing: -0.03em;
   text-wrap: balance;

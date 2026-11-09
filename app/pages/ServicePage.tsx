@@ -1,6 +1,6 @@
 import {ArrowRight, Check, Phone} from 'lucide-react';
 import {Breadcrumbs, Shell} from '../layout/Shell';
-import {posterFor, POSTER_SIZE} from '../scene/RoofStage';
+import {posterFor, posterSrcSet, POSTER_SIZE} from '../scene/RoofStage';
 import type {SceneFocus} from '../scene/roof-scene';
 import {ContactBand} from '../sections/ContactForm';
 import {FaqList, ToolCards, WorkGrid} from '../sections/Blocks';
@@ -34,7 +34,7 @@ export function ServicePage({id, language}: {id: ServiceId; language: SiteLangua
           </div>
         </div>
         <figure className="page-head__visual">
-          <img src={posterFor(index as SceneFocus, language)} width={POSTER_SIZE.width} height={POSTER_SIZE.height} fetchPriority="high" decoding="async"
+          <img src={posterFor(index as SceneFocus, language)} srcSet={posterSrcSet(posterFor(index as SceneFocus, language))} sizes="(min-width: 1100px) 46vw, 100vw" width={POSTER_SIZE.width} height={POSTER_SIZE.height} fetchPriority="high" decoding="async"
             alt={`${content.layersTitle}: ${content.layers.map(layer => layer.name.toLowerCase()).join(', ')}.`} />
         </figure>
       </div>

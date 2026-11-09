@@ -17,7 +17,7 @@ export function SiteFooter({language}: {language: SiteLanguage}) {
       <div className="container">
         <div className="footer-grid">
           <div className="footer-brand">
-            <img src="/images/logo.png" width={430} height={207} alt="INGBELG" loading="lazy" decoding="async" />
+            <img src="/images/logo-240.png" width={240} height={116} alt="INGBELG" loading="lazy" decoding="async" />
             <p>{ui.footerTagline}</p>
           </div>
           <nav aria-labelledby="footer-services">

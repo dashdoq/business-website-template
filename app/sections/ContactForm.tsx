@@ -41,7 +41,7 @@ export function ContactForm({language, service, headingLevel = 3}: {language: Si
       <form onSubmit={submit} noValidate={false}>
         <div className="field-grid">
           <label className="field" htmlFor={id('name')}><span>{f.name} *</span><input id={id('name')} name="name" autoComplete="name" required maxLength={100} placeholder={f.namePlaceholder} value={contact.name} onChange={update('name')} /></label>
-          <label className="field" htmlFor={id('email')}><span>{f.email} *</span><input id={id('email')} type="email" name="email" autoComplete="email" required maxLength={150} placeholder="naam@voorbeeld.be" value={contact.email} onChange={update('email')} /></label>
+          <label className="field" htmlFor={id('email')}><span>{f.email} *</span><input id={id('email')} type="email" name="email" autoComplete="email" required maxLength={150} placeholder={language === 'nl' ? 'naam@voorbeeld.be' : 'nom@exemple.be'} value={contact.email} onChange={update('email')} /></label>
           <label className="field" htmlFor={id('phone')}><span>{f.phone}</span><input id={id('phone')} type="tel" name="phone" autoComplete="tel" maxLength={30} placeholder="+32 …" value={contact.phone} onChange={update('phone')} /></label>
           <label className="field" htmlFor={id('town')}><span>{f.town} *</span><input id={id('town')} name="town" autoComplete="address-level2" required maxLength={100} placeholder={f.townPlaceholder} value={contact.town} onChange={update('town')} /></label>
         </div>

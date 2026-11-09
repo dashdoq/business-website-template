@@ -25,10 +25,11 @@ const security = {
 };
 const compressed = new Map();
 
-function encode(file, data, accept) {
+function encode(file, data, accept, version) {
   const encoding = /\bbr\b/.test(accept) ? 'br' : /\bgzip\b/.test(accept) ? 'gzip' : null;
   if (!encoding || data.length < 1024 || !compressible.has(extname(file))) return {data};
-  const key = encoding + ':' + file;
+  // Keyed by modification time so a rebuild never serves stale compressed files.
+  const key = `${encoding}:${file}:${version}`;
   if (!compressed.has(key)) compressed.set(key, encoding === 'br'
     ? brotliCompressSync(data, {params: {[constants.BROTLI_PARAM_QUALITY]: 9, [constants.BROTLI_PARAM_SIZE_HINT]: data.length}})
     : gzipSync(data, {level: 9}));
@@ -36,8 +37,8 @@ function encode(file, data, accept) {
 }
 
 async function send(req, res, file, status = 200) {
-  const raw = await readFile(file);
-  const {data, encoding} = encode(file, raw, String(req.headers['accept-encoding'] || ''));
+  const [raw, info] = await Promise.all([readFile(file), stat(file)]);
+  const {data, encoding} = encode(file, raw, String(req.headers['accept-encoding'] || ''), info.mtimeMs);
   const pathname = file.slice(root.length).split(sep).join('/');
   const cache = pathname.startsWith('/assets/') ? 'public, max-age=31536000, immutable'
     : /\.(webp|jpg|png|svg|woff2)$/.test(pathname) ? 'public, max-age=604800' : 'no-cache';

@@ -1,12 +1,14 @@
-# INGBELG — Node.js web app
+# INGBELG — website (NL/FR)
 
-Latest export: 15 October 2026 · version 1.0.9. Includes the Dutch/French interface, fixed desktop contact widgets, responsive laptop layout, and vertical sound/motion controls beneath the sidebar page numbers. Includes the mobile gallery and compact fun facts. The single ZotteTools button opens three calculators with centered tabs and individual URLs.
+Version 2.0.0 · 9 November 2026. A redesign of the INGBELG roofing and renovation web app (export 1.0.9):
 
-## Deploy the ZIP on Hostinger
+- **SEO.** One page per service, inline calculator pages and full metadata per URL.
+- **Design.** A calmer, light architectural design.
+- **3D.** A roof cutaway that is built and explained layer by layer.
 
-In Websites, create a Web App and choose **Upload your website files**. Upload the complete ZIP.
+## Deploy on Hostinger (unchanged)
 
-Use these settings:
+In Websites, create a Web App and upload the ZIP (source + prebuilt `dist`), or connect this repository.
 
 | Setting | Value |
 | --- | --- |
@@ -17,129 +19,122 @@ Use these settings:
 | Build command | `npm run build` |
 | Output directory | `dist` |
 
-For a running Node.js process, choose the **Other** application type and use the same build settings, with **Entry file** `server.mjs` and **Start command** `npm start`. The server listens on `0.0.0.0` and the host-provided `PORT` (3000 locally). The entry file is at the project root.
+For a running Node.js process, choose **Other**, entry file `server.mjs`, start command `npm start`. The server listens on `0.0.0.0` and `PORT` (default 3000).
 
-No API keys are required. For public deployment, set the build environment variable `SITE_URL` to your final HTTPS domain, without a path, and rebuild. This updates canonical links, language alternates, social URLs, structured data and sitemap URLs together. Without this variable, the build uses the current Sites address. The ZIP contains the project source and a prebuilt `dist` folder. Do not upload only `dist` when using Hostinger's project upload workflow.
-
-Official setup guide: https://www.hostinger.com/support/how-to-deploy-a-nodejs-website-in-hostinger/
-
-## Run the supplied production build
-
-With Node.js 24 or newer installed, extract the ZIP and run:
-
-```sh
-node server.mjs
-```
-
-Open http://localhost:3000. The supplied build runs without installing packages on Node.js 24 or newer.
-
-## Edit and rebuild
+**Domain.** Canonical links, hreflang, structured data and the sitemap default to `https://ingbelg.in`. To publish elsewhere, set the build variable `SITE_URL` to the HTTPS origin (no path) and rebuild.
 
 ```sh
 npm ci
-npm run check
-npm run build
-npm test
-npm start
+npm run check   # TypeScript
+npm run build   # client + server render + 28 pre-rendered pages, 404s, sitemap, robots
+npm test        # SEO, consent, server routes, calculator boundaries
+npm start       # http://localhost:3000
 ```
 
-For local development: `npm run dev`.
+`npm run dev` starts the Vite dev server.
+
+## Pages (28 pre-rendered URLs)
+
+| Page | NL | FR |
+| --- | --- | --- |
+| Home | `/` | `/fr` |
+| Pitched roofs | `/diensten/hellende-daken` | `/fr/services/toitures-inclinees` |
+| Flat roofs | `/diensten/platte-daken` | `/fr/services/toitures-plates` |
+| Roof insulation | `/diensten/dakisolatie` | `/fr/services/isolation-toiture` |
+| Renovation | `/diensten/renovatie` | `/fr/services/renovation` |
+| Asbestos removal | `/diensten/asbestverwijdering` | `/fr/services/desamiantage` |
+| Projects | `/realisaties` | `/fr/realisations` |
+| Contact | `/contact` | `/fr/contact` |
+| Renculator / Premculator / Wijculator | `/zottetools/<tool>` | `/fr/zottetools/<tool>` |
+| Privacy / Cookies / Accessibility | `/privacy` … | `/fr/privacy` … |
+
+All 1.0.9 URLs still work. `server.mjs` handles routing:
+
+- **Redirects.** Trailing slashes and `/index.html` get a 301 to the canonical URL; query strings are kept.
+- **Unknown URLs.** These get a branded, `noindex` 404 page with a real 404 status.
+- **Compression.** Text files are served with brotli or gzip.
+- **Headers.** Responses carry a Content-Security-Policy and other security headers.
+
+On a static host, map each path above to `<path>/index.html` and serve `404.html` (or `fr/404.html`) for everything else.
+
+## SEO
+
+- **On-page.**
+  - Every URL has its own title (≤60 characters), description (≤155), H1, canonical, `nl-BE`/`fr-BE`/`x-default` alternates, Open Graph/Twitter tags and a 1200×630 JPEG share image.
+  - The H1s carry the search intent ("Dakwerken en renovatie in Zottegem", "Platte daken in Zottegem", …).
+- **Service pages.** Each has a lead, scope, a layer-by-layer explanation, warning signs, process, related projects, a tip, an FAQ, related services and calculator links.
+- **Calculator pages.** These are now server-rendered content (intro, the calculator itself, "how it works", official sources), not a popup over the homepage.
+- **JSON-LD.** Each page gets the schema types that fit it:
+  - `RoofingContractor` with address, map link and an offer catalogue of the five services.
+  - `WebSite`, plus `WebPage` / `ContactPage` / `CollectionPage`.
+  - `BreadcrumbList`, `Service`, `FAQPage` (visible FAQs only), `ImageGallery` and `WebApplication`.
+  - No ratings markup: self-served review stars aren't eligible, and a test guards this.
+- **Sitemap and links.** The sitemap includes hreflang links and image entries. The header, footer, service pages and 404 page all cross-link.
+- **Content sources.** Copy uses only facts already in 1.0.9: services and their details, contact details, the review snapshot, building tips and the Premculator rules. It adds no prices, guarantees, certifications, years in business or town lists.
+
+After launch: verify the domain in Google Search Console, submit `/sitemap.xml`, inspect one URL per language and run the Rich Results Test.
+
+## Design
+
+- **Palette.** Limestone `#F3F0EA`, stone surfaces `#EAE6DE`/`#E3DED5`, ink `#1D2125`, muted ink `#565B60` and INGBELG red `#C41E26`. Red is used only for primary actions, the current navigation item and the highlighted roof layer. All text pairs meet 4.5:1 or better, and there is a high-contrast mode.
+- **Type.** Self-hosted, no CDN:
+  - Archivo (variable, condensed width) for headings, which suits long Dutch compounds.
+  - Source Sans 3 at 17 px for body text.
+  - IBM Plex Mono for drawing-style labels.
+- **Layout.** A strict 2 px radius, hairline rules and asymmetric 5/7 grids. Designed mobile-first and checked at 375 px and 1440 px.
+- **Removed clutter.** The chapter rail, ambient sound, timed mascot and fact pop-ups, and the floating widget stack are gone. Phones get one bottom bar instead: Call · WhatsApp · Quote.
+
+## 3D roof cutaway (`app/scene/`)
+
+- **`roof-model.ts`.** Builds a Flemish house procedurally. The left gable is cut open and the front slope steps back layer by layer:
+  - rafters → insulation → underlay → counter-battens and battens → anthracite tiles → ridge, fascia and zinc gutter;
+  - plus an EPDM flat-roof annex and a shed with old corrugated sheets.
+
+  Repeated parts use `InstancedMesh`. The brick texture is drawn on a canvas, so there are no texture downloads.
+- **`roof-scene.ts`.** A framework-free three.js renderer:
+  - **Intro.** Tile rows lift and settle from eaves to ridge, the way a roofer lays them.
+  - **Idle.** A slow ±6° turntable with damped pointer parallax, rendered at about 30 fps once settled.
+  - **Service focus.** An exploded view of the relevant layer, tinted red with the other layers ghosted. The EPDM sheet unrolls, a renovation patch of tiles is swapped, and the asbestos sheets are lifted whole and stacked on a pallet.
+  - Everything runs on frame delta time and `dispose()` frees all GPU resources.
+- **`RoofStage.tsx`.** The React wrapper:
+  - Shows a poster image first, then lazy-loads three.js when the stage is visible and the browser is idle.
+  - Stops rendering offscreen or in hidden tabs, and follows `prefers-reduced-motion` and the pause control.
+  - Projects HTML labels from 3D anchors.
+  - Software-only WebGL (SwiftShader/llvmpipe) keeps the poster. For testing, run `localStorage.setItem('ingbelg-force-3d', '1')`.
+- **Home behaviour.** On desktop the stage stays sticky and its focus follows the service you scroll to. On phones each service shows its own poster.
+
+### Regenerating images
+
+Outputs are committed, so production builds need neither sharp nor a browser.
+
+```sh
+npm i --no-save sharp
+node scripts/render-posters.mjs    # scene posters via Vite + Playwright Chromium
+node scripts/optimize-images.mjs   # photo sizes (640/1024/1600), JPEG share cards, 690 px posters, logo
+```
 
 ## Files
 
-- `app/experience.tsx`: interface, forms, gallery and interactions.
-- `app/i18n.tsx`: Dutch and French translations; Dutch is the default.
-- `app/world.tsx`: Three.js / React Three Fiber scene and responsive camera.
-- `app/globals.css`: responsive theme and floating contact widgets.
-- `app/project-data.ts`: business details, gallery data and Renculator budget allowances.
-- `app/zotte-tools.tsx`: the shared NL/FR calculator popup.
-- `app/premium-calculation.ts`: verified 2026 Flemish premium calculations and official source links.
-- `app/workforce-calculation.ts`: editable workforce planning assumptions.
-- `app/tool-routing.ts` and `app/use-tool-navigation.ts`: calculator URLs and Back/Forward navigation.
-- `tests/`: calculation boundary checks and production server route checks.
-- `public/images/`: original company logo and project photos.
-- `server.mjs`: dependency-free Node.js production server.
-- `dist/`: ready-built production app.
+- `app/seo-data.ts`: page catalogue (paths, titles, descriptions, H1s), structured data, sitemap, robots.
+- `app/content/`: NL/FR copy for services, home, calculators, projects and UI strings.
+- `app/pages/`, `app/sections/`, `app/layout/`: page components, shared sections, header/footer/shell.
+- `app/zotte-tools.tsx`, `app/tools/Renculator.tsx`: calculator UIs.
+- `app/premium-calculation.ts`, `app/workforce-calculation.ts`, `app/project-data.ts`: calculation logic, unchanged from 1.0.9.
+- `app/consent-storage.ts`, `app/cookie-controls.tsx`: consent and optional comfort preferences.
+- `app/styles/`: design tokens, base, components, sections, calculators.
+- `scripts/build-seo.mjs`: writes the pre-rendered pages, 404s, sitemap and robots.
+- `server.mjs`: dependency-free production server.
 
-## Existing functionality
+## Behaviour carried over from 1.0.9
 
-The contact form prepares an email draft in the visitor's mail application. The visitor reviews and sends that draft. Phone, email and WhatsApp links use the configured company contact details. This export does not add email delivery or a database.
+- **Contact form.** Still prepares an email draft in the visitor's mail app; nothing is sent to a server.
+- **Calculator hand-off.** A calculator summary can be carried into the form on request. It is held in `sessionStorage` until the tab closes and never includes income.
+- **Consent.** Cookie consent lasts 180 days. Optional storage only remembers display preferences (reduced motion, pause, contrast).
+- **Premculator scope.** The model covers Mijn VerbouwPremie for owner-occupiers, for applications from 1 March to 31 December 2026; the official sources are linked on the page. Re-verify the rules and update `premium-calculation.ts` and its tests before extending the date window.
 
-Reviews and ratings are the existing sourced snapshot. The estimator provides illustrative budget ranges, excluding VAT. It is not an INGBELG quotation.
+## To confirm before launch
 
-The interface uses stable Dutch and French URLs; French pages begin with `/fr`. Animation can be paused or reduced. Browsers without WebGL2 use the photo fallback. The popup fits the available viewport height and scrolls internally; the tool selector stays at the top. This update passed TypeScript checks, production builds, calculation boundary tests and direct-route server checks. Browser visual QA was not available for this update.
-
-## ZotteTools and individual URLs
-
-Only one calculator is visible at a time. Switching tabs preserves values during the current page session. The copy-link button shares the selected tool without any form data. Browser Back and Forward follow tool selections. Refreshing a direct URL opens that tool.
-
-| Tool | Purpose | URL path |
-| --- | --- | --- |
-| Renculator | Bouwcalculator: illustrative construction budget | `/zottetools/renculator` |
-| Premculator | Flemish renovation premium estimate | `/zottetools/premculator` |
-| Wijculator | Labour hours, minimum team for a deadline, extra-worker comparison | `/zottetools/wijculator` |
-
-Use these paths after your own domain. The included Node server serves all three paths directly. `npm run build` creates complete pre-rendered HTML for all 14 Dutch/French pages, including `dist/zottetools/<tool>/index.html` and their `/fr` equivalents, for static hosts that serve directory index files. Deploy at the domain root; assets use root-relative paths. On a static host without directory-index routing, map each known URL to its matching `<path>/index.html`; preserve the individual HTML files and return 404 for unknown paths. Do not rewrite every page to the home page, because each page has its own language, metadata and content.
-
-The calculations run locally in the browser. Income and calculator values are not stored in localStorage, sent to a server, or included in a shared URL. The URL identifies the language. Cookie choices are stored for at most 180 days; optional comfort settings are saved only after consent. A user can explicitly add a result summary to the existing contact form; income is excluded from the Premculator summary. The email is sent only through the visitor's mail application after review.
-
-## Premculator scope and upkeep
-
-The built-in model covers **Mijn VerbouwPremie for owner-occupiers in Flanders**, for applications from **1 March through 31 December 2026**. It covers qualifying roof, external-wall, ground-floor/basement-ceiling insulation work and new window frames/external doors. Common apartment parts, glass-only replacement, heat pumps, other regional/local grants and other applicant types are outside this model. Out-of-period applications and other regions do not produce a numeric estimate.
-
-The visitor enters qualifying net invoice costs, income, household/dependants and any relevant additional property ownership, and confirms five eligibility assumptions. Each work category has a €1,000 net minimum. Income categories 3 and 4 receive respectively 35% and 50% of capped costs: roof €11,500, wall €10,000, floor €3,000, windows/doors €10,500. Income categories 1 and 2 receive zero for these four categories in this period. The optional qualifying roof asbestos bonus is €8/m², with the roof total capped at 50% of the eligible roof invoice. These are conditional estimates, not approvals.
-
-Official sources, checked 15 October 2026:
-
-- [Owner-occupier rules and income thresholds](https://www.vlaanderen.be/bouwen-wonen-en-energie/bouwen-en-verbouwen/premies-voor-renovatie/mijn-verbouwpremie/wie-in-aanmerking-komt-voor-mijn-verbouwpremie/mijn-verbouwpremie-voor-eigenaar-bewoner)
-- [Roof](https://www.vlaanderen.be/bouwen-wonen-en-energie/bouwen-en-verbouwen/premies-voor-renovatie/mijn-verbouwpremie/mijn-verbouwpremie-voor-dak)
-- [External wall](https://www.vlaanderen.be/bouwen-wonen-en-energie/bouwen-en-verbouwen/premies-voor-renovatie/mijn-verbouwpremie/mijn-verbouwpremie-voor-buitenmuur)
-- [Floor](https://www.vlaanderen.be/bouwen-wonen-en-energie/bouwen-en-verbouwen/premies-voor-renovatie/mijn-verbouwpremie/mijn-verbouwpremie-voor-vloer)
-- [Windows and doors](https://www.vlaanderen.be/bouwen-wonen-en-energie/bouwen-en-verbouwen/premies-voor-renovatie/mijn-verbouwpremie/mijn-verbouwpremie-voor-ramen-en-deuren)
-- [Official Flemish simulator](https://apps.energiesparen.be/simulator-mijnverbouwpremie)
-
-Before extending the application-date window, verify the current official rules and update both the calculation module and its tests. Do not simply remove the date guard.
-
-## Wijculator assumptions
-
-The initial productivity rates and base crew sizes are editable planning assumptions, not INGBELG quotations, measured productivity, legal staffing requirements or guaranteed delivery dates.
-
-- Labour hours = `(area × hours/m² × complexity + setup hours) × (1 + buffer/100)`.
-- Workdays = `labour hours / hours per day × (sequential share + parallel share / team size)`.
-- The minimum team is the smallest whole team, at least the chosen base size and at most 20, that meets the target workdays.
-- Additional workers shorten only the parallel share. The comparison shows the chosen team versus the base team. Impossible deadlines are explicitly flagged.
-
-The default sequential share is 10%, and the default buffer is 15%; both can be changed. Drying time, weather, site access, deliveries, trades coordination and safety constraints need a separate professional assessment.
-
-## SEO and public launch
-
-The build includes unique titles and descriptions, concise keyword tags, canonical URLs, reciprocal `nl-BE`/`fr-BE`/`x-default` links, Open Graph and Twitter sharing cards, `robots.txt`, an XML sitemap, a web manifest, and JSON-LD for the business, website, pages, breadcrumbs and calculator web applications. No ratings, opening hours or accreditations were invented. Local service copy, internal calculator links and a visible FAQ support discovery and project enquiries.
-
-Dutch pages use `/`, `/zottetools/...`, `/privacy`, `/cookies` and `/accessibility`. French equivalents use `/fr`, `/fr/zottetools/...`, `/fr/privacy`, `/fr/cookies` and `/fr/accessibility`.
-
-For your own domain, configure `SITE_URL` in the hosting build environment (for example, your final `https://www.your-domain.be` origin), then run `npm run build`. The current Sites publication is access-controlled; search engines cannot index content behind that sign-in. Public hosting is required for organic discovery. This export does not change the Sites sharing settings.
-
-After launching on the final public domain:
-
-1. Verify the domain in Google Search Console and submit `https://YOUR_DOMAIN/sitemap.xml`.
-2. Inspect the homepage and one URL per language with Search Console. Validate structured data with Google's Rich Results Test and check sharing previews.
-3. Keep your Google Business Profile website/contact details consistent, and link campaigns to the appropriate language/tool URL. UTM campaign parameters can be used on incoming links; they are excluded from canonical URLs.
-
-No analytics, ad pixels, marketing accounts, advertising spend or outbound campaigns are configured. If adding a provider later, first document its identity, purpose and lifetime and add genuine opt-in controls that block every non-essential request until consent and handle withdrawal. Current consent covers only the implemented comfort preferences and must not be repurposed as consent for future trackers.
-
-## Accessibility and cookie controls
-
-Accessibility improvements include a main-content skip link, visible focus indicators, accessible landmarks and form labels, descriptive image alternatives, keyboard-operable tabs/dialogs, larger control targets, required-field guidance, reduced-motion and pause controls, a high-contrast setting and zoom-friendly layouts. Text, contact links and project summaries remain available alongside the decorative 3D scene. Keyboard, screen-reader and visual browser auditing remains a launch validation step; no WCAG certification is claimed.
-
-The cookie banner provides equal-weight reject/accept buttons and preference settings. Essential consent storage expires after 180 days. Optional storage remembers reduced motion, animation pause and contrast only with consent. Withdrawal deletes saved comfort preferences and prevents subsequent optional writes, including when the browser cannot persist the new decision. Cookie settings remain accessible in the footer. The app uses no analytics or advertising trackers; separate hosting/authentication services may use necessary storage. Privacy/cookie pages describe the app's actual behavior and provide the company contact for privacy requests.
-
-Checks completed for this build: TypeScript validation; client and server-side pre-render builds; all 14 production routes, metadata/language/canonical tests; consent expiry, rejection and blocked-storage tests; and the existing calculator tests. Browser visual and assistive-technology QA was unavailable in this editing environment.
-
-Primary implementation references:
-
-- [Google SEO Starter Guide](https://developers.google.com/search/docs/fundamentals/seo-starter-guide)
-- [Google language alternate guidance](https://developers.google.com/search/docs/specialty/international/localized-versions)
-- [Google sitemap guidance](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap)
-- [Google local business structured data](https://developers.google.com/search/docs/appearance/structured-data/local-business)
-- [W3C focus visibility guidance](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html)
-- [Belgian Data Protection Authority: cookies and similar technologies](https://www.autoriteprotectiondonnees.be/cookies-et-autres-traceurs)
+- That `https://ingbelg.in` is the final domain. `sameAs` still points to `https://ingbelg.be/`.
+- The service copy and the service-area wording ("Zottegem en omgeving").
+- The review snapshot (5,0 · 54 reviews) shown on the site.
+- A test on real phones and with a screen reader. Automated checks so far: TypeScript, unit and route tests, Playwright at 375/1440 px, and Lighthouse mobile (Accessibility 100, SEO 100, Best Practices 100, Performance 90–96 depending on the page).

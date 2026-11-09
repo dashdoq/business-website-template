@@ -36,7 +36,7 @@
   .home-stage > .service-steps { grid-column: 1; grid-row: 3; margin-bottom: 96px; }
   .home-stage > .home-visual { grid-column: 2; grid-row: 1 / span 3; margin: 0; }
   .home-visual .roof-stage { position: sticky; top: calc(var(--header-h) + 16px); height: calc(100svh - var(--header-h) - 32px); min-height: 520px; }
-  .service-step { padding: 40px 0; min-height: 52svh; display: flex; flex-direction: column; justify-content: center; }
+  .service-step { padding: 40px 0; min-height: 46svh; display: flex; flex-direction: column; justify-content: center; }
 }
 
 /* ---------- Roof stage (3D) ---------- */
@@ -95,11 +95,10 @@
 @media (min-width: 760px) {
   .work-grid { grid-template-columns: repeat(12, 1fr); gap: 32px 24px; }
   .work-item { grid-column: span 6; }
+  .work-grid { align-items: start; }
+  /* Asymmetric home grid: one tall photo, two stacked landscape photos. */
   .work-grid--home .work-item:nth-child(1) { grid-column: 1 / span 7; grid-row: span 2; }
-  .work-grid--home .work-item:nth-child(1) img { aspect-ratio: auto; height: 100%; min-height: 100%; }
-  .work-grid--home .work-item:nth-child(1) .frame, .work-grid--home .work-item:nth-child(1) button { height: calc(100% - 44px); }
-  .work-grid--home .work-item:nth-child(1) button { height: 100%; display: flex; flex-direction: column; }
-  .work-grid--home .work-item:nth-child(1) .frame { flex: 1; }
+  .work-grid--home .work-item:nth-child(1) img { aspect-ratio: 4 / 4.6; }
   .work-grid--home .work-item:nth-child(2), .work-grid--home .work-item:nth-child(3) { grid-column: 8 / span 5; }
   .work-grid--all .work-item:nth-child(3n + 1) { grid-column: span 7; }
   .work-grid--all .work-item:nth-child(3n + 2) { grid-column: span 5; }
@@ -138,6 +137,9 @@
 .contact-direct a:hover strong { text-decoration: underline; }
 .contact-address { margin-top: 24px; font-style: normal; color: var(--on-dark-muted); display: flex; gap: 10px; }
 
+/* The light form card inside the dark band resets the on-dark colours. */
+.on-dark .form-card .eyebrow, .on-dark .form-card .label { color: var(--ink-muted); }
+.on-dark .form-card :focus-visible { outline-color: var(--ink); }
 .form-card { background: var(--surface); color: var(--ink); padding: 24px; border-radius: var(--radius); border: 1px solid var(--line); }
 @media (min-width: 760px) { .form-card { padding: 40px; } }
 .form-card h2, .form-card h3 { font-size: clamp(1.625rem, 1.3rem + 1vw, 2.25rem); margin-bottom: 8px; }
@@ -158,6 +160,11 @@
 .page-head--split { display: grid; gap: 32px; }
 @media (min-width: 1100px) { .page-head--split { grid-template-columns: 6fr 6fr; gap: 48px; align-items: center; } }
 .page-head__visual { background: var(--bg); }
+.page-head__visual img, .service-step__poster {
+  /* Posters are crops of the 3D scene: fade the frame edges so the model never ends in a hard line. */
+  -webkit-mask-image: radial-gradient(ellipse 72% 68% at 56% 50%, #000 62%, transparent 100%);
+  mask-image: radial-gradient(ellipse 72% 68% at 56% 50%, #000 62%, transparent 100%);
+}
 .page-head__visual img { width: 100%; height: auto; }
 .page-head .btn-row { margin-top: 28px; }
 

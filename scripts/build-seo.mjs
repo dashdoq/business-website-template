@@ -8,9 +8,9 @@ const template = await readFile(new URL('index.html', dist), 'utf8');
 const escape = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const assets = [...template.matchAll(/<(?:script\b[^>]*>[\s\S]*?<\/script>|link\b[^>]*(?:stylesheet|modulepreload)[^>]*>)/g)].map(m => m[0]).join('');
 
-// Preload the two Latin font files used above the fold (heading + body).
+// Preload only the body font: it renders the LCP paragraph. Headings swap in when Archivo arrives.
 const files = await readdir(new URL('assets/', dist));
-const fontPreloads = [/^archivo-latin-wdth-normal.*\.woff2$/, /^source-sans-3-latin-wght-normal.*\.woff2$/]
+const fontPreloads = [/^source-sans-3-latin-wght-normal.*\.woff2$/]
   .map(pattern => files.find(file => pattern.test(file)))
   .filter(Boolean)
   .map(file => `<link rel="preload" href="/assets/${file}" as="font" type="font/woff2" crossorigin>`).join('');

@@ -25,12 +25,23 @@ export const LABELS: Record<AnchorId, Record<SiteLanguage, string>> = {
 /** Poster images rendered from the same scene by scripts/render-posters.mjs (focus posters carry translated labels). */
 export const posterFor = (focus: SceneFocus, language: SiteLanguage = 'nl') => `/images/scene/roof-${focus === -1 ? 'hero' : `focus-${focus}-${language}`}.webp`;
 export const POSTER_SIZE = {width: 1380, height: 1200};
+export const posterSrcSet = (src: string) => `${src.replace(/\.webp$/, '-690.webp')} 690w, ${src} 1380w`;
 
-function supportsWebGL2() {
+/**
+ * Live 3D needs WebGL2 on real graphics hardware. Software renderers (SwiftShader, llvmpipe) would
+ * block the main thread, so those devices keep the poster. `localStorage['ingbelg-force-3d'] = '1'`
+ * overrides the check for testing.
+ */
+function supportsLive3D() {
   try {
     const gl = document.createElement('canvas').getContext('webgl2');
-    gl?.getExtension('WEBGL_lose_context')?.loseContext();
-    return !!gl;
+    if (!gl) return false;
+    const info = gl.getExtension('WEBGL_debug_renderer_info');
+    const renderer = info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)) : '';
+    gl.getExtension('WEBGL_lose_context')?.loseContext();
+    let forced = false;
+    try {forced = localStorage.getItem('ingbelg-force-3d') === '1'} catch {/* storage blocked */}
+    return forced || !/swiftshader|llvmpipe|software/i.test(renderer);
   } catch {return false}
 }
 const hasIdle = () => typeof window.requestIdleCallback === 'function';
@@ -54,7 +65,7 @@ export function RoofStage({language, focus, caption, eager = false, alt}: {langu
     const el = root.current, cv = canvas.current;
     if (!ready || !el || !cv) return;
     const saveData = (navigator as Navigator & {connection?: {saveData?: boolean}}).connection?.saveData;
-    if (saveData || !supportsWebGL2()) return;
+    if (saveData || !supportsLive3D()) return;
     let disposed = false, visible = false, idle = 0;
     let instance: RoofScene | null = null;
     const activate = () => instance?.setActive(visible && !document.hidden);
@@ -106,8 +117,8 @@ export function RoofStage({language, focus, caption, eager = false, alt}: {langu
 
   return (
     <div className={`roof-stage${live ? ' is-live' : ''}`} ref={root}>
-      <img className="roof-stage__poster" src={posterFor(-1)} width={POSTER_SIZE.width} height={POSTER_SIZE.height} alt={alt}
-        loading={eager ? 'eager' : 'lazy'} fetchPriority={eager ? 'high' : 'auto'} decoding="async" />
+      <img className="roof-stage__poster" src={posterFor(-1)} srcSet={posterSrcSet(posterFor(-1))} sizes="(min-width: 1100px) 56vw, 100vw" width={POSTER_SIZE.width} height={POSTER_SIZE.height} alt={alt}
+        loading={eager ? 'eager' : 'lazy'} decoding="async" />
       <canvas ref={canvas} aria-hidden="true" />
       <div className="roof-stage__annotations" ref={labels} aria-hidden="true">
         {(Object.keys(LABELS) as AnchorId[]).map(id => <span key={id} className="annotation" data-anchor={id}><i /><span>{LABELS[id][language]}</span></span>)}

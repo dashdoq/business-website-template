@@ -8,7 +8,7 @@
  *  - focus: an exploded axonometric of one layer, tinted with the brand red, others ghosted.
  */
 import {
-  Color, DirectionalLight, Fog, HemisphereLight, MathUtils, Matrix4, Mesh, NeutralToneMapping, PCFSoftShadowMap,
+  Color, DirectionalLight, Fog, HemisphereLight, MathUtils, Matrix4, Mesh, NeutralToneMapping, PCFShadowMap,
   PerspectiveCamera, PlaneGeometry, Quaternion, Scene, ShadowMaterial, SRGBColorSpace, Vector3, WebGLRenderer,
 } from 'three';
 import {buildRoofModel, type AnchorId, type LayerKey, type RoofModel} from './roof-model';
@@ -113,7 +113,7 @@ export class RoofScene {
     renderer.toneMappingExposure = 1.02;
     renderer.setClearColor(0x000000, 0);
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = PCFSoftShadowMap;
+    renderer.shadowMap.type = PCFShadowMap;
     this.renderer = renderer;
     options.canvas.addEventListener('webglcontextlost', this.contextLost);
 
@@ -129,6 +129,7 @@ export class RoofScene {
     Object.assign(sun.shadow.camera, {left: -10, right: 10, top: 9, bottom: -7, near: 2, far: 40});
     sun.shadow.bias = -0.0004;
     sun.shadow.normalBias = 0.025;
+    sun.shadow.radius = 3;
     this.sun = sun;
     this.scene.add(sun, sun.target);
     const rim = new DirectionalLight('#d6e3ec', 0.9);
@@ -207,6 +208,8 @@ export class RoofScene {
     this.last = performance.now();
     const frame = (now: number) => {
       this.raf = requestAnimationFrame(frame);
+      // Once the intro and transitions have settled, the slow idle drift only needs ~30 fps.
+      if (this.settled() && now - this.last < 30) return;
       const dt = Math.min(0.05, (now - this.last) / 1000);
       this.last = now;
       this.update(dt);
@@ -214,6 +217,13 @@ export class RoofScene {
       this.measure(dt);
     };
     this.raf = requestAnimationFrame(frame);
+  }
+  private settled() {
+    if (this.intro < 4.4 || (this.focus === 3 && this.renovation < 3.2) || (this.focus === 1 && this.unroll < 1.5)) return false;
+    const def = FOCUS[this.focus];
+    for (const key of LAYER_KEYS) if (Math.abs(this.emphasis.get(key)! - this.targetEmphasis(key)) > 0.01) return false;
+    for (const key of [...SLOPE_KEYS, ...ANNEX_KEYS]) if (Math.abs(this.offsets.get(key)! - (def.slope?.[key] ?? def.annex?.[key] ?? 0)) > 0.005) return false;
+    return Math.abs(this.asbestos - (this.focus === 4 ? 1 : 0)) < 0.001 && this.pose.target.distanceToSquared(this.tmp.v.set(...def.camera.target)) < 0.0004;
   }
   private renderOnce() {
     requestAnimationFrame(() => {this.update(0); this.draw()});
@@ -382,14 +392,22 @@ export class RoofScene {
     if (!this.labels.length) return;
     const def = FOCUS[this.focus];
     const v = this.tmp.p;
+    const compact = this.width < 560;
     for (const {el, anchor} of this.labels) {
-      const visible = def.labels.includes(anchor.id);
+      // On narrow stages the overview keeps only the five roof layers.
+      const visible = def.labels.includes(anchor.id) && !(compact && this.focus === -1 && anchor.id === 'epdm');
       el.classList.toggle('is-visible', visible && this.ready);
       el.classList.toggle('is-active', def.active === anchor.id);
       if (!visible) continue;
       anchor.parent.localToWorld(v.copy(anchor.local)).project(this.camera);
       const x = ((v.x + 1) / 2) * this.width, y = ((1 - v.y) / 2) * this.height;
-      el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) translate(${anchor.side === 'left' ? '-100%' : '0'}, -50%)`;
+      // Flip a label to the other side of its anchor when it would be clipped by the stage edge.
+      const width = el.offsetWidth;
+      let side = anchor.side;
+      if (side === 'right' && x + width > this.width - 8) side = 'left';
+      else if (side === 'left' && x - width < 8) side = 'right';
+      if (el.dataset.side !== side) el.dataset.side = side;
+      el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) translate(${side === 'left' ? '-100%' : '0'}, -50%)`;
     }
   }
 }
