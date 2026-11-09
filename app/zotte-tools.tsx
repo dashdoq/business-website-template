@@ -1,0 +1,153 @@
+'use client';
+import {useContext, useEffect, useRef, useState, type ReactNode} from 'react';
+import {BadgeEuro, Check, Clock3, Copy, ExternalLink, Minus, Plus, RotateCcw, Ruler, Users} from 'lucide-react';
+import {Dialog, DialogContent, DialogDescription, DialogTitle} from '@/components/ui/dialog';
+import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
+import {languagePath} from './seo-data';
+import {LanguageContext, useTranslation, type Language} from './i18n';
+import {TOOL_IDS, TOOL_PATHS, type ToolId} from './tool-routing';
+import {LABOUR_PRESETS, MAX_CREW, calculateWorkforce, type WorkforceInput} from './workforce-calculation';
+import {PREMIUM_WORKS, PREMIUM_SOURCES, calculatePremium, type PremiumWork} from './premium-calculation';
+
+type Localize = (nl:string,fr:string)=>string;
+const names={renculator:'Renculator',premculator:'Premculator',wijculator:'Wijculator'};
+const icons={renculator:Ruler,premculator:BadgeEuro,wijculator:Users};
+type WorkforceForm={type:string}&Record<keyof WorkforceInput,string>;
+const defaultWorkforce:WorkforceForm={type:'Pitched roof',area:'100',rate:'2',complexity:'1',setupHours:'16',bufferPercent:'15',hoursPerDay:'8',targetDays:'15',minimumCrew:'2',crew:'2',serialPercent:'10'};
+type PremiumForm={date:string;region:string;income:string;household:'single'|'multiple';dependants:string;extraProperty:boolean;costs:Record<PremiumWork,{enabled:boolean;amount:string}>;asbestos:boolean;asbestosArea:string;checks:boolean[]};
+function newPremium():PremiumForm {
+  return {date:'2026-10-15',region:'flanders',income:'',household:'single',dependants:'0',extraProperty:false,
+    costs:{roof:{enabled:true,amount:''},wall:{enabled:false,amount:''},floor:{enabled:false,amount:''},windows:{enabled:false,amount:''}},
+    asbestos:false,asbestosArea:'',checks:[false,false,false,false,false]};
+}
+const numeric=(value:string)=>value.trim()===''?NaN:Number(value);
+
+export function ZotteTools({open,activeTool,onToolChange,onClose,onUseSummary,setLanguage,children}:{open:boolean;activeTool:ToolId;onToolChange:(id:ToolId)=>void;onClose:()=>void;onUseSummary:(summary:string)=>void;setLanguage:(language:Language)=>void;children:ReactNode}) {
+  const language=useContext(LanguageContext);
+  const l:Localize=(nl,fr)=>language==='nl'?nl:fr;
+  const [workforce,setWorkforce]=useState<WorkforceForm>({...defaultWorkforce});
+  const [premium,setPremium]=useState<PremiumForm>(newPremium);
+  const [copyState,setCopyState]=useState<'idle'|'done'|'failed'>('idle');
+  const scroller=useRef<HTMLDivElement>(null);
+  useEffect(()=>{setPremium(p=>({...p,date:new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Brussels'}).format(new Date())}))},[]);
+  useEffect(()=>{setCopyState('idle');scroller.current?.scrollTo({top:0})},[activeTool]);
+  useEffect(()=>{if(copyState==='idle')return;const timer=setTimeout(()=>setCopyState('idle'),4000);return()=>clearTimeout(timer)},[copyState]);
+  const descriptions={renculator:l('Bouwcalculator','Calculateur de travaux'),premculator:l('Premies & subsidies','Primes & subsides'),wijculator:l('Werkuren & teamplanning','Heures & planification d’équipe')};
+  const copyLink=async()=>{try{await navigator.clipboard.writeText(location.origin+languagePath(TOOL_PATHS[activeTool],language));setCopyState('done')}catch{setCopyState('failed')}};
+  return <Dialog open={open} onOpenChange={next=>{if(!next)onClose()}}>
+    <DialogContent className="zotte-dialog" onCloseAutoFocus={e=>{e.preventDefault();document.getElementById('zotte-tools-launcher')?.focus({preventScroll:true})}}>
+      <div className="zotte-header">
+        <div className="zotte-brand-row"><div><span className="zotte-kicker">INGBELG / {l('PLAN JE PROJECT','PLANIFIEZ VOTRE PROJET')}</span><DialogTitle>ZotteTools</DialogTitle></div><div className="language-switch" role="group" aria-label={l('Taal kiezen','Choisir la langue')}>{(['nl','fr'] as const).map(lang=><button type="button" className="language" key={lang} aria-pressed={language===lang} onClick={()=>setLanguage(lang)}>{lang.toUpperCase()}</button>)}</div></div>
+        <DialogDescription>{l('Van eerste budget tot een haalbare planning.','Du premier budget à un planning réaliste.')}</DialogDescription>
+      </div>
+      <Tabs value={activeTool} onValueChange={id=>onToolChange(id as ToolId)} className="zotte-tabs">
+        <TabsList className="zotte-tab-list" aria-label={l('Kies een calculator','Choisir un calculateur')}>
+          {TOOL_IDS.map(id=>{const Icon=icons[id];return <TabsTrigger key={id} value={id}><Icon size={18}/><span>{names[id]}</span></TabsTrigger>})}
+        </TabsList>
+        <div className="zotte-scroll" ref={scroller}>
+          <div className="zotte-panel-heading"><div><span className="zotte-kicker">{descriptions[activeTool]}</span><h2>{names[activeTool]}</h2></div><button className="zotte-link-button" onClick={copyLink}>{copyState==='done'?<Check size={16}/>:<Copy size={16}/>}<span>{copyState==='done'?l('Gekopieerd','Copié'):l('Kopieer link','Copier le lien')}</span></button></div>
+          {copyState==='failed'&&<p role="status" className="zotte-note">{l('Kopieer deze tool-link:','Copiez ce lien :')} <a href={languagePath(TOOL_PATHS[activeTool],language)}>{languagePath(TOOL_PATHS[activeTool],language)}</a></p>}
+          <TabsContent value="renculator" className="zotte-panel">{children}</TabsContent>
+          <TabsContent value="premculator" className="zotte-panel"><Premculator value={premium} setValue={setPremium} l={l} language={language} onUseSummary={onUseSummary}/></TabsContent>
+          <TabsContent value="wijculator" className="zotte-panel"><Wijculator value={workforce} setValue={setWorkforce} l={l} language={language} onUseSummary={onUseSummary}/></TabsContent>
+          <p className="zotte-privacy">{l('Je berekeningen blijven in deze sessie. Een gedeelde link bevat alleen de gekozen tool.','Vos calculs restent dans cette session. Le lien partagé contient uniquement l’outil choisi.')}</p>
+        </div>
+      </Tabs>
+    </DialogContent>
+  </Dialog>;
+}
+
+function NumberField({id,label,value,onChange,min,max,step=1,hint}:{id:string;label:string;value:string;onChange:(v:string)=>void;min:number;max:number;step?:number;hint?:string}){
+  return <label className="zotte-field" htmlFor={id}><span>{label}</span><input id={id} type="number" inputMode={step<1?'decimal':'numeric'} value={value} min={min} max={max} step={step} onChange={e=>onChange(e.target.value)} aria-describedby={hint?id+'-hint':undefined}/>{hint&&<small id={id+'-hint'}>{hint}</small>}</label>;
+}
+
+function Wijculator({value:v,setValue,l,language,onUseSummary}:{value:WorkforceForm;setValue:(v:WorkforceForm)=>void;l:Localize;language:Language;onUseSummary:(s:string)=>void}) {
+  const t=useTranslation();
+  const n=(value:number,digits=1)=>value.toLocaleString(language==='nl'?'nl-BE':'fr-BE',{maximumFractionDigits:digits});
+  const update=(key:keyof WorkforceInput,value:string)=>setValue({...v,[key]:value});
+  const p=Object.fromEntries(Object.entries(v).filter(([key])=>key!=='type').map(([key,value])=>[key,numeric(value)])) as WorkforceInput;
+  const result=calculateWorkforce(p);
+  const crewValid=Number.isInteger(p.minimumCrew)&&p.minimumCrew>=1&&p.minimumCrew<=MAX_CREW&&Number.isInteger(p.crew)&&p.crew>=p.minimumCrew&&p.crew<=MAX_CREW;
+  const field=(key:keyof WorkforceInput,label:string,min:number,max:number,step=1,hint?:string)=><NumberField id={'wij-'+key} label={label} value={v[key]} onChange={s=>update(key,s)} min={min} max={max} step={step} hint={hint}/>;
+  const summary=result?`Wijculator · ${t(v.type)} · ${v.area} m²\n${l('Geraamde arbeidsuren','Heures de travail estimées')}: ${n(result.labourHours)}\n${l('Team','Équipe')}: ${v.crew} · ${l('werkdagen','jours ouvrés')}: ${n(result.selectedDays)}\n${l('Doel','Objectif')}: ${v.targetDays} ${l('werkdagen','jours ouvrés')} · ${l('Minimumteam voor dit doel','Équipe minimale pour cet objectif')}: ${result.requiredCrew??l('niet haalbaar binnen 20 personen','irréalisable avec 20 personnes')}\n${l('Indicatieve planning; te bevestigen na plaatsbezoek.','Planning indicatif ; à confirmer après visite.')}\n${l('Aannames','Hypothèses')}: ${v.rate} h/m² · ${v.hoursPerDay} h/${l('dag','jour')} · ${v.bufferPercent}% ${l('marge','marge')} · ${v.serialPercent}% ${l('opeenvolgend werk','travail séquentiel')}`:'';
+  return <>
+    <p className="zotte-intro">{l('Hoeveel werk vraagt je project? Kies je doeltermijn en vergelijk de bezetting van je team.','Combien de travail demande votre projet ? Fixez votre délai et comparez la taille de votre équipe.')}</p>
+    <div className="zotte-two-columns"><div className="zotte-form-column">
+      <div className="zotte-field-grid"><label className="zotte-field"><span>{t('Project type')}</span><select value={v.type} onChange={e=>{const preset=LABOUR_PRESETS.find(x=>x.id===e.target.value)!;setValue({...v,type:preset.id,rate:String(preset.rate),minimumCrew:String(preset.crew),crew:String(Math.max(preset.crew,Number(v.crew)||preset.crew))})}}>{LABOUR_PRESETS.map(x=><option value={x.id} key={x.id}>{t(x.id)}</option>)}</select></label>{field('area',l('Oppervlakte (m²)','Surface (m²)'),1,10000,0.5)}{field('targetDays',l('Gewenste termijn (werkdagen)','Délai souhaité (jours ouvrés)'),1,365)}{field('hoursPerDay',l('Werkuren per persoon per dag','Heures par personne et par jour'),1,12,0.5)}</div>
+      <label className="zotte-field"><span>{l('Moeilijkheid van de werken','Difficulté des travaux')}</span><select value={v.complexity} onChange={e=>update('complexity',e.target.value)}><option value="0.85">{l('Eenvoudig · × 0,85','Simple · × 0,85')}</option><option value="1">{l('Normaal · × 1','Normal · × 1')}</option><option value="1.3">{l('Complex · × 1,3','Complexe · × 1,3')}</option></select></label>
+      <details className="zotte-details"><summary>{l('Aannames aanpassen','Ajuster les hypothèses')}</summary><p className="zotte-note">{l('Startwaarden zijn vrij aanpasbare planningsaannames, geen gemeten productiviteit of wettelijk personeelsminimum.','Les valeurs initiales sont des hypothèses modifiables, pas des rendements mesurés ni un effectif minimum légal.')}</p><div className="zotte-field-grid">
+        {field('rate',l('Arbeidsuren per m²','Heures de travail par m²'),0.1,100,0.05)}
+        {field('setupHours',l('Voorbereiding (arbeidsuren)','Préparation (heures de travail)'),0,1000)}
+        {field('bufferPercent',l('Planningsmarge (%)','Marge de planification (%)'),0,100)}
+        {field('serialPercent',l('Opeenvolgend werk (%)','Travail séquentiel (%)'),0,80,1,l('Dit deel kan maar door één persoon tegelijk gebeuren.','Cette part ne peut être réalisée que par une personne à la fois.'))}
+        <NumberField id="wij-minimumCrew" label={l('Minimaal basisteam','Équipe de base minimale')} value={v.minimumCrew} min={1} max={MAX_CREW} onChange={value=>setValue({...v,minimumCrew:value,crew:String(Math.max(Number(value)||1,Number(v.crew)||1))})}/>
+      </div></details>
+      <button className="reset-estimate" onClick={()=>setValue({...defaultWorkforce})}><RotateCcw size={14}/>{l('Beginwaarden herstellen','Réinitialiser les valeurs')}</button>
+    </div><div className="zotte-results-column">
+      <div className="zotte-result" aria-live="polite"><span className="zotte-kicker"><Clock3 size={16}/> {l('Geraamde arbeidsuren','Heures de travail estimées')}</span><strong>{result?`${n(Math.ceil(result.labourHours),0)} h`:'—'}</strong><p>{l('Totaal werk over alle teamleden, inclusief voorbereiding en marge.','Travail total de l’équipe, préparation et marge comprises.')}</p>
+        <div className="zotte-result-divider"/><span>{l('Minimumteam voor jouw termijn','Équipe minimale pour votre délai')}</span><b className="zotte-secondary-number">{result?(result.requiredCrew===null?l('Termijn niet haalbaar','Délai irréalisable'):`${result.requiredCrew} ${l(result.requiredCrew===1?'persoon':'personen',result.requiredCrew===1?'personne':'personnes')}`):'—'}</b>
+        {result?.requiredCrew&&<button className="zotte-outline-button" onClick={()=>update('crew',String(result.requiredCrew))}>{l('Dit team gebruiken','Utiliser cette équipe')} <Users size={16}/></button>}
+        {result&&result.requiredCrew===null&&<p>{l('Ook met 20 personen is deze termijn te kort. Pas de termijn of werkomvang aan.','Même avec 20 personnes, ce délai est trop court. Adaptez le délai ou l’étendue des travaux.')}</p>}
+      </div>
+      <div className="zotte-team-box"><label htmlFor="wij-crew">{l('Jouw team · voeg mensen toe','Votre équipe · ajoutez des personnes')}</label><div className="zotte-stepper"><button aria-label={l('Eén persoon minder','Une personne de moins')} disabled={!crewValid||p.crew<=p.minimumCrew} onClick={()=>update('crew',String(p.crew-1))}><Minus size={18}/></button><input id="wij-crew" type="number" min={p.minimumCrew||1} max={MAX_CREW} step={1} value={v.crew} onChange={e=>update('crew',e.target.value)}/><button aria-label={l('Eén persoon extra','Une personne de plus')} disabled={!crewValid||p.crew>=MAX_CREW} onClick={()=>update('crew',String(p.crew+1))}><Plus size={18}/></button></div><span className="zotte-note">{l('Maximaal 20 personen in dit model.','20 personnes maximum dans ce modèle.')}</span>
+        <div className="zotte-comparison" aria-live="polite"><div><small>{l('Basisteam','Équipe de base')} · {v.minimumCrew}</small><b>{result?n(result.baselineDays):'—'} <small>{l('dagen','jours')}</small></b></div><div><small>{l('Jouw team','Votre équipe')} · {v.crew||'—'}</small><b>{result?n(result.selectedDays):'—'} <small>{l('dagen','jours')}</small></b></div></div>
+        {result&&<p className={result.meetsDeadline?'zotte-success':'zotte-note'}>{result.meetsDeadline?l('Past binnen je doeltermijn.','Respecte votre délai cible.'):l('Je hebt meer tijd of een groter team nodig.','Prévoyez plus de temps ou une équipe plus grande.')} {result.savedDays>0&&l(`${n(result.savedDays)} werkdagen sneller (${result.savingsPercent}%).`,`${n(result.savedDays)} jours ouvrés gagnés (${result.savingsPercent} %).`)}</p>}
+      </div>
+      {!result&&<p className="zotte-validation" role="status">{l('Controleer de invoer en de grenzen bij elk veld. Je team mag niet kleiner zijn dan het basisteam.','Vérifiez les valeurs et les limites de chaque champ. Votre équipe ne peut pas être plus petite que l’équipe de base.')}</p>}
+      <button className="primary-button" disabled={!result} onClick={()=>onUseSummary(summary)}>{l('Bespreek deze planning','Discuter de ce planning')}<Plus size={18}/></button>
+    </div></div>
+    <details className="zotte-details"><summary>{l('Hoe wordt dit berekend?','Comment ce calcul fonctionne-t-il ?')}</summary><p>{l('Arbeidsuren = (m² × uren/m² × moeilijkheid + voorbereiding) × (1 + marge). Werkdagen = arbeidsuren ÷ uren/dag × (opeenvolgend aandeel + parallel aandeel ÷ teamgrootte). Het minimumteam is de kleinste ploeg die de doeltermijn haalt, vanaf het gekozen basisteam.','Heures = (m² × heures/m² × difficulté + préparation) × (1 + marge). Jours ouvrés = heures ÷ heures/jour × (part séquentielle + part parallèle ÷ effectif). L’équipe minimale est la plus petite équipe respectant le délai, à partir de l’équipe de base.')}</p></details>
+    <p className="zotte-note">{l('Indicatieve raming, geen leveringsbelofte. Extra mensen versnellen alleen parallel werk. Droogtijd, weer, leveringen, toegang en veiligheidsvereisten vragen een afzonderlijke beoordeling. De basispercentages zijn aannames.','Estimation indicative, sans engagement de délai. Ajouter des personnes accélère uniquement les tâches parallèles. Séchage, météo, livraisons, accès et sécurité nécessitent une évaluation distincte. Les coefficients initiaux sont des hypothèses.')}</p>
+  </>;
+}
+
+function Premculator({value:v,setValue,l,language,onUseSummary}:{value:PremiumForm;setValue:(v:PremiumForm)=>void;l:Localize;language:Language;onUseSummary:(s:string)=>void}){
+  const money=(amount:number)=>amount.toLocaleString(language==='nl'?'nl-BE':'fr-BE',{style:'currency',currency:'EUR',maximumFractionDigits:2});
+  const labels:Record<PremiumWork,string>={roof:l('Dak & nieuwe isolatie','Toiture & nouvelle isolation'),wall:l('Buitenmuren & isolatie','Murs extérieurs & isolation'),floor:l('Vloer & isolatie','Sol & isolation'),windows:l('Ramen met nieuwe profielen & buitendeuren','Fenêtres avec nouveaux châssis & portes extérieures')};
+  const requirements:Record<PremiumWork,string>={
+    roof:l('Nieuwe isolatie Rd ≥ 4,5 m²K/W; bij een hellend dak ook een dampscherm. Dak en zoldervloer boven hetzelfde volume tellen niet dubbel.','Nouvelle isolation Rd ≥ 4,5 m²K/W ; pare-vapeur pour toiture inclinée. Pas de cumul toiture et plancher de combles pour un même volume.'),
+    wall:l('Buitenisolatie Rd ≥ 3; binnenisolatie Rd ≥ 2 met bevoegde aannemer/architect. Spouw: volledige vulling ≥ 50 mm, λ ≤ 0,065 en STS-aannemer.','Isolation extérieure Rd ≥ 3 ; intérieure Rd ≥ 2 avec entrepreneur/architecte qualifié. Coulisse : remplissage complet ≥ 50 mm, λ ≤ 0,065 et entrepreneur STS.'),
+    floor:l('Nieuwe isolatie van de begane vloer of het kelderplafond: Rd ≥ 2 m²K/W. Geen tussenvloeren of vloerafwerking.','Nouvelle isolation du sol sur terre-plein ou du plafond de cave : Rd ≥ 2 m²K/W. Pas de planchers intermédiaires ni de revêtements de sol.'),
+    windows:l('Nieuwe profielen, glas Ug ≤ 1,0 W/m²K en vereiste ventilatie; volle buitendeuren U ≤ 2,0. Alleen glas vervangen valt buiten dit model.','Nouveaux châssis, vitrage Ug ≤ 1,0 W/m²K et ventilation conforme ; portes pleines U ≤ 2,0. Le remplacement du vitrage seul est exclu de ce modèle.'),
+  };
+  const changeCost=(id:PremiumWork,patch:Partial<PremiumForm['costs'][PremiumWork]>)=>setValue({...v,costs:{...v.costs,[id]:{...v.costs[id],...patch}}});
+  const selected=PREMIUM_WORKS.filter(id=>v.costs[id].enabled);
+  const result=calculatePremium({date:v.date,income:numeric(v.income),household:v.household,dependants:numeric(v.dependants),extraProperty:v.extraProperty,costs:Object.fromEntries(selected.map(id=>[id,numeric(v.costs[id].amount)])),asbestosArea:v.asbestos&&v.costs.roof.enabled?numeric(v.asbestosArea):0});
+  const inPeriod=v.date>='2026-03-01'&&v.date<='2026-12-31';
+  const ready=v.region==='flanders'&&v.checks.every(Boolean)&&result!==null;
+  const checks=[
+    l('Ik ben eigenaar-bewoner van deze woning in Vlaanderen. Het gaat om mijn private woningdelen.','Je suis propriétaire occupant de ce logement en Flandre. Les travaux concernent mes parties privatives.'),
+    l('De woning is vóór 2006 op het elektriciteitsnet aangesloten en de werken betreffen het beschermde, verwarmde volume.','Le logement a été raccordé au réseau électrique avant 2006 et les travaux concernent le volume protégé et chauffé.'),
+    l('De werken gebeuren door een aannemer en zijn klaar bij aanvraag; alle ingebrachte facturen zijn dan maximaal 24 maanden oud.','Un entrepreneur réalise les travaux, terminés à la demande ; toutes les factures présentées ont alors au maximum 24 mois.'),
+    l('De gekozen werken voldoen aan de technische eisen in de links hieronder.','Les travaux choisis respectent les exigences techniques dans les liens ci-dessous.'),
+    l('Voor deze eigenaar en woning werd in de voorbije 5 jaar geen premie voor dezelfde categorie goedgekeurd.','Aucune prime de la même catégorie n’a été accordée pour ce propriétaire et ce logement au cours des 5 dernières années.'),
+  ];
+  const summary=ready&&result?`Premculator · Mijn VerbouwPremie · ${v.date}\n${result.rows.map(row=>`${labels[row.id]}: ${money(row.total)}`).join('\n')}\n${l('Indicatief totaal','Total indicatif')}: ${money(result.total)}\n${l('Onder voorbehoud van officiële voorwaarden en goedkeuring.','Sous réserve des conditions officielles et de l’accord de l’administration.')}`:'';
+  return <>
+    <p className="zotte-intro">{l('Een eerste raming van Mijn VerbouwPremie voor je eigen woning in Vlaanderen.','Une première estimation de Mijn VerbouwPremie pour votre propre logement en Flandre.')}</p>
+    <div className="zotte-scope"><BadgeEuro size={20}/><p>{l('Aanvragen van 1 maart t/m 31 december 2026. Dit model omvat dak, buitenmuur, vloer en ramen/deuren voor eigenaar-bewoners. Gemeenschappelijke delen, warmtepompen en andere of lokale premies zijn niet inbegrepen.','Demandes du 1er mars au 31 décembre 2026. Ce modèle couvre toiture, murs, sol et fenêtres/portes pour propriétaires occupants. Parties communes, pompes à chaleur et autres primes ou aides locales ne sont pas incluses.')}</p></div>
+    <div className="zotte-two-columns"><div className="zotte-form-column">
+      <div className="zotte-field-grid"><label className="zotte-field"><span>{l('Gewest','Région')}</span><select value={v.region} onChange={e=>setValue({...v,region:e.target.value})}><option value="flanders">{l('Vlaanderen','Flandre')}</option><option value="brussels">{l('Brussel','Bruxelles')}</option><option value="wallonia">{l('Wallonië','Wallonie')}</option></select></label><label className="zotte-field"><span>{l('Geplande aanvraagdatum','Date de demande prévue')}</span><input type="date" value={v.date} onChange={e=>setValue({...v,date:e.target.value})}/></label></div>
+      {v.region!=='flanders'?<p className="zotte-validation" role="status">{l('Dit model berekent alleen Vlaamse premies. Voor Brussel of Wallonië wordt geen bedrag getoond.','Ce modèle calcule uniquement les primes flamandes. Aucun montant n’est affiché pour Bruxelles ou la Wallonie.')}</p>:<>
+      <div className="zotte-field-grid"><NumberField id="prem-income" label={l('Jaarinkomen volgens aanslagbiljet (€)','Revenus annuels selon l’avertissement-extrait de rôle (€)')} value={v.income} onChange={income=>setValue({...v,income})} min={0} max={10000000} step={0.01}/><label className="zotte-field"><span>{l('Gezinssituatie','Situation du ménage')}</span><select value={v.household} onChange={e=>setValue({...v,household:e.target.value as PremiumForm['household']})}><option value="single">{l('Alleenstaande','Personne seule')}</option><option value="multiple">{l('Koppel / meerdere eigenaar-bewoners','Couple / plusieurs propriétaires occupants')}</option></select></label><NumberField id="prem-dependants" label={l('Personen ten laste','Personnes à charge')} value={v.dependants} onChange={dependants=>setValue({...v,dependants})} min={0} max={20}/></div>
+      <p className="zotte-note">{l('Gebruik het relevante gezamenlijke én afzonderlijk belastbare inkomen van inwonende eigenaars en hun wettelijke partner, plus de in aanmerking te nemen uitkeringen/vrijgestelde inkomsten, volgens het meest recente aanslagbiljet.','Utilisez les revenus imposables globalement et distinctement des propriétaires résidents et de leur partenaire légal, ainsi que les allocations/revenus exonérés pris en compte, selon le dernier avertissement-extrait de rôle.')} <a href={PREMIUM_SOURCES.income} target="_blank" rel="noreferrer">{l('Welke inkomsten tellen mee?','Quels revenus sont pris en compte ?')}</a></p>
+      <label className="zotte-check"><input type="checkbox" checked={v.extraProperty} onChange={e=>setValue({...v,extraProperty:e.target.checked})}/><span>{l('De inwonende eigenaars bezitten samen een andere woning, appartement of bouwgrond volledig in volle eigendom (ook in het buitenland).','Les propriétaires résidents possèdent ensemble entièrement en pleine propriété un autre logement, appartement ou terrain à bâtir (y compris à l’étranger).')}</span></label>
+      <p className="zotte-note">{l('Een gedeeltelijk aandeel met derden, blote eigendom of alleen vruchtgebruik telt hiervoor niet automatisch mee.','Une part avec des tiers, la nue-propriété ou le seul usufruit ne sont pas automatiquement pris en compte ici.')}</p>
+      <fieldset className="zotte-work-list"><legend>{l('Welke werken plan je?','Quels travaux prévoyez-vous ?')}</legend><p className="zotte-note">{l('Voer uitsluitend subsidiabele factuurbedragen exclusief btw in. Reken een factuur nooit dubbel.','Indiquez uniquement les montants admissibles hors TVA. Ne comptez jamais une facture deux fois.')}</p>
+        {PREMIUM_WORKS.map(id=><div key={id} className={'zotte-work-row '+(v.costs[id].enabled?'selected':'')}><label className="zotte-check"><input type="checkbox" checked={v.costs[id].enabled} onChange={e=>changeCost(id,{enabled:e.target.checked})}/><span>{labels[id]}</span></label>{v.costs[id].enabled&&<><NumberField id={'prem-'+id} label={l('Subsidiabel bedrag excl. btw (€)','Montant admissible hors TVA (€)')} value={v.costs[id].amount} onChange={amount=>changeCost(id,{amount})} min={0} max={10000000} step={0.01}/><p className="zotte-note">{requirements[id]} <a href={PREMIUM_SOURCES[id]} target="_blank" rel="noreferrer">{l('Alle voorwaarden','Toutes les conditions')} <ExternalLink size={12}/></a></p></>}</div>)}
+      </fieldset>
+      {v.costs.roof.enabled&&<div className="zotte-work-row"><label className="zotte-check"><input type="checkbox" checked={v.asbestos} onChange={e=>setValue({...v,asbestos:e.target.checked})}/><span>{l('Subsidiabele asbestverwijdering + nieuwe dakisolatie','Désamiantage admissible + nouvelle isolation de toiture')}</span></label>{v.asbestos&&<><NumberField id="prem-asbestos" label={l('Subsidiabel asbestdak (m²)','Surface de toiture désamiantée admissible (m²)')} min={0} max={10000} step={0.1} value={v.asbestosArea} onChange={asbestosArea=>setValue({...v,asbestosArea})}/><p className="zotte-note">{l('Alleen kwalificerende dakbedekking/onderdak, door een bevoegde aannemer met tijdige melding en facturen ≤ 24 maanden. Bonus € 8/m²; totaal maximaal 50% van de subsidiabele dakfactuur excl. btw.','Uniquement couverture/sous-toiture admissible, par un entrepreneur qualifié, avec notification dans les délais et factures ≤ 24 mois. Bonus 8 €/m² ; total plafonné à 50 % de la facture toiture admissible hors TVA.')}</p></>}</div>}
+      <fieldset className="zotte-checks"><legend>{l('Bevestig de aannames voor je raming','Confirmez les hypothèses de votre estimation')}</legend>{checks.map((label,index)=><label className="zotte-check" key={index}><input type="checkbox" checked={v.checks[index]} onChange={e=>setValue({...v,checks:v.checks.map((c,i)=>i===index?e.target.checked:c)})}/><span>{label}</span></label>)}<p className="zotte-note">{l('De 5-jaarregel kan ook gelden voor een renovatiepremie aangevraagd van 7 mei t/m 30 juni 2022 voor dak/ramen. Nieuwe eigenaars hebben een nieuwe termijn. Controleer uitzonderingen bij Vlaanderen.','La règle des 5 ans peut aussi concerner une prime de rénovation demandée du 7 mai au 30 juin 2022 pour toiture/fenêtres. Un nouveau propriétaire dispose d’une nouvelle période. Vérifiez les exceptions auprès de la Région flamande.')}</p></fieldset>
+      </>}
+    </div><div className="zotte-results-column">
+      <div className="zotte-result" aria-live="polite"><span className="zotte-kicker">{l('Indicatieve premie','Prime indicative')}</span><strong>{ready&&result?money(result.total):'—'}</strong>
+        {ready&&result?<><p>{l('Inkomenscategorie','Catégorie de revenus')} {result.category} · {Math.round(result.rate*100)}% {l('van begrensde kosten','des coûts plafonnés')}</p><div className="zotte-result-divider"/>{result.rows.map(row=><div className="zotte-breakdown" key={row.id}><span>{labels[row.id]}{row.invoice<1000&&<small>{l('Onder € 1.000 excl. btw: geen premie.','Sous 1 000 € HTVA : aucune prime.')}</small>}{row.bonus>0&&<small>{l('Waarvan asbestbonus','Dont bonus amiante')} {money(row.bonus)}</small>}</span><b>{money(row.total)}</b></div>)}{result.category<=2&&<p>{l('Sinds 1 maart 2026 krijgen categorie 1 en 2 geen premie voor deze vier werkcategorieën. Andere regelingen kunnen wel bestaan.','Depuis le 1er mars 2026, les catégories 1 et 2 ne reçoivent plus de prime pour ces quatre catégories de travaux. D’autres aides peuvent exister.')}</p>}</>:<p>{v.region!=='flanders'?l('Buiten het bereik van deze calculator.','Hors du périmètre de ce calculateur.'):!inPeriod?l('Kies een aanvraagdatum van 1 maart t/m 31 december 2026. Buiten die periode zijn de regels hier niet geverifieerd.','Choisissez une date du 1er mars au 31 décembre 2026. Les règles ne sont pas vérifiées ici en dehors de cette période.'):l('Vul inkomen en factuurbedragen in, selecteer minstens één werkcategorie en bevestig de vijf aannames om je raming te zien.','Saisissez les revenus et factures, sélectionnez au moins une catégorie de travaux et confirmez les cinq hypothèses pour voir votre estimation.')}</p>}
+      </div>
+      <button className="primary-button" disabled={!ready} onClick={()=>onUseSummary(summary)}>{l('Bespreek deze raming','Discuter de cette estimation')}<Plus size={18}/></button>
+      <a className="zotte-outline-button" href={PREMIUM_SOURCES.simulator} target="_blank" rel="noreferrer">{l('Controleer bij Vlaanderen','Vérifier auprès de la Région flamande')}<ExternalLink size={16}/></a>
+      <p className="zotte-note">{l('Geen officiële beslissing of garantie. De overheid beoordeelt je aanvraag. Je inkomen wordt niet opgeslagen of toegevoegd aan de contactaanvraag.','Ce calcul ne vaut ni décision officielle ni garantie. L’administration examine votre demande. Vos revenus ne sont ni enregistrés ni ajoutés à la demande de contact.')}</p>
+      <details className="zotte-details"><summary>{l('Berekeningsregels 2026','Règles de calcul 2026')}</summary><p>{l('Categorie 4: 50%. Categorie 3: 35%. Minimumfactuur per categorie: € 1.000 excl. btw. Kostenplafonds: dak € 11.500; muur € 10.000; vloer € 3.000; ramen/deuren € 10.500. De optionele asbestbonus wordt apart begrensd.','Catégorie 4 : 50 %. Catégorie 3 : 35 %. Facture minimale par catégorie : 1 000 € HTVA. Coûts plafonnés : toiture 11 500 € ; murs 10 000 € ; sol 3 000 € ; fenêtres/portes 10 500 €. Le bonus amiante optionnel est plafonné séparément.')}</p><a href={PREMIUM_SOURCES.income} target="_blank" rel="noreferrer">{l('Officiële inkomensgrenzen en voorwaarden','Seuils de revenus et conditions officiels')}</a><p>{l('Regels gecontroleerd op 15 oktober 2026.','Règles vérifiées le 15 octobre 2026.')}</p></details>
+      <button className="reset-estimate" onClick={()=>setValue({...newPremium(),date:v.date})}><RotateCcw size={14}/>{l('Invoer wissen','Effacer les données')}</button>
+    </div></div>
+  </>;
+}

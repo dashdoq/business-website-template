@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://ingbelg-in-motion.roman-galosh.chatgpt.site/sitemap.xml
