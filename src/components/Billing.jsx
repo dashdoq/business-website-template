@@ -1,41 +1,93 @@
-import React from 'react'
-import { apple, bill, google } from '../assets'
-import styles, { layout } from '../style'
+import { appStores, ledger } from "../constants";
 
-const Billing = () => {
-  return (
-    <section id='product' className={layout.sectionReverse}>
-      <div className={layout.sectionImgReverse}>
-        <img
-          src={bill}
-          alt='billing'
-          className='w-[100%] h-[100%] relative z-[5]'
-        />
-        <div className='absolute z-[3] -left-1/2 top-0 w-[50%] h-[50%] rounded-full white__gradient'/>
-        <div className='absolute z-[0] -left-1/2 bottom-0 w-[50%] h-[50%] rounded-full pink__gradient'/>
-      </div>
-      <div className={layout.sectionInfo}>
-        <h2 className={styles.heading2}>Easily control your <br className='sm:block hidden'/> billing & invoicing.</h2>
-        <p className={`${styles.paragraph} max-w-[470px] mt-5`}>
-          Elit enim sed massa etiam.
-          Mauris eu adipiscing ultrices ametodio aenean neque.
-          Fusce ipsum orci rhoncus aliporttitor integer platea placerat.
+const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
+
+const outstanding = ledger.rows
+  .filter((row) => !row.paid)
+  .reduce((sum, row) => sum + row.amount, 0);
+
+const Ledger = () => (
+  <div className="relative mx-auto w-full max-w-[36rem]">
+    <div className="copy copy--canary" aria-hidden="true" />
+    <div className="sheet px-4 pb-6 pt-4 min-[380px]:px-5 sm:px-8 sm:pb-8">
+      <div className="perforation" aria-hidden="true" />
+      <table className="mt-5 w-full text-sm min-[380px]:text-base">
+        <caption className="pb-4 text-left font-display text-2xl sm:text-3xl">
+          Invoices this month
+        </caption>
+        <thead>
+          <tr className="border-y-2 border-carbon text-left text-sm text-carbon/70">
+            <th scope="col" className="hidden py-2 pr-3 sm:pr-4 font-normal sm:table-cell">
+              Number
+            </th>
+            <th scope="col" className="py-2 pr-3 sm:pr-4 font-normal">
+              Customer
+            </th>
+            <th scope="col" className="py-2 pr-3 sm:pr-4 text-right font-normal">
+              Amount
+            </th>
+            <th scope="col" className="py-2 font-normal">
+              Status
+            </th>
+          </tr>
+        </thead>
+        <tbody className="rule-rows">
+          {ledger.rows.map((row) => (
+            <tr key={row.serial}>
+              <td className="hidden py-3 pr-3 sm:pr-4 font-display text-lg text-stamp sm:table-cell">
+                {row.serial}
+              </td>
+              <td className="py-3 pr-3 sm:pr-4 font-semibold">{row.customer}</td>
+              <td className="py-3 pr-3 sm:pr-4 text-right tabular-nums">{money.format(row.amount)}</td>
+              <td className="py-3">
+                {row.paid ? (
+                  <span className="inline-block -rotate-3 rounded-[3px] border-2 border-stamp px-2 font-display text-lg uppercase leading-snug tracking-wider text-stamp">
+                    {row.status}
+                  </span>
+                ) : (
+                  row.status
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="mt-4 flex items-center justify-between gap-4 text-base font-semibold">
+        Still to come in
+        <span className="font-display text-2xl font-normal sm:text-3xl">
+          {money.format(outstanding)}
+        </span>
+      </p>
+    </div>
+  </div>
+);
+
+const Billing = () => (
+  <section id="invoicing" className="on-pink overflow-hidden bg-pink">
+    <div className="wrap grid items-center gap-x-10 gap-y-16 py-24 lg:grid-cols-12 lg:py-32">
+      <div className="lg:order-2 lg:col-span-5 lg:col-start-8">
+        <h2 className="heading">Send the invoice. We&rsquo;ll chase it.</h2>
+        <p className="mt-6 max-w-[30rem]">
+          Write an invoice in a minute and send it by email or link. Customers pay by card
+          from the invoice itself, and anyone who&rsquo;s late gets a polite reminder from us,
+          not from you.
         </p>
-        <div className='flex flex-row flex-wrap sm:mt-10 mt-6'>
-          <img
-            src={apple}
-            alt='app-store'
-            className='w-[128px] h-[42px] object-contain mr-5 cursor-pointer'
-          />
-          <img
-            src={google}
-            alt='google-play'
-            className='w-[128px] h-[42px] object-contain cursor-pointer'
-          />
-        </div>
-      </div>  
-    </section>
-  )
-}
+        <ul className="mt-9 flex flex-wrap gap-4">
+          {appStores.map((store) => (
+            <li key={store.id}>
+              <a href={store.link} className="block rounded-[7px]">
+                <img src={store.badge} alt={store.name} className="h-[44px] w-auto" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-export default Billing
+      <div className="lg:order-1 lg:col-span-6">
+        <Ledger />
+      </div>
+    </div>
+  </section>
+);
+
+export default Billing;

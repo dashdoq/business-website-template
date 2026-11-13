@@ -1,21 +1,22 @@
-import React from 'react'
-import styles from '../style'
-import Button from './Button'
+import { signupUrl } from "../constants";
+import Button from "./Button";
 
-const CTA = () => {
-  return (
-    <section className={`${styles.flexCenter} ${styles.marginY} ${styles.padding} sm:flex-row flex-col bg-black-gradient-2 rounded-[20px] box-shadow`}>
-      <div className='flex-1 flex flex-col'>
-        <h2 className={styles.heading2}>Let's try our service now!</h2>
-        <p className={`${styles.paragraph} max-w-[470px] mt-5`}>
-          Everything you need to accept card payments and grow your business anywhere on the planet.
-        </p>
+const CTA = () => (
+  <section id="open-account" className="bg-carbon text-white">
+    <div className="wrap headline-box py-24 lg:py-32">
+      <h2 className="headline max-w-[9em] text-canary">Open an account in ten minutes.</h2>
+      <p className="mt-8 max-w-[32rem] text-lg">
+        Everything you need to accept card payments and grow your business, anywhere on the
+        planet.
+      </p>
+      <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-5">
+        <Button href={signupUrl} tone="canary">
+          Open an account
+        </Button>
+        <p className="text-base">You get 20% off your first month.</p>
       </div>
-      <div className={`${styles.flexCenter} sm:ml-10 ml-0`}>
-        <Button/>
-      </div>
-    </section>
-  )
-}
+    </div>
+  </section>
+);
 
-export default CTA
+export default CTA;
