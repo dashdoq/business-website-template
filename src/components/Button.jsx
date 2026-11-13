@@ -1,11 +1,26 @@
-import React from 'react'
+const Button = ({ href, tone = "carbon", small = false, className = "", children, ...props }) => {
+  const classes = [
+    "btn",
+    tone === "canary" ? "btn--canary" : "",
+    small ? "btn--small" : "",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
-const Button = ({ styles }) => {
+  if (href) {
+    return (
+      <a href={href} className={classes} {...props}>
+        {children}
+      </a>
+    );
+  }
+
   return (
-    <button type='button' className={`py-4 px-6 bg-blue-gradient font-poppins font-medium text-[18px] text-primary outline-none ${styles} rounded-[10px]`}>
-      Get Started
+    <button type="button" className={classes} {...props}>
+      {children}
     </button>
-  )
-}
+  );
+};
 
-export default Button
+export default Button;

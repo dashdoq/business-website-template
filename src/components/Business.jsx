@@ -1,48 +1,43 @@
-import React from 'react'
-import { features } from '../constants'
-import styles, { layout } from '../style'
-import Button from './Button'
+import { features } from "../constants";
 
-const FeatureCard = ({ icon, title, content, index }) => (
-  <div className={`flex flex-row p-6 rounded-[20px] ${index !== features.length - 1 ? 'mb-6' : 'mb-0'} feature-card`}>
-    <div className={`w-[64px] h-[64px] rounded-full ${styles.flexCenter} bg-dimBlue`}>
-      <img
-        src={icon}
-        alt='icon'
-        className='w-[50%] h-[50%] object-contain'
-      />
-    </div>
-    <div className='flex-1 flex flex-col ml-3'>
-      <h4 className='font-poppins font-semibold text-white text-[18px] leading-[23px] mb-1'>
-        {title}
-      </h4>
-      <p className='font-poppins font-normal text-dimWhite text-[16px] leading-[24px]'>
-        {content}
-      </p>
-    </div>
-  </div>
-)
+const TickedBox = () => (
+  <svg viewBox="0 0 40 40" width="36" height="36" className="mt-1 shrink-0" aria-hidden="true">
+    <rect x="3" y="9" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2.5" />
+    <path
+      d="M8 21 L15.5 29.5 L37 4"
+      fill="none"
+      className="stroke-stamp"
+      strokeWidth="4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
 
-const Business = () => {
-  return (
-    <section id='features' className={layout.section}>
-      <div className={layout.sectionInfo}>
-        <h2 className={styles.heading2}>You do the business, <br className='sm:block hidden'/>we'll handle the money.</h2>
-        <p className={`${styles.paragraph} max-w-[470px] mt-5`}>
-          With the right credit card, 
-          you can improve your financial life by building credit,
-          earning rewards and saving money.
-          But with hundreds of credit cards on the market.
+const Business = () => (
+  <section id="features" className="bg-white">
+    <div className="wrap grid gap-x-10 gap-y-12 py-24 lg:grid-cols-12 lg:py-32">
+      <div className="lg:col-span-5">
+        <h2 className="heading">Included with every account.</h2>
+        <p className="mt-6 max-w-[26rem]">
+          There are no add-ons and no tiers. Open an account and all of this is switched on
+          from your first day.
         </p>
-        <Button styles='mt-10'/>
       </div>
-      <div className={`${layout.sectionImg} flex-col`}>
-        {features.map((feature, index) => (
-          <FeatureCard key={feature.id} {...feature} index={index}/>
-        ))}
-      </div>
-    </section>
-  )
-}
 
-export default Business
+      <ul className="rule-rows border-t-2 border-carbon lg:col-span-7">
+        {features.map((feature) => (
+          <li key={feature.id} className="flex gap-5 py-8 sm:gap-7">
+            <TickedBox />
+            <div className="grid flex-1 gap-x-8 gap-y-2 sm:grid-cols-[13.5rem_1fr]">
+              <h3 className="font-display text-2xl sm:text-3xl">{feature.title}</h3>
+              <p className="max-w-[30rem]">{feature.content}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+);
+
+export default Business;

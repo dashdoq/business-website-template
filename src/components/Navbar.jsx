@@ -1,50 +1,62 @@
-import React, { useState } from 'react'
-import { close, logo, menu } from '../assets'
-import { navLinks } from '../constants'
+import { useState } from "react";
+import { navLinks } from "../constants";
+import Button from "./Button";
+import Logo from "./Logo";
 
 const Navbar = () => {
-
-  const [toggle, setToggle] = useState(false)
+  const [open, setOpen] = useState(false);
 
   return (
-    <nav className='w-full flex py-6 justify-between items-center navbar'>
-      <img src={logo} alt='hoobank' className='w-[124px] h-[32px]'/>
-      <ul className='list-none sm:flex hidden justify-end items-center flex-1'>
-        {navLinks.map((nav, i) => (
-          <li 
-            key={nav.id}
-            className={`font-poppins font-normal cursor-pointer text-[16px] ${i === navLinks.length - 1 ? 'mr-0' : 'mr-10'} text-white mr-10`}
-          >
-            <a href={`#${nav.id}`}>
-              {nav.title}
-            </a>
-          </li>        
-        ))}
-      </ul>
-      <div className='sm:hidden flex flex-1 justify-end items-center'>
-        <img
-          src={toggle ? close : menu}
-          alt='menu'
-          className='w-[28px] h-[28px] object-contain'
-          onClick={() => setToggle((previous) => !previous)}
-        />
-        <div className={`${toggle ? 'flex' : 'hidden'} p-6 bg-black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar`}>
-          <ul className='list-none flex flex-col justify-end items-center flex-1'>
-            {navLinks.map((nav, i) => (
-              <li 
-                key={nav.id}
-                className={`font-poppins font-normal cursor-pointer text-[16px] ${i === navLinks.length - 1 ? 'mr-0' : 'mb-4'} text-white mr-10`}
-              >
-                <a href={`#${nav.id}`}>
-                  {nav.title}
-                </a>
-              </li>        
-            ))}
-          </ul>
-        </div>
-      </div>
-    </nav>
-  )
-}
+    <header className="bg-canary">
+      <nav aria-label="Main" className="wrap flex items-center justify-between gap-6 py-5">
+        <Logo />
 
-export default Navbar
+        <ul className="hidden items-center gap-9 md:flex">
+          {navLinks.map((nav) => (
+            <li key={nav.id}>
+              <a href={`#${nav.id}`} className="text-base font-medium hover:underline hover:decoration-2 hover:underline-offset-[0.3em]">
+                {nav.title}
+              </a>
+            </li>
+          ))}
+          <li>
+            <Button href="#open-account" small>
+              Open an account
+            </Button>
+          </li>
+        </ul>
+
+        <button
+          type="button"
+          className="rounded-[3px] border-2 border-carbon px-4 py-2 text-base font-semibold md:hidden"
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          onClick={() => setOpen((previous) => !previous)}
+        >
+          {open ? "Close" : "Menu"}
+        </button>
+      </nav>
+
+      <div id="mobile-menu" hidden={!open} className="wrap pb-6 md:hidden">
+        <ul className="rule-rows border-t-2 border-carbon">
+          {navLinks.map((nav) => (
+            <li key={nav.id}>
+              <a
+                href={`#${nav.id}`}
+                className="block py-4 font-display text-2xl"
+                onClick={() => setOpen(false)}
+              >
+                {nav.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <Button href="#open-account" className="mt-6 w-full" onClick={() => setOpen(false)}>
+          Open an account
+        </Button>
+      </div>
+    </header>
+  );
+};
+
+export default Navbar;

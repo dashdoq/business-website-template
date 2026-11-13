@@ -1,5 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import '@fontsource-variable/league-gothic'
+import '@fontsource-variable/libre-franklin'
 import App from './App'
 import './index.css'
 
