@@ -88,7 +88,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
                 <li key={chip.label}>
                   <Link
                     href={shopHref(query, chip.clear)}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-ink py-1.5 pr-2.5 pl-3 text-sm hover:bg-ink hover:text-paper"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-tile py-1.5 pr-2.5 pl-3 text-sm ring-1 ring-line transition-colors hover:bg-ink hover:text-paper hover:ring-ink"
                   >
                     {chip.label}
                     <CloseIcon className="size-4" />
@@ -108,7 +108,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
               ))}
             </ul>
           ) : (
-            <div className="space-y-4 border border-line px-6 py-16 text-center">
+            <div className="panel space-y-4 px-6 py-16 text-center">
               <p className="text-lg">Geen sokken gevonden met deze filters.</p>
               <p className="text-stone">Haal een filter weg of zoek op een ander woord.</p>
               <Link href="/shop" className="btn-primary">

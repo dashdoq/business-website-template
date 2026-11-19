@@ -83,8 +83,8 @@ function CarouselButton({
       disabled={disabled}
       aria-label={direction === "prev" ? "Vorige producten" : "Volgende producten"}
       className={cn(
-        "absolute top-[34%] z-10 hidden size-12 -translate-y-1/2 place-items-center rounded-full border border-line bg-paper shadow-[0_1px_2px_rgb(0_0_0/0.08)] transition-opacity duration-150 hover:border-ink sm:grid",
-        direction === "prev" ? "-left-5" : "-right-5",
+        "absolute top-[34%] z-10 hidden size-11 -translate-y-1/2 place-items-center rounded-full border border-line bg-paper shadow-[0_4px_16px_rgb(0_0_0/0.08)] transition-[opacity,border-color] duration-150 hover:border-stone sm:grid",
+        direction === "prev" ? "-left-4" : "-right-4",
         disabled && "pointer-events-none opacity-0",
       )}
     >

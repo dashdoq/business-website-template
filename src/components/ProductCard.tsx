@@ -12,20 +12,20 @@ export function ProductCard({ product, priority }: { product: Product; priority?
   const href = `/product/${product.slug}`;
 
   return (
-    <article className="group relative flex h-full flex-col border border-line bg-paper">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-line bg-paper transition-[border-color] duration-150 hover:border-stone/40">
       <Link href={href} className="relative block" tabIndex={-1} aria-hidden="true">
         <ProductImage
           src={product.images[0]}
           alt=""
           placeholderColor={primary?.hex ?? "#000"}
           priority={priority}
-          className="transition-[filter] duration-200 group-hover:brightness-[0.97]"
+          className="transition-[filter] duration-200 group-hover:brightness-[0.98]"
         />
         <ProductBadges product={product} />
       </Link>
 
-      <div className="flex flex-1 flex-col items-center gap-2 px-3 pt-4 pb-3 text-center">
-        <h3 className="caps text-[1.0625rem] leading-tight">
+      <div className="flex flex-1 flex-col items-center gap-1.5 px-3 pt-4 pb-3 text-center">
+        <h3 className="caps text-[0.8125rem] leading-snug">
           <Link href={href} className="hover:underline">
             {product.name}
           </Link>
@@ -35,7 +35,7 @@ export function ProductCard({ product, priority }: { product: Product; priority?
           {colors.map((color) => (
             <li key={color.slug}>
               <span
-                className="block size-3 rounded-full border border-ink/20"
+                className="block size-2.5 rounded-full ring-1 ring-ink/15"
                 style={{ backgroundColor: color.hex }}
                 title={color.name}
               />
@@ -43,7 +43,7 @@ export function ProductCard({ product, priority }: { product: Product; priority?
             </li>
           ))}
         </ul>
-        <div className="mt-auto w-full pt-2">
+        <div className="mt-auto w-full pt-2.5">
           <QuickAdd
             slug={product.slug}
             name={product.name}

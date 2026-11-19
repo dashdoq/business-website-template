@@ -40,12 +40,12 @@ export default function AboutPage() {
           </p>
         </div>
         <aside className="space-y-8 lg:pt-6">
-          <div className="grid aspect-square place-items-center bg-ecru">
+          <div className="grid aspect-square place-items-center rounded-2xl bg-ecru">
             <SockMark className="h-1/2 w-auto" />
           </div>
           <dl className="space-y-6">
             {values.map((value) => (
-              <div key={value.title} className="space-y-1 border-t border-ink pt-4">
+              <div key={value.title} className="space-y-1 border-t border-line pt-4">
                 <dt className="display-md">{value.title}</dt>
                 <dd className="text-sm text-stone">{value.text}</dd>
               </div>

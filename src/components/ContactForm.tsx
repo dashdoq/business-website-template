@@ -17,7 +17,7 @@ export function ContactForm() {
 
   if (submitted) {
     return (
-      <div role="status" className="max-w-xl space-y-3 bg-ecru p-6">
+      <div role="status" className="max-w-xl space-y-3 rounded-xl bg-ecru p-6">
         <p className="text-lg font-semibold">Het formulier werkt nog niet.</p>
         <p>
           Je bericht is niet verstuurd. Mail ons op{" "}

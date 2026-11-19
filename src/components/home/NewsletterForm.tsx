@@ -17,7 +17,7 @@ export function NewsletterForm() {
 
   return (
     <section aria-labelledby="nieuwsbrief-titel" className="wrap mt-20 lg:mt-28">
-      <div className="grid gap-8 border-y border-ink py-12 md:grid-cols-2 md:items-end lg:py-16">
+      <div className="grid gap-8 rounded-2xl bg-ecru p-6 sm:p-10 md:grid-cols-2 md:items-end lg:p-14">
         <div className="space-y-4">
           <h2 id="nieuwsbrief-titel" className="display-lg">
             Hoor als eerste van de volgende drop.

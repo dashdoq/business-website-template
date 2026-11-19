@@ -55,7 +55,7 @@ export function MobileMenu() {
             <nav aria-label="Hoofdmenu">
               <NavLinks
                 className="flex flex-col gap-5"
-                linkClassName="text-[1.75rem] tracking-[0.04em]"
+                linkClassName="text-base"
                 onNavigate={close}
               />
             </nav>

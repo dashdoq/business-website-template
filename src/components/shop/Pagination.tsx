@@ -7,7 +7,7 @@ import type { ProductQuery } from "@/lib/types";
 export function Pagination({ query, page, pageCount }: { query: ProductQuery; page: number; pageCount: number }) {
   if (pageCount <= 1) return null;
   const pages = Array.from({ length: pageCount }, (_, i) => i + 1);
-  const item = "grid size-11 place-items-center rounded-sm border text-sm tabular-nums";
+  const item = "grid size-10 place-items-center rounded-md border text-sm tabular-nums transition-colors";
 
   return (
     <nav aria-label="Paginering" className="mt-10 flex justify-center">

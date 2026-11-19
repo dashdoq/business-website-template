@@ -15,7 +15,7 @@ export function Footer() {
         </div>
         {footerNav.map((group) => (
           <nav key={group.title} aria-label={group.title}>
-            <h2 className="caps mb-4 text-[1.0625rem]">{group.title}</h2>
+            <h2 className="caps mb-4 text-[0.75rem] text-paper/60">{group.title}</h2>
             <ul className="space-y-2.5 text-sm text-paper/75">
               {group.links.map((link) => (
                 <li key={link.href}>

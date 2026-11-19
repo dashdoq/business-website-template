@@ -38,7 +38,7 @@ export function ProductImage({
             className="h-[46%] w-auto"
             style={{
               color: placeholderColor,
-              filter: isLight(placeholderColor) ? "drop-shadow(0 0 1px #8b847a)" : undefined,
+              filter: isLight(placeholderColor) ? "drop-shadow(0 0 0.5px rgb(0 0 0 / 0.35))" : undefined,
             }}
           />
           {showNote && (

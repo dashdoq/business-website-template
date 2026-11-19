@@ -12,7 +12,7 @@ export default function FaqPage() {
   return (
     <ContentPage title="Veelgestelde vragen" intro="Over maten, wassen, drops en bestellen.">
       <div className="max-w-3xl">
-        <div className="divide-y divide-line border-y border-line">
+        <div className="panel divide-y divide-line px-5">
           {faq.map((item) => (
             <details key={item.q} className="group py-1">
               <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 text-lg font-semibold [&::-webkit-details-marker]:hidden">

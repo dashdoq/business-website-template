@@ -27,7 +27,7 @@ export function NavLinks({ className, linkClassName, onNavigate }: NavLinksProps
               onClick={onNavigate}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "caps text-[1.0625rem] decoration-2 underline-offset-[0.4em] hover:underline",
+                "caps text-[0.8125rem] decoration-[1.5px] underline-offset-[0.6em] hover:underline",
                 active && "underline",
                 linkClassName,
               )}

@@ -26,7 +26,7 @@ export function ContentPage({ title, intro, draft, children }: ContentPageProps)
         {intro && <div className="max-w-[52ch] text-lg">{intro}</div>}
       </header>
       {draft && (
-        <p className="mt-8 max-w-[68ch] border-l-4 border-loden bg-ecru px-4 py-3 text-sm">
+        <p className="mt-8 max-w-[68ch] rounded-lg bg-ecru px-4 py-3 text-sm">
           Conceptpagina. Deze tekst is een opzet en moet nog worden aangevuld en gecontroleerd
           voordat de webshop opengaat.
         </p>

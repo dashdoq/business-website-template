@@ -14,8 +14,8 @@ type ShopFiltersProps = {
 
 function Panel({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="border border-line p-4">
-      <h2 className="caps mb-3 text-[1.0625rem]">{title}</h2>
+    <section className="panel p-5">
+      <h2 className="mb-3 text-base font-semibold">{title}</h2>
       {children}
     </section>
   );
@@ -51,7 +51,7 @@ export function ShopFilters({ query, categories, colors, totalProducts }: ShopFi
           <button
             type="submit"
             aria-label="Zoeken"
-            className="absolute top-1/2 right-1 grid size-9 -translate-y-1/2 place-items-center hover:bg-tile"
+            className="absolute top-1/2 right-1 grid size-9 -translate-y-1/2 place-items-center rounded-md hover:bg-tile"
           >
             <SearchIcon className="size-5" />
           </button>
@@ -118,8 +118,8 @@ export function ShopFilters({ query, categories, colors, totalProducts }: ShopFi
                   href={shopHref(query, { maat: active ? null : size })}
                   aria-current={active ? "true" : undefined}
                   className={cn(
-                    "grid min-h-11 place-items-center rounded-sm border text-sm tabular-nums",
-                    active ? "border-ink bg-ink text-paper" : "border-line hover:border-ink",
+                    "grid min-h-10 place-items-center rounded-md border text-sm tabular-nums transition-colors",
+                    active ? "border-ink bg-ink text-paper" : "border-line hover:border-stone",
                   )}
                 >
                   {size}
@@ -165,7 +165,7 @@ export function ShopFilters({ query, categories, colors, totalProducts }: ShopFi
               />
             </div>
           </div>
-          <button type="submit" className="btn-primary min-h-11 w-full text-[0.9375rem]">
+          <button type="submit" className="btn-primary min-h-11 w-full">
             Prijsfilter toepassen
           </button>
         </form>
@@ -178,8 +178,8 @@ export function ShopFilters({ query, categories, colors, totalProducts }: ShopFi
                   href={shopHref(query, { min: range.min ?? null, max: range.max ?? null })}
                   aria-current={active ? "true" : undefined}
                   className={cn(
-                    "inline-block rounded-full border px-3 py-1.5 text-sm",
-                    active ? "border-ink bg-ink text-paper" : "border-line hover:border-ink",
+                    "inline-block rounded-full border px-3 py-1.5 text-sm transition-colors",
+                    active ? "border-ink bg-ink text-paper" : "border-line hover:border-stone",
                   )}
                 >
                   {range.label}

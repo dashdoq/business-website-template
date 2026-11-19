@@ -8,7 +8,7 @@ import type { Product } from "@/lib/types";
 export function PromoBlock({ product }: { product: Product }) {
   return (
     <section aria-labelledby="promo-titel" className="wrap mt-20 lg:mt-28">
-      <div className="grid overflow-hidden bg-ecru md:grid-cols-2">
+      <div className="grid overflow-hidden rounded-2xl border border-line bg-paper shadow-[0_12px_40px_rgb(0_0_0/0.05)] md:grid-cols-2">
         <ProductImage
           src={product.images[0]}
           alt=""
@@ -17,7 +17,7 @@ export function PromoBlock({ product }: { product: Product }) {
           className="bg-tile"
         />
         <div className="flex flex-col justify-center gap-6 p-6 sm:p-10 lg:p-16">
-          <p className="text-sm text-stone">Sok van het seizoen</p>
+          <p className="caps text-[0.75rem] text-stone">Sok van het seizoen</p>
           <h2 id="promo-titel" className="display-lg">
             {product.name}
           </h2>

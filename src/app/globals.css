@@ -2,17 +2,20 @@
 
 /*
   woolup design tokens, see docs/design.md.
-  Black comes straight from the logo; ecru is undyed wool; loden is the
-  felted green wool cloth, used only for "Nieuw" and stock signals.
+  Flat and light: black from the logo, soft neutral greys for tiles and
+  hairlines, ecru (undyed wool) for feature panels, and loden green only
+  for "Nieuw" and stock signals. Radii use Tailwind's defaults:
+  sm 4px (badges), md 6px (buttons, fields), lg 8px (cards, panels),
+  2xl 16px (feature blocks).
 */
 @theme {
   --color-*: initial;
   --color-ink: #000000;
   --color-paper: #ffffff;
-  --color-ecru: #eee8dc;
-  --color-tile: #f4f2ee;
-  --color-line: #dcd6cb;
-  --color-stone: #67615a;
+  --color-ecru: #f2eee7;
+  --color-tile: #f5f5f3;
+  --color-line: #e8e6e1;
+  --color-stone: #66635d;
   --color-loden: #45513b;
   --color-transparent: transparent;
   --color-current: currentColor;
@@ -29,7 +32,6 @@
   --text-lg: 1.25rem;
   --text-lg--line-height: 1.45;
 
-  --radius-sm: 2px;
   --container-wrap: 84rem;
 
   --animate-drawer-in: drawer-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -96,44 +98,43 @@
   }
 }
 
-/* Display type: the extra-condensed cut carries the editorial voice. */
+/* Headings: the extra-condensed cut, kept to a calm, modern scale. */
 @utility display-xl {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(3.4rem, 1.6rem + 7.4vw, 8.25rem);
-  line-height: 0.86;
-  letter-spacing: -0.01em;
+  font-size: clamp(2.75rem, 1.4rem + 4.6vw, 5.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.005em;
 }
 
 @utility display-lg {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem);
-  line-height: 0.9;
-  letter-spacing: -0.005em;
+  font-size: clamp(1.875rem, 1.45rem + 1.4vw, 2.625rem);
+  line-height: 0.95;
 }
 
 @utility display-md {
   font-family: var(--font-display);
   font-weight: 750;
-  font-size: clamp(2rem, 1.5rem + 1.8vw, 2.875rem);
-  line-height: 0.95;
+  font-size: clamp(1.5rem, 1.25rem + 0.7vw, 1.875rem);
+  line-height: 1;
 }
 
-/* Product names and buttons are set in capitals, as on the shop shelf. */
+/* Small capitals for product names, buttons, navigation and badges. */
 @utility caps {
-  font-family: var(--font-display);
-  font-weight: 700;
+  font-family: var(--font-sans);
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
 }
 
 @utility btn {
-  @apply caps inline-flex min-h-12 items-center justify-center gap-2 rounded-sm border px-6 text-center text-[1.0625rem] leading-none;
+  @apply caps inline-flex min-h-12 items-center justify-center gap-2 rounded-md border px-6 text-center text-[0.8125rem] leading-none;
   transition:
-    background-color 120ms ease-out,
-    color 120ms ease-out,
-    border-color 120ms ease-out;
+    background-color 140ms ease-out,
+    color 140ms ease-out,
+    border-color 140ms ease-out;
 }
 
 @layer components {
@@ -149,7 +150,7 @@
   }
 
   .btn-primary:hover:not(:disabled):not([aria-disabled="true"]) {
-    @apply bg-paper text-ink;
+    @apply border-stone bg-stone;
   }
 
   .btn-outline {
@@ -168,12 +169,22 @@
   }
 
   .field {
-    @apply min-h-11 w-full rounded-sm border border-line bg-paper px-3 text-base placeholder:text-stone;
+    @apply min-h-11 w-full rounded-md border border-line bg-paper px-3 text-base placeholder:text-stone;
+    transition: border-color 140ms ease-out;
+  }
+
+  .field:hover {
+    border-color: var(--color-stone);
   }
 
   .field:focus-visible {
     outline-offset: 0;
     border-color: var(--color-ink);
+  }
+
+  /* A flat, softly rounded container: filter panels, sort bar, notes. */
+  .panel {
+    @apply rounded-lg border border-line bg-paper;
   }
 
   .link {

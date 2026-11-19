@@ -25,7 +25,7 @@ export function FilterPanel({ activeCount, children }: { activeCount: number; ch
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="btn-outline min-h-11 w-full text-[0.9375rem] lg:hidden"
+        className="btn-outline min-h-11 w-full lg:hidden"
         aria-expanded={isOpen}
       >
         <FilterIcon className="size-5" />
@@ -51,7 +51,7 @@ export function FilterPanel({ activeCount, children }: { activeCount: number; ch
       >
         {isOpen && (
           <div className="mb-4 flex items-center justify-between lg:hidden">
-            <p className="caps text-[1.375rem]">Filters</p>
+            <p className="text-lg font-semibold">Filters</p>
             <button
               type="button"
               onClick={close}

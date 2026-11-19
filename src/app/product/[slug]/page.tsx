@@ -91,7 +91,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 {categoryName} uit drop Nº {String(product.drop).padStart(2, "0")}
               </span>
               {product.isNew && (
-                <span className="caps rounded-sm bg-loden px-2 py-1 text-[0.8125rem] leading-none text-paper">
+                <span className="caps rounded-sm bg-loden px-2 py-[0.3rem] text-[0.6875rem] leading-none text-paper">
                   Nieuw
                 </span>
               )}
@@ -101,7 +101,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="flex items-center gap-3">
               <Price price={product.price} compareAtPrice={product.compareAtPrice} className="text-xl" />
               {discount !== undefined && (
-                <span className="caps rounded-sm bg-ink px-2 py-1 text-[0.8125rem] leading-none text-paper">
+                <span className="caps rounded-sm bg-ink px-2 py-[0.3rem] text-[0.6875rem] leading-none text-paper">
                   -{discount}%
                 </span>
               )}

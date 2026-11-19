@@ -48,11 +48,11 @@ export default async function HomePage() {
         <h2 id="waarden-titel" className="sr-only">
           Waar woolup voor staat
         </h2>
-        <dl className="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+        <dl className="grid gap-x-10 gap-y-8 rounded-2xl bg-tile p-6 sm:grid-cols-2 sm:p-10 lg:grid-cols-4 lg:p-12">
           {values.map((value) => (
-            <div key={value.title} className="space-y-3 border-t border-ink pt-5">
+            <div key={value.title} className="space-y-2">
               <dt className="display-md">{value.title}</dt>
-              <dd className="text-stone">{value.text}</dd>
+              <dd className="text-sm text-stone">{value.text}</dd>
             </div>
           ))}
         </dl>

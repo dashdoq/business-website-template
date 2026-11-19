@@ -16,7 +16,7 @@ type SortBarProps = {
 /** Result count plus "Toon" and "Sorteer op"; changing either submits the form. */
 export function SortBar({ from, to, total, sort, perPage, preserved }: SortBarProps) {
   return (
-    <div className="flex flex-col gap-3 border border-line bg-tile px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex flex-col gap-3 rounded-lg border border-line bg-tile px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
       <p className="text-sm" aria-live="polite">
         {total === 0
           ? "Geen resultaten"

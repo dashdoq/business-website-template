@@ -47,7 +47,7 @@ export function ProductTabs({ tabs }: { tabs: Tab[] }) {
             tabIndex={index === active ? 0 : -1}
             onClick={() => setActive(index)}
             className={cn(
-              "caps -mb-px shrink-0 border-b-2 py-3 text-[1.0625rem]",
+              "caps -mb-px shrink-0 border-b-2 py-3 text-[0.8125rem]",
               index === active ? "border-ink" : "border-transparent text-stone hover:text-ink",
             )}
           >

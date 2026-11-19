@@ -48,6 +48,7 @@ export function ProductDetail({ slug, name, price, colors, sizes, images, soldOu
           placeholderColor={color?.hex ?? "#000"}
           sizes="(min-width: 768px) 50vw, 100vw"
           priority
+          className="rounded-xl"
         />
         {images.length > 1 && (
           <ul className="grid grid-cols-5 gap-2" aria-label="Foto's">
@@ -58,7 +59,7 @@ export function ProductDetail({ slug, name, price, colors, sizes, images, soldOu
                   onClick={() => setActiveImage(index)}
                   aria-label={`Foto ${index + 1}`}
                   aria-pressed={index === activeImage}
-                  className={cn("block w-full border", index === activeImage ? "border-ink" : "border-transparent")}
+                  className={cn("block w-full overflow-hidden rounded-md border", index === activeImage ? "border-ink" : "border-transparent")}
                 >
                   <ProductImage src={src} alt="" placeholderColor={color?.hex ?? "#000"} sizes="10vw" showNote={false} />
                 </button>
@@ -93,7 +94,7 @@ export function ProductDetail({ slug, name, price, colors, sizes, images, soldOu
                   onChange={() => setColor(option)}
                   className="sr-only"
                 />
-                <span className="block size-9 rounded-full border border-ink/15" style={{ backgroundColor: option.hex }} />
+                <span className="block size-9 rounded-full ring-1 ring-ink/10" style={{ backgroundColor: option.hex }} />
                 <span className="sr-only">{option.name}</span>
               </label>
             ))}
@@ -114,8 +115,8 @@ export function ProductDetail({ slug, name, price, colors, sizes, images, soldOu
               <label
                 key={option}
                 className={cn(
-                  "grid min-h-12 cursor-pointer place-items-center rounded-sm border text-base tabular-nums has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ink",
-                  size === option ? "border-ink bg-ink text-paper" : "border-line hover:border-ink",
+                  "grid min-h-12 cursor-pointer place-items-center rounded-md border text-base tabular-nums transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ink",
+                  size === option ? "border-ink bg-ink text-paper" : "border-line hover:border-stone",
                   soldOut && "pointer-events-none text-stone",
                 )}
               >

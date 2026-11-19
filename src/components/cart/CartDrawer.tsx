@@ -30,7 +30,7 @@ export function CartDrawer() {
         className="animate-drawer-in absolute inset-y-0 right-0 flex w-[min(28rem,100vw)] flex-col bg-paper"
       >
         <div className="flex items-center justify-between border-b border-line px-5 py-4">
-          <h2 id="winkelmand-titel" className="caps text-[1.375rem]">
+          <h2 id="winkelmand-titel" className="text-lg font-semibold">
             Winkelmand <span className="text-stone tabular-nums">({count})</span>
           </h2>
           <button
@@ -53,7 +53,7 @@ export function CartDrawer() {
           </div>
         ) : (
           <>
-            <p className="border-b border-line bg-ecru px-5 py-3 text-sm">
+            <p className="mx-5 mt-4 rounded-md bg-tile px-4 py-2.5 text-sm">
               {toFreeShipping > 0
                 ? `Nog ${formatPrice(toFreeShipping)} tot gratis verzending.`
                 : "Je bestelling wordt gratis verzonden."}
@@ -66,7 +66,7 @@ export function CartDrawer() {
                     <Link
                       href={`/product/${line.slug}`}
                       onClick={close}
-                      className="grid size-20 shrink-0 place-items-center bg-tile"
+                      className="grid size-20 shrink-0 place-items-center rounded-md bg-tile"
                       tabIndex={-1}
                       aria-hidden="true"
                     >
@@ -77,7 +77,7 @@ export function CartDrawer() {
                         <Link
                           href={`/product/${line.slug}`}
                           onClick={close}
-                          className="caps text-[1.0625rem] leading-tight hover:underline"
+                          className="caps text-[0.8125rem] leading-snug hover:underline"
                         >
                           {line.name}
                         </Link>
@@ -138,12 +138,12 @@ export function QuantityStepper({
   min?: number;
 }) {
   return (
-    <div className="inline-flex items-center rounded-sm border border-line" role="group" aria-label={`Aantal ${label}`}>
+    <div className="inline-flex items-center rounded-md border border-line" role="group" aria-label={`Aantal ${label}`}>
       <button
         type="button"
         onClick={() => onChange(value - 1)}
         disabled={value <= min}
-        className="grid size-10 place-items-center hover:bg-tile disabled:text-line"
+        className="grid size-10 place-items-center rounded-l-md hover:bg-tile disabled:text-line"
         aria-label="Eén minder"
       >
         <MinusIcon className="size-4" />
@@ -155,7 +155,7 @@ export function QuantityStepper({
         type="button"
         onClick={() => onChange(value + 1)}
         disabled={value >= CART_MAX_PER_LINE}
-        className="grid size-10 place-items-center hover:bg-tile disabled:text-line"
+        className="grid size-10 place-items-center rounded-r-md hover:bg-tile disabled:text-line"
         aria-label="Eén meer"
       >
         <PlusIcon className="size-4" />

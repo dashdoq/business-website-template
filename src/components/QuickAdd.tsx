@@ -25,7 +25,7 @@ export function QuickAdd({ slug, name, price, sizes, color, soldOut }: QuickAddP
 
   if (soldOut) {
     return (
-      <button type="button" className="btn-outline w-full min-h-11 text-[0.9375rem]" disabled>
+      <button type="button" className="btn-outline min-h-10 w-full px-2 text-[0.75rem] whitespace-nowrap sm:text-[0.8125rem]" disabled>
         Uitverkocht
       </button>
     );
@@ -35,7 +35,7 @@ export function QuickAdd({ slug, name, price, sizes, color, soldOut }: QuickAddP
     return (
       <button
         type="button"
-        className="btn-outline w-full min-h-11 text-[0.9375rem]"
+        className="btn-outline min-h-10 w-full px-2 text-[0.75rem] whitespace-nowrap sm:text-[0.8125rem]"
         aria-expanded={false}
         onClick={() => {
           setChoosing(true);
@@ -65,7 +65,7 @@ export function QuickAdd({ slug, name, price, sizes, color, soldOut }: QuickAddP
             key={size}
             ref={index === 0 ? firstSizeRef : undefined}
             type="button"
-            className="min-h-11 rounded-sm border border-ink text-sm tabular-nums hover:bg-ink hover:text-paper"
+            className="min-h-10 rounded-md border border-line text-sm tabular-nums transition-colors hover:border-ink hover:bg-ink hover:text-paper"
             onClick={() => {
               add({
                 slug,

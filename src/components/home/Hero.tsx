@@ -13,10 +13,12 @@ type HeroProps = {
 export function Hero({ drop, featured }: HeroProps) {
   const dropNumber = String(drop.drop).padStart(2, "0");
   return (
-    <section aria-labelledby="hero-titel" className="bg-ecru">
-      <div className="wrap grid items-center gap-10 py-10 md:grid-cols-[1.05fr_1fr] md:gap-12 md:py-16 lg:py-20">
-        <div className="space-y-7">
-          <p className="caps text-[1.0625rem]">Drop Nº {dropNumber}</p>
+    <section aria-labelledby="hero-titel" className="wrap pt-4 lg:pt-6">
+      <div className="grid items-center gap-8 overflow-hidden rounded-2xl bg-ecru p-6 sm:p-10 md:grid-cols-[1.05fr_1fr] md:gap-12 lg:px-16 lg:py-14">
+        <div className="space-y-6">
+          <p className="caps inline-block rounded-full bg-ink px-3 py-1.5 text-[0.6875rem] leading-none text-paper">
+            Drop Nº {dropNumber}
+          </p>
           <h1 id="hero-titel" className="display-xl">
             Warme voeten, kleine oplage.
           </h1>
@@ -46,10 +48,10 @@ export function Hero({ drop, featured }: HeroProps) {
             placeholderColor={getColor(featured.colors[0] ?? "loden").hex}
             sizes="(min-width: 768px) 45vw, 100vw"
             priority
-            className="bg-paper/60"
+            className="rounded-xl bg-paper/70"
           />
-          <span className="absolute right-4 bottom-4 bg-paper px-3 py-2 text-sm shadow-[0_1px_2px_rgb(0_0_0/0.08)]">
-            <span className="caps mr-2 text-[1rem]">{featured.name}</span>
+          <span className="absolute right-4 bottom-4 rounded-md bg-paper px-3 py-2 text-sm shadow-[0_4px_16px_rgb(0_0_0/0.06)]">
+            <span className="caps mr-2 text-[0.75rem]">{featured.name}</span>
             <span className="tabular-nums">{formatPrice(featured.price)}</span>
           </span>
         </Link>
