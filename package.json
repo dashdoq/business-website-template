@@ -1,26 +1,29 @@
 {
-  "name": "business-website-template",
+  "name": "woolup-shop",
   "private": true,
-  "version": "1.0.0",
-  "type": "module",
+  "version": "0.1.0",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=20.9"
   },
   "dependencies": {
-    "@fontsource-variable/league-gothic": "^5.3.0",
-    "@fontsource-variable/libre-franklin": "^5.3.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@fontsource-variable/sofia-sans": "^5.3.0",
+    "@fontsource-variable/sofia-sans-extra-condensed": "^5.3.0",
+    "next": "16.4.6",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   },
   "devDependencies": {
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
-    "@vitejs/plugin-react": "^3.1.0",
-    "autoprefixer": "^10.4.13",
-    "postcss": "^8.5.23",
-    "tailwindcss": "^3.2.7",
-    "vite": "^4.5.14"
+    "@tailwindcss/postcss": "^4.3.5",
+    "@types/node": "^22",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "tailwindcss": "^4.3.5",
+    "typescript": "^5.9.3"
   }
 }

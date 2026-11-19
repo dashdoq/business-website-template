@@ -1,0 +1,216 @@
+@import "tailwindcss";
+
+/*
+  woolup design tokens, see docs/design.md.
+  Black comes straight from the logo; ecru is undyed wool; loden is the
+  felted green wool cloth, used only for "Nieuw" and stock signals.
+*/
+@theme {
+  --color-*: initial;
+  --color-ink: #000000;
+  --color-paper: #ffffff;
+  --color-ecru: #eee8dc;
+  --color-tile: #f4f2ee;
+  --color-line: #dcd6cb;
+  --color-stone: #67615a;
+  --color-loden: #45513b;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --font-sans: "Sofia Sans Variable", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Sofia Sans Extra Condensed Variable", "Arial Narrow", sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.4;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.45;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.55;
+  --text-lg: 1.25rem;
+  --text-lg--line-height: 1.45;
+
+  --radius-sm: 2px;
+  --container-wrap: 84rem;
+
+  --animate-drawer-in: drawer-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  --animate-fade-in: fade-in 180ms ease-out;
+}
+
+@keyframes drawer-in {
+  from {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    @apply bg-paper font-sans text-base text-ink antialiased;
+    font-feature-settings: "kern", "liga";
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    @apply bg-ink text-paper;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+
+  .on-dark :focus-visible {
+    outline-color: var(--color-paper);
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+}
+
+/* Display type: the extra-condensed cut carries the editorial voice. */
+@utility display-xl {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(3.4rem, 1.6rem + 7.4vw, 8.25rem);
+  line-height: 0.86;
+  letter-spacing: -0.01em;
+}
+
+@utility display-lg {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.005em;
+}
+
+@utility display-md {
+  font-family: var(--font-display);
+  font-weight: 750;
+  font-size: clamp(2rem, 1.5rem + 1.8vw, 2.875rem);
+  line-height: 0.95;
+}
+
+/* Product names and buttons are set in capitals, as on the shop shelf. */
+@utility caps {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+@utility btn {
+  @apply caps inline-flex min-h-12 items-center justify-center gap-2 rounded-sm border px-6 text-center text-[1.0625rem] leading-none;
+  transition:
+    background-color 120ms ease-out,
+    color 120ms ease-out,
+    border-color 120ms ease-out;
+}
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: var(--container-wrap);
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2.5rem);
+  }
+
+  .btn-primary {
+    @apply btn border-ink bg-ink text-paper;
+  }
+
+  .btn-primary:hover:not(:disabled):not([aria-disabled="true"]) {
+    @apply bg-paper text-ink;
+  }
+
+  .btn-outline {
+    @apply btn border-ink bg-paper text-ink;
+  }
+
+  .btn-outline:hover:not(:disabled):not([aria-disabled="true"]) {
+    @apply bg-ink text-paper;
+  }
+
+  .btn-primary:disabled,
+  .btn-outline:disabled,
+  .btn-primary[aria-disabled="true"],
+  .btn-outline[aria-disabled="true"] {
+    @apply cursor-not-allowed border-line bg-tile text-stone;
+  }
+
+  .field {
+    @apply min-h-11 w-full rounded-sm border border-line bg-paper px-3 text-base placeholder:text-stone;
+  }
+
+  .field:focus-visible {
+    outline-offset: 0;
+    border-color: var(--color-ink);
+  }
+
+  .link {
+    @apply underline decoration-1 underline-offset-[0.22em];
+  }
+
+  .link:hover {
+    @apply decoration-2;
+  }
+
+  .prose-shop {
+    @apply max-w-[68ch] space-y-4 text-base;
+  }
+
+  .prose-shop h2 {
+    @apply display-md pt-6;
+  }
+
+  .prose-shop ul {
+    @apply list-disc space-y-1 pl-5;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
