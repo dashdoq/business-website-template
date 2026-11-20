@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 import type { Product } from '@/api/ecommerce-api';
-import { useModalPanel } from '@/hooks/use-modal-panel';
 import { useProductReviews } from '@/hooks/use-product-reviews';
+import { useModalPanel } from '@/components/site-footer';
 
 export function ProductReviews({ product }: { product: Product }) {
 	const r = useProductReviews({ productId: product.id, reviewsAnalytics: product.reviews_analytics });
@@ -19,7 +19,7 @@ export function ProductReviews({ product }: { product: Product }) {
 					<>
 						<h2 className="display-lg">Ervaringen</h2>
 						{r.summary && (
-							<p className="text-stone">
+							<p className="text-muted-foreground">
 								{r.summary.total} beoordelingen · {r.summary.average.toFixed(1)} / 5
 							</p>
 						)}
@@ -30,7 +30,7 @@ export function ProductReviews({ product }: { product: Product }) {
 										<p className="text-sm font-semibold">
 											{v.reviewer_name || 'Een Woolup-klant'} · {v.rating}/5
 										</p>
-										<p className="text-stone">{v.comment}</p>
+										<p className="text-muted-foreground">{v.comment}</p>
 									</li>
 								))}
 							</ul>
@@ -41,21 +41,21 @@ export function ProductReviews({ product }: { product: Product }) {
 					</>
 				)}
 				{message && (
-					<p role="status" className="rounded-md bg-ecru px-4 py-3 text-sm">
+					<p role="status" className="rounded-md bg-accent px-4 py-3 text-sm">
 						{message}
 					</p>
 				)}
 			</section>
 			{r.isFormOpen && (
 				<div className="fixed inset-0 z-50 grid place-items-center p-5">
-					<div className="absolute inset-0 animate-fade-in bg-ink/40" onClick={closeForm} aria-hidden="true" />
+					<div className="absolute inset-0 animate-fade-in bg-primary/40" onClick={closeForm} aria-hidden="true" />
 					<div
 						ref={dialogRef}
 						role="dialog"
 						aria-modal="true"
 						aria-label="Beoordeling schrijven"
 						tabIndex={-1}
-						className="relative max-h-[90vh] w-full max-w-md animate-fade-in overflow-auto rounded-2xl bg-paper p-6 sm:p-8"
+						className="relative max-h-[90vh] w-full max-w-md animate-fade-in overflow-auto rounded-2xl bg-background p-6 sm:p-8"
 					>
 						<h2 className="display-lg mb-6">Uw ervaring.</h2>
 						<form

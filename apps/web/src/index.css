@@ -1,5 +1,4 @@
-@import '@fontsource-variable/sofia-sans/index.css';
-@import '@fontsource-variable/sofia-sans-extra-condensed/index.css';
+@import url('https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,300..800;1,300..800&family=Sofia+Sans+Extra+Condensed:wght@600..900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -11,7 +10,12 @@
   hairlines, ecru (undyed wool) for feature panels, loden green only for
   badges. Radii: 4px badges, 6px buttons and fields, 8px cards and panels,
   16px feature blocks.
-  The shadcn variables below follow the same palette, so the ui/ kit matches.
+  Colours use the shadcn names already in tailwind.config.js, so this file
+  needs no config change:
+    primary / foreground = ink #000      background = paper #fff
+    accent = ecru #f2eee7                secondary / muted = tile #f5f5f3
+    border = line #e8e6e1                muted-foreground = stone #66635d
+    loden #45513b is used as an arbitrary value on two badges.
 */
 @layer base {
 	:root {
@@ -43,7 +47,8 @@
 	}
 
 	body {
-		@apply bg-paper font-sans text-[1.0625rem] leading-[1.55] text-ink antialiased;
+		@apply bg-background text-[1.0625rem] leading-[1.55] text-foreground antialiased;
+		font-family: 'Sofia Sans', 'Helvetica Neue', Arial, sans-serif;
 		font-feature-settings: 'kern', 'liga';
 	}
 
@@ -58,16 +63,16 @@
 	}
 
 	::selection {
-		@apply bg-ink text-paper;
+		@apply bg-primary text-primary-foreground;
 	}
 
 	:focus-visible {
-		outline: 2px solid theme('colors.ink');
+		outline: 2px solid #000;
 		outline-offset: 3px;
 	}
 
 	.on-dark :focus-visible {
-		outline-color: theme('colors.paper');
+		outline-color: #fff;
 	}
 
 	button:not(:disabled),
@@ -86,7 +91,7 @@
 
 	/* Headings: the extra-condensed cut, on a calm, modern scale. */
 	.display-xl {
-		font-family: theme('fontFamily.display');
+		font-family: 'Sofia Sans Extra Condensed', 'Arial Narrow', sans-serif;
 		font-weight: 800;
 		font-size: clamp(2.75rem, 1.4rem + 4.6vw, 5.5rem);
 		line-height: 0.9;
@@ -94,14 +99,14 @@
 	}
 
 	.display-lg {
-		font-family: theme('fontFamily.display');
+		font-family: 'Sofia Sans Extra Condensed', 'Arial Narrow', sans-serif;
 		font-weight: 800;
 		font-size: clamp(1.875rem, 1.45rem + 1.4vw, 2.625rem);
 		line-height: 0.95;
 	}
 
 	.display-md {
-		font-family: theme('fontFamily.display');
+		font-family: 'Sofia Sans Extra Condensed', 'Arial Narrow', sans-serif;
 		font-weight: 750;
 		font-size: clamp(1.5rem, 1.25rem + 0.7vw, 1.875rem);
 		line-height: 1;
@@ -109,7 +114,7 @@
 
 	/* Small capitals for product names, buttons, navigation, labels and badges. */
 	.caps {
-		font-family: theme('fontFamily.sans');
+		font-family: 'Sofia Sans', 'Helvetica Neue', Arial, sans-serif;
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.07em;
@@ -125,42 +130,42 @@
 	}
 
 	.btn-primary {
-		@apply border-ink bg-ink text-paper;
+		@apply border-primary bg-primary text-primary-foreground;
 	}
 
 	.btn-primary:hover:not(:disabled) {
-		@apply border-stone bg-stone;
+		@apply border-muted-foreground bg-muted-foreground;
 	}
 
 	.btn-outline {
-		@apply border-ink bg-paper text-ink;
+		@apply border-primary bg-background text-foreground;
 	}
 
 	.btn-outline:hover:not(:disabled) {
-		@apply bg-ink text-paper;
+		@apply bg-primary text-primary-foreground;
 	}
 
 	.btn-primary:disabled,
 	.btn-outline:disabled {
-		@apply cursor-not-allowed border-line bg-tile text-stone;
+		@apply cursor-not-allowed border-border bg-secondary text-muted-foreground;
 	}
 
 	.field {
-		@apply min-h-11 w-full rounded-md border border-line bg-paper px-3 text-base placeholder:text-stone;
+		@apply min-h-11 w-full rounded-md border border-border bg-background px-3 text-base placeholder:text-muted-foreground;
 		transition: border-color 140ms ease-out;
 	}
 
 	.field:hover {
-		@apply border-stone;
+		@apply border-muted-foreground;
 	}
 
 	.field:focus-visible {
 		outline-offset: 0;
-		@apply border-ink;
+		@apply border-primary;
 	}
 
 	.panel {
-		@apply rounded-lg border border-line bg-paper;
+		@apply rounded-lg border border-border bg-background;
 	}
 
 	.link {
@@ -173,11 +178,11 @@
 
 	/* Store descriptions arrive as HTML from the shop admin. */
 	.rich-text {
-		@apply max-w-[68ch] space-y-4 text-stone;
+		@apply max-w-[68ch] space-y-4 text-muted-foreground;
 	}
 
 	.rich-text a {
-		@apply link text-ink;
+		@apply link text-foreground;
 	}
 
 	.rich-text ul {
@@ -188,12 +193,46 @@
 		@apply list-decimal space-y-1 pl-5;
 	}
 
+	.font-display {
+		font-family: 'Sofia Sans Extra Condensed', 'Arial Narrow', sans-serif;
+	}
+
+	.animate-drawer-in {
+		animation: woolup-drawer-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+
+	.animate-drawer-in-left {
+		animation: woolup-drawer-in-left 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+
+	.animate-fade-in {
+		animation: woolup-fade-in 180ms ease-out;
+	}
+
 	.no-scrollbar {
 		scrollbar-width: none;
 	}
 
 	.no-scrollbar::-webkit-scrollbar {
 		display: none;
+	}
+}
+
+@keyframes woolup-drawer-in {
+	from {
+		transform: translateX(100%);
+	}
+}
+
+@keyframes woolup-drawer-in-left {
+	from {
+		transform: translateX(-100%);
+	}
+}
+
+@keyframes woolup-fade-in {
+	from {
+		opacity: 0;
 	}
 }
 

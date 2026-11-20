@@ -2,10 +2,9 @@ import { Menu, Search, ShoppingBag, UserRound, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Form, Link, NavLink, useLocation } from 'react-router';
 import { useCart } from '@/hooks/use-ecommerce-cart';
-import { useModalPanel } from '@/hooks/use-modal-panel';
-import { useCartDrawer } from '@/components/cart-drawer';
-import { Logo } from '@/components/logo';
 import { cn } from '@/lib/utils';
+import { CartDrawer, openCartDrawer } from '@/components/cart-view';
+import { Logo, useModalPanel } from '@/components/site-footer';
 
 const NAV = [
 	{ to: '/collectie', label: 'De collectie' },
@@ -28,12 +27,12 @@ function SearchField({ id }: { id: string }) {
 				type="search"
 				placeholder="Zoek een editie"
 				autoComplete="off"
-				className="field rounded-full border-transparent bg-tile pr-11 pl-4 hover:border-line"
+				className="field rounded-full border-transparent bg-secondary pr-11 pl-4 hover:border-border"
 			/>
 			<button
 				type="submit"
 				aria-label="Zoeken"
-				className="absolute top-1/2 right-1 grid size-9 -translate-y-1/2 place-items-center rounded-full hover:bg-line/70"
+				className="absolute top-1/2 right-1 grid size-9 -translate-y-1/2 place-items-center rounded-full hover:bg-border/70"
 			>
 				<Search size={18} aria-hidden="true" />
 			</button>
@@ -89,20 +88,20 @@ function MobileMenu() {
 				onClick={() => setIsOpen(true)}
 				aria-label="Menu"
 				aria-expanded={isOpen}
-				className="-ml-2 grid size-11 place-items-center rounded-full hover:bg-tile"
+				className="-ml-2 grid size-11 place-items-center rounded-full hover:bg-secondary"
 			>
 				<Menu size={22} aria-hidden="true" />
 			</button>
 			{isOpen && (
 				<div className="fixed inset-0 z-50">
-					<div className="absolute inset-0 animate-fade-in bg-ink/40" onClick={close} aria-hidden="true" />
+					<div className="absolute inset-0 animate-fade-in bg-primary/40" onClick={close} aria-hidden="true" />
 					<div
 						ref={panelRef}
 						role="dialog"
 						aria-modal="true"
 						aria-label="Hoofdnavigatie"
 						tabIndex={-1}
-						className="absolute inset-y-0 left-0 flex w-[min(22rem,88vw)] animate-drawer-in-left flex-col gap-8 bg-paper p-5"
+						className="absolute inset-y-0 left-0 flex w-[min(22rem,88vw)] animate-drawer-in-left flex-col gap-8 bg-background p-5"
 					>
 						<div className="flex items-center justify-between">
 							<Logo className="h-7 w-auto" />
@@ -110,7 +109,7 @@ function MobileMenu() {
 								type="button"
 								onClick={close}
 								aria-label="Sluiten"
-								className="-mr-2 grid size-11 place-items-center rounded-full hover:bg-tile"
+								className="-mr-2 grid size-11 place-items-center rounded-full hover:bg-secondary"
 							>
 								<X size={22} aria-hidden="true" />
 							</button>
@@ -131,12 +130,11 @@ function MobileMenu() {
 
 export function SiteHeader() {
 	const cart = useCart();
-	const drawer = useCartDrawer();
 	const count = cart.lines.reduce((sum, line) => sum + line.quantity, 0);
 
 	return (
 		<>
-			<div className="on-dark bg-ink text-paper">
+			<div className="on-dark bg-primary text-primary-foreground">
 				<ul className="wrap flex h-9 items-center justify-center gap-10 text-xs md:justify-between">
 					{TOPLINE.map((item, index) => (
 						<li key={item} className={index > 0 ? 'hidden md:block' : undefined}>
@@ -146,7 +144,7 @@ export function SiteHeader() {
 					))}
 				</ul>
 			</div>
-			<header className="sticky top-0 z-30 border-b border-line bg-paper/95 backdrop-blur supports-[backdrop-filter]:bg-paper/85">
+			<header className="sticky top-0 z-30 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/85">
 				<div className="wrap flex h-16 items-center gap-4 lg:h-20 lg:gap-8">
 					<MobileMenu />
 					<Link to="/" aria-label="Woolup – naar de homepage" className="shrink-0">
@@ -162,21 +160,21 @@ export function SiteHeader() {
 						<Link
 							to="/account"
 							aria-label="Mijn account"
-							className="hidden size-11 place-items-center rounded-full hover:bg-tile sm:grid"
+							className="hidden size-11 place-items-center rounded-full hover:bg-secondary sm:grid"
 						>
 							<UserRound size={21} aria-hidden="true" />
 						</Link>
 						<button
 							type="button"
-							onClick={drawer.open}
+							onClick={openCartDrawer}
 							aria-label="Winkelwagen"
-							className="relative grid size-11 place-items-center rounded-full hover:bg-tile"
+							className="relative grid size-11 place-items-center rounded-full hover:bg-secondary"
 						>
 							<ShoppingBag size={21} aria-hidden="true" />
 							{!cart.isLoading && count > 0 && (
 								<span
 									aria-hidden="true"
-									className="absolute top-0.5 right-0 grid h-5 min-w-5 place-items-center rounded-full bg-ink px-1 text-[0.75rem] leading-none font-semibold text-paper tabular-nums"
+									className="absolute top-0.5 right-0 grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-[0.75rem] leading-none font-semibold text-primary-foreground tabular-nums"
 								>
 									{count}
 								</span>
@@ -185,6 +183,7 @@ export function SiteHeader() {
 					</div>
 				</div>
 			</header>
+			<CartDrawer />
 		</>
 	);
 }

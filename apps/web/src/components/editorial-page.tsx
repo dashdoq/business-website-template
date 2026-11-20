@@ -7,18 +7,18 @@ export function EditorialPage({ slug }: { slug: string }) {
 
 	return (
 		<main className="wrap pt-8 lg:pt-12">
-			<nav aria-label="Kruimelpad" className="mb-6 text-sm text-stone">
+			<nav aria-label="Kruimelpad" className="mb-6 text-sm text-muted-foreground">
 				<Link to="/" className="hover:underline">
 					Woolup
 				</Link>{' '}
-				/ <span className="text-ink">{p.label}</span>
+				/ <span className="text-foreground">{p.label}</span>
 			</nav>
 			<div className="grid gap-10 lg:grid-cols-[1fr_24rem] lg:gap-20">
 				<article className="max-w-[62ch] space-y-6">
-					<span className="caps text-[0.75rem] text-stone">{p.label}</span>
+					<span className="caps text-[0.75rem] text-muted-foreground">{p.label}</span>
 					<h1 className="display-xl">{p.title}</h1>
 					{p.paragraphs.map(t => (
-						<p className="text-lg text-stone" key={t}>
+						<p className="text-lg text-muted-foreground" key={t}>
 							{t}
 						</p>
 					))}
@@ -26,7 +26,7 @@ export function EditorialPage({ slug }: { slug: string }) {
 						Ontdek de collectie →
 					</Link>
 				</article>
-				<div className="relative hidden aspect-[4/5] overflow-hidden rounded-2xl bg-ecru lg:block">
+				<div className="relative hidden aspect-[4/5] overflow-hidden rounded-2xl bg-accent lg:block">
 					<img
 						src={HERO_IMAGE}
 						width={1344}

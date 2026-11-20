@@ -1,6 +1,6 @@
 # woolup.shop
 
-De webshop van woolup: sokken van 100% wol, eigen ontwerpen, kleine oplages. Dit is de Hostinger Horizons-build die gekoppeld is aan de echte Hostinger-winkel (producten, winkelwagen en checkout), met de vormgeving uit `docs/design.md`. Die is vlak en modern, met zachte hoeken, lichte randen, kleine hoofdletters en het woolup-logo.
+De webshop van woolup: sokken van 100% wol, eigen ontwerpen, kleine oplages. Dit is de Hostinger Horizons-build (nu Hostinger AI-bouwer) die gekoppeld is aan de echte Hostinger-winkel (producten, winkelwagen en checkout), met de vormgeving uit `docs/design.md`. Die is vlak en modern, met zachte hoeken, lichte randen, kleine hoofdletters en het woolup-logo.
 
 ![woolup homepage](docs/preview.png)
 
@@ -29,17 +29,21 @@ bun run start        # draait de build
 Accounts werken alleen als PocketBase meedraait: `bun run dev` in de root start beide.
 
 ## Waar staat wat
+Alle vormgeving zit in bestaande bestanden van de Horizons-export. Er zijn geen nieuwe bestanden, pakketten of config-wijzigingen, zodat alles in de code-editor van de Hostinger AI-bouwer te plakken is (zie *Live zetten*).
+
 | Wat | Waar |
 | --- | --- |
-| Kleuren, fonts, knoppen, velden | `apps/web/src/index.css`, `apps/web/tailwind.config.js` |
-| Header, footer, logo | `apps/web/src/components/site-header.tsx`, `site-footer.tsx`, `logo.tsx` |
+| Kleuren, fonts (Sofia Sans via Google Fonts), knoppen, velden | `apps/web/src/index.css` |
+| Footer, plus het logo (`Logo`, `SockMark`) en `useModalPanel` voor lades | `apps/web/src/components/site-footer.tsx` |
+| Header met zoekbalk, menu en winkelwagenknop | `apps/web/src/components/site-header.tsx` |
+| Winkelwagen-pagina en -lade (`openCartDrawer()`) | `apps/web/src/components/cart-view.tsx` |
+| Productkaart, snelle toevoegknop, carrousel, prijshulpjes | `apps/web/src/components/product-grid.tsx` |
 | Homepagina | `apps/web/src/components/home/` |
-| Productkaart en carrousel | `apps/web/src/components/product-card.tsx`, `product-carousel.tsx` |
 | Collectie met filters | `apps/web/src/components/catalog.tsx` |
 | Productpagina | `apps/web/src/components/product-detail.tsx` |
-| Winkelwagen-lade en -pagina | `apps/web/src/components/cart-drawer.tsx`, `cart-parts.tsx`, `cart-view.tsx` |
 | Verhaalpagina's (verhaal, wol, productie, contact) | `apps/web/src/data/pages.ts` |
 | Koppeling met de winkel | `apps/web/src/api/ecommerce-api.ts`; **niet aanpassen**, Horizons beheert dit bestand |
+| Logo-bestanden | `docs/brand/` |
 
 ## Producten beheren
 Producten, prijzen en foto's komen rechtstreeks uit de Hostinger-winkel, niet uit de code. Wat je in de winkel-admin invult, verschijnt vanzelf op de site:
@@ -51,8 +55,33 @@ Producten, prijzen en foto's komen rechtstreeks uit de Hostinger-winkel, niet ui
 - **Meerdere foto's:** dan verschijnen op de productpagina miniaturen.
 - **Beoordelingen:** die staan in de winkel nu uit. Zet je ze aan in de winkel-admin, dan verschijnt "Ervaringen" op de productpagina.
 
-## Live zetten
-Deze code is de Horizons-export met een nieuwe vormgeving. De mapindeling, `bun.lock`, `server.ts` en de checkout-koppeling zijn ongewijzigd, zodat Hostinger hem op dezelfde manier kan draaien. Zet hem terug in Horizons of op Hostinger Node.js-hosting. Let op: dat overschrijft wat er nu live op woolup.shop staat.
+## Live zetten in de Hostinger AI-bouwer
+Hostinger kan geen zip terugzetten in de AI-bouwer. Je kunt wel bestaande bestanden aanpassen in het **Code**-tab. Zo werkt het:
+
+1. hPanel → **Websites** → woolup.shop → **Edit site**, en open het **Code**-tab bovenin.
+2. Vervang per bestand de hele inhoud (alles selecteren, plakken, opslaan), in deze volgorde:
+   1. `apps/web/src/index.css`
+   2. `apps/web/src/components/site-footer.tsx`
+   3. `apps/web/src/components/cart-view.tsx`
+   4. `apps/web/src/components/product-grid.tsx`
+   5. `apps/web/src/components/site-header.tsx`
+   6. `apps/web/src/components/home/hero.tsx`
+   7. `apps/web/src/components/home/featured.tsx`
+   8. `apps/web/src/components/home/story.tsx`
+   9. `apps/web/src/components/catalog.tsx`
+   10. `apps/web/src/components/product-detail.tsx`
+   11. `apps/web/src/components/product-reviews.tsx`
+   12. `apps/web/src/components/account-view.tsx`
+   13. `apps/web/src/components/editorial-page.tsx`
+   14. `apps/web/src/components/cookie-banner.tsx`
+   15. `apps/web/src/routes/home.tsx`
+   16. `apps/web/src/routes/collectie.tsx`
+   17. `apps/web/src/routes/checkout-success.tsx`
+   18. `apps/web/src/routes/checkout-cancelled.tsx`
+3. Optioneel, als `apps/web/src/root.tsx` te bewerken is: de versie uit de plakgids. Die geeft de sok als favicon en een nette 404-pagina.
+4. Bekijk de preview: de homepagina, de collectie, een product, en toevoegen aan de winkelwagen. Daarna **Publiceren**.
+
+Prompt de AI niet tussendoor, want dan kan hij bestanden terugschrijven. De originele export is je back-up.
 
 ## Claude Code: Alpaca MCP-server
 `.mcp.json` registreert de [Alpaca MCP-server](https://github.com/alpacahq/alpaca-mcp-server) voor dit project (vereist [`uv`](https://docs.astral.sh/uv/)). De sleutels komen uit je omgeving en worden nooit gecommit:

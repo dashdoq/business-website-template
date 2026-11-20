@@ -1,14 +1,13 @@
 import { Link } from 'react-router';
 import type { ProductListItem } from '@/api/ecommerce-api';
-import { ProductCard } from '@/components/product-card';
-import { ProductCarousel } from '@/components/product-carousel';
+import { ProductCard, ProductCarousel } from '@/components/product-grid';
 
 export function Featured({ products }: { products: ProductListItem[] }) {
 	return (
 		<section className="wrap mt-16 lg:mt-24" aria-labelledby="featured-title">
 			<div className="mb-6 flex items-end justify-between gap-4 lg:mb-8">
 				<div className="space-y-3">
-					<span className="caps text-[0.75rem] text-stone">Bijzonder. Niet onbeperkt.</span>
+					<span className="caps text-[0.75rem] text-muted-foreground">Bijzonder. Niet onbeperkt.</span>
 					<h2 id="featured-title" className="display-lg">
 						Een kleine collectie.
 						<br />
@@ -26,7 +25,7 @@ export function Featured({ products }: { products: ProductListItem[] }) {
 					))}
 				</ProductCarousel>
 			) : (
-				<p className="panel px-6 py-12 text-center text-stone">Er zijn geen edities die bij uw selectie passen.</p>
+				<p className="panel px-6 py-12 text-center text-muted-foreground">Er zijn geen edities die bij uw selectie passen.</p>
 			)}
 		</section>
 	);

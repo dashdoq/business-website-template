@@ -2,9 +2,9 @@ import { ArrowLeft, ArrowRight, Search, SlidersHorizontal, X } from 'lucide-reac
 import { type FormEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router';
 import { type ProductListItem, toPriceUnits } from '@/api/ecommerce-api';
-import { useModalPanel } from '@/hooks/use-modal-panel';
 import { ProductGrid } from '@/components/product-grid';
 import { cn } from '@/lib/utils';
+import { useModalPanel } from '@/components/site-footer';
 
 const SORTS = [
 	{ value: 'order', label: 'Onze selectie' },
@@ -115,9 +115,9 @@ export function Catalog({ products }: { products: ProductListItem[] }) {
 	return (
 		<main className="wrap min-h-[65vh] pt-8 pb-10 lg:pt-12">
 			<header className="mb-8 max-w-2xl space-y-3 lg:mb-10">
-				<span className="caps text-[0.75rem] text-stone">Eigen ontwerpen · Gelimiteerde edities</span>
+				<span className="caps text-[0.75rem] text-muted-foreground">Eigen ontwerpen · Gelimiteerde edities</span>
 				<h1 className="display-xl">De collectie.</h1>
-				<p className="text-stone">Geen massa. Wel karakter. Ontdek onze sokken van 100% wol.</p>
+				<p className="text-muted-foreground">Geen massa. Wel karakter. Ontdek onze sokken van 100% wol.</p>
 			</header>
 
 			<div className="grid gap-6 lg:grid-cols-[17rem_1fr] lg:gap-8">
@@ -127,7 +127,7 @@ export function Catalog({ products }: { products: ProductListItem[] }) {
 				</aside>
 
 				<div className="min-w-0 space-y-4">
-					<div className="flex flex-col gap-3 rounded-lg border border-line bg-tile px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+					<div className="flex flex-col gap-3 rounded-lg border border-border bg-secondary px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
 						<p className="caps text-[0.75rem]" aria-live="polite">
 							{shown.length} edities
 						</p>
@@ -170,7 +170,7 @@ export function Catalog({ products }: { products: ProductListItem[] }) {
 									<button
 										type="button"
 										onClick={() => update(chip.clear)}
-										className="inline-flex items-center gap-1.5 rounded-full bg-tile py-1.5 pr-2.5 pl-3 text-sm ring-1 ring-line transition-colors hover:bg-ink hover:text-paper hover:ring-ink"
+										className="inline-flex items-center gap-1.5 rounded-full bg-secondary py-1.5 pr-2.5 pl-3 text-sm ring-1 ring-border transition-colors hover:bg-primary hover:text-primary-foreground hover:ring-primary"
 									>
 										{chip.label}
 										<X size={15} aria-hidden="true" />
@@ -240,8 +240,8 @@ function PageButton({
 			aria-label={label}
 			aria-current={current ? 'page' : undefined}
 			className={cn(
-				'grid size-10 place-items-center rounded-md border text-sm tabular-nums transition-colors disabled:text-line',
-				current ? 'border-ink bg-ink text-paper' : 'border-line hover:border-ink disabled:hover:border-line',
+				'grid size-10 place-items-center rounded-md border text-sm tabular-nums transition-colors disabled:text-border',
+				current ? 'border-primary bg-primary text-primary-foreground' : 'border-border hover:border-primary disabled:hover:border-border',
 			)}
 		>
 			{children}
@@ -291,7 +291,7 @@ function FilterPanels({
 						}}
 						className="field pr-11"
 					/>
-					<Search size={18} aria-hidden="true" className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-stone" />
+					<Search size={18} aria-hidden="true" className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground" />
 				</div>
 			</Panel>
 
@@ -317,13 +317,13 @@ function FilterPanels({
 			<Panel title="Prijs">
 				<form onSubmit={onPrice} className="space-y-3" key={`${filters.min}-${filters.max}`}>
 					<div className="grid grid-cols-2 gap-2">
-						<label className="space-y-1 text-sm text-stone">
+						<label className="space-y-1 text-sm text-muted-foreground">
 							Min.
-							<input name="min" type="number" inputMode="numeric" min={0} placeholder="0" defaultValue={filters.min} className="field text-ink" />
+							<input name="min" type="number" inputMode="numeric" min={0} placeholder="0" defaultValue={filters.min} className="field text-foreground" />
 						</label>
-						<label className="space-y-1 text-sm text-stone">
+						<label className="space-y-1 text-sm text-muted-foreground">
 							Max.
-							<input name="max" type="number" inputMode="numeric" min={0} placeholder="100" defaultValue={filters.max} className="field text-ink" />
+							<input name="max" type="number" inputMode="numeric" min={0} placeholder="100" defaultValue={filters.max} className="field text-foreground" />
 						</label>
 					</div>
 					<button type="submit" className="btn-primary min-h-11 w-full">
@@ -338,7 +338,7 @@ function FilterPanels({
 						type="checkbox"
 						checked={filters.stock}
 						onChange={e => update({ beschikbaar: e.target.checked ? '1' : null })}
-						className="size-5 accent-ink"
+						className="size-5 accent-primary"
 					/>
 					Alleen beschikbaar
 				</label>
@@ -361,7 +361,7 @@ function SizeButton({ active, onClick, children }: { active: boolean; onClick: (
 			onClick={onClick}
 			className={cn(
 				'grid min-h-10 w-full place-items-center rounded-md border px-2 text-sm tabular-nums transition-colors',
-				active ? 'border-ink bg-ink text-paper' : 'border-line hover:border-stone',
+				active ? 'border-primary bg-primary text-primary-foreground' : 'border-border hover:border-muted-foreground',
 			)}
 		>
 			{children}
@@ -384,28 +384,28 @@ function MobileFilters({ activeCount, children }: { activeCount: number; childre
 			</button>
 			{isOpen && (
 				<div className="fixed inset-0 z-50">
-					<div className="absolute inset-0 animate-fade-in bg-ink/40" onClick={close} aria-hidden="true" />
+					<div className="absolute inset-0 animate-fade-in bg-primary/40" onClick={close} aria-hidden="true" />
 					<div
 						ref={panelRef}
 						role="dialog"
 						aria-modal="true"
 						aria-label="Filters"
 						tabIndex={-1}
-						className="absolute inset-y-0 right-0 flex w-[min(24rem,100vw)] animate-drawer-in flex-col bg-paper"
+						className="absolute inset-y-0 right-0 flex w-[min(24rem,100vw)] animate-drawer-in flex-col bg-background"
 					>
-						<div className="flex items-center justify-between border-b border-line px-4 py-3">
+						<div className="flex items-center justify-between border-b border-border px-4 py-3">
 							<p className="text-lg font-semibold">Filters</p>
 							<button
 								type="button"
 								onClick={close}
 								aria-label="Sluiten"
-								className="-mr-2 grid size-11 place-items-center rounded-full hover:bg-tile"
+								className="-mr-2 grid size-11 place-items-center rounded-full hover:bg-secondary"
 							>
 								<X size={22} aria-hidden="true" />
 							</button>
 						</div>
 						<div className="flex-1 overflow-y-auto p-4">{children}</div>
-						<div className="border-t border-line p-4">
+						<div className="border-t border-border p-4">
 							<button type="button" onClick={close} className="btn-primary w-full">
 								Toepassen
 							</button>

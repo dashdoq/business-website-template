@@ -14,7 +14,7 @@ export function AccountView() {
 	return (
 		<main className="wrap min-h-[65vh] pt-8 pb-20 lg:pt-12">
 			<div className="max-w-xl">
-				<span className="caps text-[0.75rem] text-stone">Uw persoonlijke Woolup</span>
+				<span className="caps text-[0.75rem] text-muted-foreground">Uw persoonlijke Woolup</span>
 				<h1 className="display-xl mt-3 mb-8">Mijn account.</h1>
 				{a.user ? (
 					<div className="space-y-8">
@@ -40,7 +40,7 @@ export function AccountView() {
 								</label>
 								<label className="block space-y-1.5 text-sm">
 									E-mail
-									<input value={a.user.email} disabled className="field bg-tile text-stone" />
+									<input value={a.user.email} disabled className="field bg-secondary text-muted-foreground" />
 								</label>
 								<button className="btn-primary" disabled={busy}>
 									Gegevens opslaan
@@ -49,7 +49,7 @@ export function AccountView() {
 						</div>
 						<div className="space-y-3">
 							<h2 className="display-md">Uw bestellingen</h2>
-							<p className="text-stone">
+							<p className="text-muted-foreground">
 								Uw bestelgegevens en bestelstatus ontvangt u per e-mail. Een besteloverzicht in dit account is nog niet beschikbaar.
 							</p>
 						</div>
@@ -59,7 +59,7 @@ export function AccountView() {
 					</div>
 				) : (
 					<div className="panel space-y-6 p-6">
-						<div className="grid grid-cols-2 gap-1 rounded-md bg-tile p-1">
+						<div className="grid grid-cols-2 gap-1 rounded-md bg-secondary p-1">
 							{[
 								['login', 'Inloggen'],
 								['signup', 'Account aanmaken'],
@@ -71,7 +71,7 @@ export function AccountView() {
 									onClick={() => setMode(value)}
 									className={cn(
 										'min-h-11 rounded-[5px] text-sm font-semibold transition-colors',
-										mode === value ? 'bg-paper shadow-[0_1px_3px_rgb(0_0_0/0.08)]' : 'text-stone hover:text-ink',
+										mode === value ? 'bg-background shadow-[0_1px_3px_rgb(0_0_0/0.08)]' : 'text-muted-foreground hover:text-foreground',
 									)}
 								>
 									{label}
@@ -125,13 +125,13 @@ export function AccountView() {
 								{busy ? 'Even geduld…' : mode === 'signup' ? 'Account aanmaken' : mode === 'reset' ? 'Herstelmail aanvragen' : 'Inloggen'}
 							</button>
 						</form>
-						<button type="button" className="link text-sm text-stone hover:text-ink" onClick={() => setMode('reset')}>
+						<button type="button" className="link text-sm text-muted-foreground hover:text-foreground" onClick={() => setMode('reset')}>
 							Wachtwoord vergeten?
 						</button>
 					</div>
 				)}
 				{message && (
-					<p className="mt-6 rounded-md bg-ecru px-4 py-3 text-sm" role="status">
+					<p className="mt-6 rounded-md bg-accent px-4 py-3 text-sm" role="status">
 						{message}
 					</p>
 				)}

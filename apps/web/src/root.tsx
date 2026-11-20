@@ -1,7 +1,6 @@
 import {
 	data,
 	isRouteErrorResponse,
-	Link,
 	Links,
 	Meta,
 	Outlet,
@@ -14,15 +13,22 @@ import { CartProvider } from '@/hooks/use-ecommerce-cart';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 import { CookieBanner } from '@/components/cookie-banner';
-import { CartDrawerProvider } from '@/components/cart-drawer';
-import { Logo } from '@/components/logo';
 import { siteOrigin } from '@/lib/site-origin.server';
 import { HorizonsPreviewScripts } from './horizons-preview-scripts';
 
 export const links: Route.LinksFunction = () => [
 	{ rel: 'stylesheet', href: stylesheet, precedence: 'default' },
-	{ rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
 	{ rel: 'icon', href: '/favicon.png', type: 'image/png' },
+	{ rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+	{
+		rel: 'preconnect',
+		href: 'https://fonts.gstatic.com',
+		crossOrigin: 'anonymous',
+	},
+	{
+		rel: 'stylesheet',
+		href: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap',
+	},
 ];
 
 /**
@@ -63,7 +69,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<HorizonsPreviewScripts />
 			</head>
 			<body suppressHydrationWarning>
-				<CartProvider><CartDrawerProvider><div id="root" className="flex min-h-dvh flex-col">{children}</div><CookieBanner /></CartDrawerProvider></CartProvider>
+				<CartProvider><div id="root">{children}</div><CookieBanner /></CartProvider>
 				<ScrollRestoration />
 				<Scripts />
 			</body>
@@ -72,7 +78,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-	return <><SiteHeader /><div className="flex-1"><Outlet /></div><SiteFooter /></>;
+	return <><SiteHeader /><Outlet /><SiteFooter /></>;
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
@@ -91,15 +97,9 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 	}
 
 	return (
-		<main className="wrap flex flex-col items-start gap-6 py-20 lg:py-28">
-			<Link to="/" aria-label="Woolup – naar de homepage">
-				<Logo className="h-8 w-auto" title="Woolup" />
-			</Link>
-			<h1 className="display-xl">{message}</h1>
-			<p className="max-w-[48ch] text-lg text-stone">{details}</p>
-			<Link to="/collectie" className="btn-primary">
-				De collectie
-			</Link>
+		<main>
+			<h1>{message}</h1>
+			<p>{details}</p>
 		</main>
 	);
 }

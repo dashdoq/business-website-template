@@ -3,7 +3,7 @@
 Editorial luxe in een vlakke, moderne webshop-opbouw, naar de referentie van de klant: lichte grijze tegels, dunne lichte randen, zacht afgeronde hoeken en bijna geen schaduw. Zwart komt rechtstreeks uit het logo. Ecru is de kleur van ongeverfde wol. Loden, het groene vilt van gevolde wol, is het enige accent.
 
 ## Kleuren
-De tokens staan in `apps/web/tailwind.config.js` en `apps/web/src/index.css`. De shadcn-variabelen in `index.css` volgen hetzelfde palet.
+De waarden staan als shadcn-variabelen in `apps/web/src/index.css`, zodat `tailwind.config.js` ongewijzigd blijft. In de code heten ze zo: ink = `primary` en `foreground`, paper = `background`, ecru = `accent`, tile = `secondary`, line = `border`, stone = `muted-foreground`. Loden staat als vaste waarde `[#45513b]` op twee badges.
 
 | Token | Waarde | Gebruik |
 | --- | --- | --- |
@@ -23,7 +23,7 @@ Productfoto's en -gegevens komen uit de Hostinger-winkel. Zonder foto toont een 
 - **Titels van filterpanelen en de winkelmand:** halfvet, gewone schrijfwijze
 - **Lopende tekst en prijzen:** Sofia Sans (variabel), 17px basis. Prijzen en aantallen gebruiken tabular numbers
 
-Beide fonts komen uit `@fontsource-variable` en worden met de site meegeleverd, dus er is geen externe fontdienst nodig.
+Beide fonts komen van Google Fonts, via een `@import` bovenaan `index.css`.
 
 ## Opbouw
 - **Hero en blokken:** afgeronde vlakken binnen de paginabreedte, niet van rand tot rand. De hero heeft een zwart pillabel "Drop Nº 01"; het promoblok is een witte kaart met een zachte schaduw, zoals "Product of the Year" in de referentie

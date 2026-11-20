@@ -13,19 +13,7 @@ export default {
 			},
 		},
 		extend: {
-			fontFamily: {
-				sans: ['"Sofia Sans Variable"', '"Helvetica Neue"', 'Arial', 'sans-serif'],
-				display: ['"Sofia Sans Extra Condensed Variable"', '"Arial Narrow"', 'sans-serif'],
-			},
-			// woolup tokens, see docs/design.md.
 			colors: {
-				ink: '#000000',
-				paper: '#ffffff',
-				ecru: '#f2eee7',
-				tile: '#f5f5f3',
-				line: '#e8e6e1',
-				stone: '#66635d',
-				loden: '#45513b',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -84,16 +72,10 @@ export default {
 					from: { height: 'var(--radix-accordion-content-height)' },
 					to: { height: '0' },
 				},
-				'drawer-in': { from: { transform: 'translateX(100%)' } },
-				'drawer-in-left': { from: { transform: 'translateX(-100%)' } },
-				'fade-in': { from: { opacity: '0' } },
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'drawer-in': 'drawer-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1)',
-				'drawer-in-left': 'drawer-in-left 220ms cubic-bezier(0.2, 0.8, 0.2, 1)',
-				'fade-in': 'fade-in 180ms ease-out',
 			},
 		},
 	},

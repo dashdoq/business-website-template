@@ -9,9 +9,9 @@ export function Hero() {
 	return (
 		<>
 			<section className="wrap pt-4 lg:pt-6" aria-labelledby="hero-title">
-				<div className="grid items-center gap-8 overflow-hidden rounded-2xl bg-ecru p-6 sm:p-10 md:grid-cols-[1fr_1.05fr] md:gap-12 lg:py-14 lg:pr-14 lg:pl-16">
+				<div className="grid items-center gap-8 overflow-hidden rounded-2xl bg-accent p-6 sm:p-10 md:grid-cols-[1fr_1.05fr] md:gap-12 lg:py-14 lg:pr-14 lg:pl-16">
 					<div className="space-y-6">
-						<span className="caps inline-block rounded-full bg-ink px-3 py-1.5 text-[0.6875rem] leading-none text-paper">
+						<span className="caps inline-block rounded-full bg-primary px-3 py-1.5 text-[0.6875rem] leading-none text-primary-foreground">
 							Puur in materiaal. Eigen in karakter.
 						</span>
 						<h1 id="hero-title" className="display-xl">
@@ -26,12 +26,12 @@ export function Hero() {
 						<Link to="/collectie" className="btn-primary">
 							Ontdek de collectie
 						</Link>
-						<div className="flex flex-col gap-1 pt-2 text-xs text-stone sm:flex-row sm:gap-6">
+						<div className="flex flex-col gap-1 pt-2 text-xs text-muted-foreground sm:flex-row sm:gap-6">
 							<span className="caps text-[0.6875rem]">WOOLUP — GELIMITEERDE EDITIES</span>
 							<span className="caps text-[0.6875rem]">GEMAAKT MET AANDACHT. GEDRAGEN MET KARAKTER.</span>
 						</div>
 					</div>
-					<div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-tile md:aspect-[5/6]">
+					<div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-secondary md:aspect-[5/6]">
 						<img
 							src={HERO_IMAGE}
 							width={1344}
@@ -44,9 +44,9 @@ export function Hero() {
 				</div>
 			</section>
 			<div className="wrap mt-4">
-				<ul className="panel grid grid-cols-2 divide-line text-center md:grid-cols-4 md:divide-x">
+				<ul className="panel grid grid-cols-2 divide-border text-center md:grid-cols-4 md:divide-x">
 					{VALUES.map(value => (
-						<li key={value} className="caps px-3 py-4 text-[0.6875rem] text-stone sm:text-[0.75rem]">
+						<li key={value} className="caps px-3 py-4 text-[0.6875rem] text-muted-foreground sm:text-[0.75rem]">
 							{value}
 						</li>
 					))}
