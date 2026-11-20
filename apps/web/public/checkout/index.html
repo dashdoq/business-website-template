@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="robots" content="noindex, nofollow" />
+		<title>Checkout</title>
+	</head>
+	<body data-hostinger-checkout-shell>
+		<noscript>Checkout needs JavaScript. Enable it and reload the page.</noscript>
+		<div id="app"></div>
+		<script>
+			(function () {
+				var checkoutOrigin = 'https://checkout.hostinger.com';
+				var search = window.location.search;
+				var hasLeftPage = false;
+
+				if (!new URLSearchParams(search).get('cart_id')) {
+					window.location.replace('/');
+					return;
+				}
+
+				function openHostedCheckout() {
+					if (hasLeftPage) {
+						return;
+					}
+
+					hasLeftPage = true;
+					window.location.replace(checkoutOrigin + '/checkout' + search);
+				}
+
+				var fonts = document.createElement('link');
+				fonts.rel = 'stylesheet';
+				fonts.href = checkoutOrigin + '/fonts/roboto.css';
+				document.head.appendChild(fonts);
+
+				var importMap = document.createElement('script');
+				importMap.src = checkoutOrigin + '/app-import-map.js?t=' + Date.now();
+				importMap.crossOrigin = '';
+				importMap.onerror = openHostedCheckout;
+				importMap.onload = function () {
+					var tags = window.__PREVIEW_IMPORT_MAP__;
+
+					if (!Array.isArray(tags) || !tags.length) {
+						openHostedCheckout();
+						return;
+					}
+
+					tags.forEach(function (tag) {
+						if (tag.tag === 'script') {
+							var script = document.createElement('script');
+							script.src = tag.src;
+							script.type = tag.type || '';
+							script.crossOrigin = '';
+							script.onerror = openHostedCheckout;
+							document.head.appendChild(script);
+						} else if (tag.tag === 'link') {
+							var link = document.createElement('link');
+							link.rel = tag.rel || '';
+							link.href = tag.href || '';
+							document.head.appendChild(link);
+						}
+					});
+				};
+				document.head.appendChild(importMap);
+			})();
+		</script>
+	</body>
+</html>

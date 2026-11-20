@@ -1,62 +1,58 @@
 # woolup.shop
 
-De webshop van woolup: sokken en kousen van wol, in eigen productie en in kleine oplage. Gebouwd met Next.js, React en Tailwind CSS. Hij is bedoeld om als headless frontend op Hostinger te draaien.
+De webshop van woolup: sokken van 100% wol, eigen ontwerpen, kleine oplages. Dit is de Hostinger Horizons-build die gekoppeld is aan de echte Hostinger-winkel (producten, winkelwagen en checkout), met de vormgeving uit `docs/design.md`. Die is vlak en modern, met zachte hoeken, lichte randen, kleine hoofdletters en het woolup-logo.
 
 ![woolup homepage](docs/preview.png)
 
-**Status:** de visuele frontend staat. Producten, prijzen en voorraad zijn voorbeelden. Afrekenen, de nieuwsbrief en het contactformulier zijn nog niet aangesloten; dat gebeurt samen met de backend en de betalingen.
+## Opbouw
+Een monorepo zoals Horizons hem exporteert:
+
+| Map | Wat |
+| --- | --- |
+| `apps/web` | De site: React Router (SSR), Vite, Tailwind CSS, Express (`server.ts`) |
+| `apps/pocketbase` | Database voor accounts (inloggen, account aanmaken) |
+| `docs/` | Brief en designkeuzes |
 
 ## Lokaal draaien
-Je hebt Node.js 20.9 of nieuwer nodig.
+Je hebt [Bun](https://bun.sh) en Node.js 22 nodig.
 
 ```bash
-npm install
-npm run dev        # http://localhost:3000
-npm run build      # productiebuild, met typecontrole
-npm run start      # draait de build (zo draait hij ook op Hostinger)
+bun install
+cd apps/web
+bun run dev          # ontwikkelserver op http://localhost:3000
+bun run typecheck
+bun run lint
+bun run build        # productiebuild naar dist/apps/web
+bun run start        # draait de build
 ```
+
+Accounts werken alleen als PocketBase meedraait: `bun run dev` in de root start beide.
 
 ## Waar staat wat
 | Wat | Waar |
 | --- | --- |
-| Teksten, menu, USP's, FAQ en maattabel | `src/content/site.ts` |
-| Producten, categorieën en kleuren | `src/content/products.ts` |
-| Productlogica (filteren, sorteren, voorraad) | `src/lib/catalog.ts` |
-| Kleuren, fonts en knoppen | `src/app/globals.css` |
-| Pagina's | `src/app/` |
-| Logo (zwart, wit en sok-icoon) | `public/brand/`, als component in `src/components/Logo.tsx` |
-| Brief en designkeuzes | `docs/brief.md`, `docs/design.md` |
+| Kleuren, fonts, knoppen, velden | `apps/web/src/index.css`, `apps/web/tailwind.config.js` |
+| Header, footer, logo | `apps/web/src/components/site-header.tsx`, `site-footer.tsx`, `logo.tsx` |
+| Homepagina | `apps/web/src/components/home/` |
+| Productkaart en carrousel | `apps/web/src/components/product-card.tsx`, `product-carousel.tsx` |
+| Collectie met filters | `apps/web/src/components/catalog.tsx` |
+| Productpagina | `apps/web/src/components/product-detail.tsx` |
+| Winkelwagen-lade en -pagina | `apps/web/src/components/cart-drawer.tsx`, `cart-parts.tsx`, `cart-view.tsx` |
+| Verhaalpagina's (verhaal, wol, productie, contact) | `apps/web/src/data/pages.ts` |
+| Koppeling met de winkel | `apps/web/src/api/ecommerce-api.ts`; **niet aanpassen**, Horizons beheert dit bestand |
 
-## Productfoto's toevoegen
-1. Zet de foto's in `public/images/products/<slug>/`, bijvoorbeeld `public/images/products/bergpad/1.jpg`. De slug staat bij elk product in `src/content/products.ts`.
-2. Vul bij dat product de lijst `images` in: `images: ["/images/products/bergpad/1.jpg", "/images/products/bergpad/2.jpg"]`. De eerste foto is de hoofdfoto. Bij meer dan één foto verschijnen op de productpagina miniaturen.
+## Producten beheren
+Producten, prijzen en foto's komen rechtstreeks uit de Hostinger-winkel, niet uit de code. Wat je in de winkel-admin invult, verschijnt vanzelf op de site:
 
-Tips voor een rustig geheel, zoals in de referentie-webshop:
-- vierkante foto's (1:1), minstens 1600 × 1600 px
-- het product op een lichte, effen achtergrond
-- overal hetzelfde licht en dezelfde uitsnede
+- **Maten:** geef een product de optie **"Maat"** met waarden (bijvoorbeeld 35–38, 39–42, 43–46). Dan verschijnen het maatfilter in de collectie, de maatknoppen op de productpagina en de maatkeuze onder "In de winkelwagen" op de kaarten.
+- **Sale-prijs:** dan tonen de kaart en de productpagina de doorgestreepte oude prijs en een "-x%"-badge.
+- **Ribbon-tekst** (bijvoorbeeld "Nieuw" of "Bestseller"): een groen label op de kaart, in plaats van het standaardlabel "Gelimiteerde editie".
+- **Voorraad bijhouden:** dan toont de productpagina "X paar beschikbaar". Bij een uitverkochte uitvoering worden de knoppen uitgeschakeld.
+- **Meerdere foto's:** dan verschijnen op de productpagina miniaturen.
+- **Beoordelingen:** die staan in de winkel nu uit. Zet je ze aan in de winkel-admin, dan verschijnt "Ervaringen" op de productpagina.
 
-Zolang er geen foto is, toont de site de woolup-sok in de kleur van het product, met "Foto volgt".
-
-## Nog aan te vullen
-- Echte producten, prijzen, oplages en materiaalsamenstelling (`src/content/products.ts`; nu staat er overal "Wol, samenstelling volgt")
-- Het bedrag voor gratis verzending (`freeShippingFrom` in `src/content/site.ts`, nu €50) en het e-mailadres
-- De conceptpagina's Verzending en retour, Privacy en Algemene voorwaarden, met bedrijfsgegevens (KvK, btw)
-- Productfoto's (zie hierboven)
-
-## Vervolg op Hostinger
-De bouw volgt de Hostinger Headless-handleiding (`hostinger.com/headless/skill.md`). Deze stappen zijn gedaan:
-- de brief (`docs/brief.md`)
-- het design (`docs/design.md`)
-- de frontend
-
-De rest vraagt om de Hostinger-connector in Claude:
-1. **Connect:** de Hostinger-connector koppelen via claude.ai, onder Customize → Connectors, en een nieuwe sessie starten.
-2. **Provision:** een `headless_ecommerce`-backend op woolup.shop, met het CMS op `woolup.shop/cms`.
-3. **Content model:** producten, varianten (kleur × maat), voorraad per drop.
-4. **Koppelen:** de functies in `src/lib/catalog.ts` laten lezen uit de backend. De pagina's hoeven daarvoor niet te veranderen.
-5. **Betalingen** en afrekenen aanzetten in de winkelmand (`src/components/cart/`).
-6. **Deploy** als Node.js-app (`type: "nodejs"`, niet `static`). Let op: deployen overschrijft wat er nu live op woolup.shop staat.
+## Live zetten
+Deze code is de Horizons-export met een nieuwe vormgeving. De mapindeling, `bun.lock`, `server.ts` en de checkout-koppeling zijn ongewijzigd, zodat Hostinger hem op dezelfde manier kan draaien. Zet hem terug in Horizons of op Hostinger Node.js-hosting. Let op: dat overschrijft wat er nu live op woolup.shop staat.
 
 ## Claude Code: Alpaca MCP-server
 `.mcp.json` registreert de [Alpaca MCP-server](https://github.com/alpacahq/alpaca-mcp-server) voor dit project (vereist [`uv`](https://docs.astral.sh/uv/)). De sleutels komen uit je omgeving en worden nooit gecommit:

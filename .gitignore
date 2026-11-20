@@ -1,32 +1,31 @@
-# Logs
-logs
+# Files matched here are not saved with the project and are not published with the site.
+# The platform ignores node_modules, build output, PocketBase data and its own archives even if
+# their lines are removed. Add only what can be regenerated: tool installs, caches, test reports, logs.
+node_modules/
+dist/
+apps/pocketbase/pb_data/
+apps/pocketbase/pocketbase
+vault/sessions/
+vault/temp/SESSION_JOURNAL.md
+export.zip
+app.tar.gz
+dist.tar.gz
+.*.upload-tmp
+.cache/
+.lh-tools/
+**/ms-playwright/
+**/pw-browsers/
+playwright-report/
+test-results/
+coverage/
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# Next.js
-.next
-out
-next-env.d.ts
-*.tsbuildinfo
-.env*
+# Repository-only (not part of the Horizons export)
+.react-router/
+**/.react-router/
+.env
+.env.*
 !.env.example
+.DS_Store
+.idea
+.vscode/*

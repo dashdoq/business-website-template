@@ -3,7 +3,7 @@
 Editorial luxe in een vlakke, moderne webshop-opbouw, naar de referentie van de klant: lichte grijze tegels, dunne lichte randen, zacht afgeronde hoeken en bijna geen schaduw. Zwart komt rechtstreeks uit het logo. Ecru is de kleur van ongeverfde wol. Loden, het groene vilt van gevolde wol, is het enige accent.
 
 ## Kleuren
-De tokens staan in `src/app/globals.css` (`@theme`).
+De tokens staan in `apps/web/tailwind.config.js` en `apps/web/src/index.css`. De shadcn-variabelen in `index.css` volgen hetzelfde palet.
 
 | Token | Waarde | Gebruik |
 | --- | --- | --- |
@@ -15,10 +15,10 @@ De tokens staan in `src/app/globals.css` (`@theme`).
 | `stone` | `#66635D` | Secundaire tekst (contrast ≥ 5:1 op wit) |
 | `loden` | `#45513B` | Alleen de badges "Nieuw" en "Laatste paren" |
 
-Productkleuren (naturel, loden, oker en zo verder) staan bij de producten in `src/content/products.ts`. Ze worden alleen gebruikt voor swatches en de placeholder-sokken.
+Productfoto's en -gegevens komen uit de Hostinger-winkel. Zonder foto toont een kaart de woolup-sok in lichtgrijs.
 
 ## Typografie
-- **Koppen:** Sofia Sans Extra Condensed (variabel), gewicht 750–800, op een rustige schaal. Klassen: `display-xl`, `display-lg`, `display-md`
+- **Koppen:** Sofia Sans Extra Condensed (variabel), gewicht 750–800, op een rustige schaal. Klassen: `display-xl`, `display-lg`, `display-md` (in `index.css`)
 - **Productnamen, knoppen, navigatie en badges:** Sofia Sans in kleine hoofdletters (12–13px), halfvet, met wat extra spatiëring (`caps`), zoals in de referentie-webshop
 - **Titels van filterpanelen en de winkelmand:** halfvet, gewone schrijfwijze
 - **Lopende tekst en prijzen:** Sofia Sans (variabel), 17px basis. Prijzen en aantallen gebruiken tabular numbers
@@ -49,13 +49,16 @@ Beide fonts komen uit `@fontsource-variable` en worden met de site meegeleverd, 
   - rond voor swatches, de zoekbalk, filterchips en carrouselpijlen
 - **Schaduw:** alleen een heel zachte schaduw onder het promoblok, de carrouselpijlen en het prijslabel in de hero. Al het andere is vlak, met lichte randen
 
+## Teksten
+De teksten zijn die uit de Horizons-build (u-vorm). Alleen bedieningselementen die er nieuw bij kwamen, hebben korte labels in dezelfde toon: Filters, Prijs, Min., Max., Toepassen, Toon en Beschikbaarheid.
+
 ## Het ene opvallende element
-De **voorraadmeter in breisteken** (`DropMeter`): een rij gebreide V-steken. Donkere steken zijn paren die nog beschikbaar zijn, lichte steken zijn al verkocht. Hij staat in de hero (de hele drop), in het promoblok en op de productpagina. Verder blijft alles rustig.
+In de Next.js-versie was dat de **voorraadmeter in breisteken**. De Hostinger-winkel kent geen totale oplage per editie, dus in deze build staat de voorraad als tekst ("X paar beschikbaar"). Het opvallende element is hier de grote hero met de sfeerfoto, in een afgerond ecru-vlak.
 
 ## Regels
 - Hoofdletters alleen voor productnamen, knoppen, navigatie en badges; koppen in zinsvorm
-- Teksten staan in `src/content/`, niet in componenten
-- Placeholders tonen de woolup-sok in de productkleur, met "Foto volgt"
+- Productgegevens komen uit de Hostinger-winkel; vaste teksten van de verhaalpagina's staan in `apps/web/src/data/pages.ts`
+- Zonder productfoto toont een kaart de woolup-sok in lichtgrijs
 - Toegankelijkheid:
   - zichtbare focus-ring
   - toetsenbordbediening van menu, lades, tabs en carrousel

@@ -1,0 +1,3 @@
+# Keep npm's single hoisted node_modules: template tooling and generated code resolve packages from the root.
+[install]
+linker = "hoisted"

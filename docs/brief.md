@@ -35,10 +35,10 @@ Home, Shop (met filters), Product, Over ons, Contact, Veelgestelde vragen (met m
 - Mobiel even goed bruikbaar als desktop
 
 ## Fasering
-1. **Nu:** de visuele frontend (Next.js) met voorbeeldproducten. Afrekenen staat uit
-2. **Later:**
-   - Hostinger headless e-commerce-backend (`headless_ecommerce` op woolup.shop, met het CMS op `/cms`)
-   - echte producten en voorraad
-   - betalingen
-   - nieuwsbrief
-   - contactformulier
+1. **Eerst:** een visuele frontend in Next.js met voorbeeldproducten (staat in de git-geschiedenis).
+2. **Nu:** de Hostinger Horizons-build, gekoppeld aan de echte winkel en checkout, met de vormgeving uit `docs/design.md` en de Horizons-teksten (u-vorm).
+3. **Volgende stappen in de winkel-admin:**
+   - maten als optie "Maat"
+   - voorraad bijhouden
+   - ribbons en sale-prijzen
+   - beoordelingen aanzetten

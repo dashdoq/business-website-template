@@ -1,0 +1,1 @@
+import type {Route} from './+types/cart';import {seo} from '@/lib/seo';import {CartView} from '@/components/cart-view';export function meta({matches,location}:Route.MetaArgs){return seo({matches,location},{title:'Uw winkelwagen — Woolup',description:'Bekijk uw Woolup selectie en ga veilig verder naar checkout.',noindex:true})}export default function Cart(){return <CartView/>}
