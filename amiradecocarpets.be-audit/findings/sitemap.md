@@ -1,0 +1,51 @@
+# Sitemap audit: https://www.amiradecocarpets.be (offline, 2026-11-21)
+
+Sources: raw/sm.xml (78 URLs), raw/crawl-snapshot.jsonl (104 rows). No live requests were made.
+
+## Validation summary
+| Check | Result |
+|---|---|
+| Valid XML, single urlset, under 50k URLs / 50 MB | Pass (78 URLs) |
+| Duplicates inside the sitemap | Pass (78 unique) |
+| Listed URLs that are 404 / redirecting / noindex | Pass (0 of 78) |
+| Listed URLs whose canonical points elsewhere | Pass (0 of 78); every listed URL is self-canonical |
+| Every listed URL was found by the crawl | Pass (all 78 in_sitemap=true) |
+| lastmod | Mostly pass: 77/78 present, W3C format. Distribution: 2026-02 x5, 03 x35, 04 x16, 05 x21, so not all identical. Only the homepage lacks it |
+| changefreq / priority | Present on all 78 (all "monthly" / "0.8"). Ignored by Google, no value (Info) |
+| Image / hreflang entries | None. Namespaces for video and xhtml are declared but unused |
+
+Headline: the sitemap is clean. The 22 crawled pages missing from it are almost all non-canonical duplicates, a noindex page or 404 template junk, so omitting them is correct. Do not add them.
+
+## URL-level problems
+| Sev | URL | Problem | Fix (hosted platform) |
+|---|---|---|---|
+| Medium | /nl/catalog-14 (crawled) | Not in sitemap, canonical is "/". Correctly excluded | None for the sitemap. The crawl shows it is still linked internally |
+| Medium | 8 short category URLs: /nl/dekens, /nl/kindertapijtjes, /nl/laatste-stock, /nl/lopers, /nl/marrokaanse-vintage, /nl/online-shop, /nl/sierkussens, /nl/tapijten | Duplicate of /nl/catalog-14/<slug>, canonical points to the long form. Correctly excluded, but the platform still links to the short form | Find out which form the menus link to. If the platform allows, make menus and internal links use the canonical /nl/catalog-14/ form. Otherwise rely on the canonical tag |
+| Medium | /nl/tapijten-19, /nl/kunstgras-18 | Canonical is /nl/catalog-14/tapijten. kunstgras-18 canonicalising to the tapijten category is likely a platform mislabel | Check the kunstgras page in the Proxi back office. Sitemap lists /nl/kunstgras-3 as the artificial grass page, so confirm it is the intended one |
+| Medium | /nl/tapijten-2 and /nl/vloerkleden | Both listed as self-canonical, while /nl/catalog-14/tapijten also exists. Possible topical overlap or cannibalisation | Check that each page has a distinct purpose and content |
+| Medium | /nl/catalog-14/tapijten/malagha-2226 to -2231 (6 URLs) | Colour/size variants, canonical is /malagha. Not in sitemap (correct). Does the parent /malagha appear in the sitemap? Yes | None |
+| Low | /nl/catalog-14/tapijten/cleaner-500-ml-906 and /sierkussens/cleaner-500-ml-906 | Product reachable under several categories, canonical is /dekens/cleaner-500-ml-906. The sitemap holds the canonical one | Product assigned to a odd category (cleaner under dekens). Reassign category in the shop admin |
+| Low | /nl/nl/online-shop, /nl/catalog-14/nl/online-shop | Broken relative links produce doubled path segments (200 with canonical fix) | Find the link source (likely a hard-coded relative link in a page or menu block) and make it absolute |
+| Low | /nl/vloerkleden?idgallery=13&idcible=Gallery | Parameter URL, canonical is clean. Not in sitemap (correct) | None |
+| Low | /{url}, /nl/catalog-14/{url} | 404. Unrendered template placeholder links in the page HTML | Remove or fix the offending link or widget in the page editor. Not sitemap related |
+| Low | /nl/confidentiality_ws | noindex, nofollow. Not in sitemap (correct) | None. The /nl/algemene-voorwaarden page is listed |
+| Low | /catalog/c/review/form/ca/14/ar/605 | Review form, 200, self-canonical, no noindex. Not in sitemap (correct) | Ask the platform for noindex on review forms, or ignore |
+| Low | Homepage `https://www.amiradecocarpets.be` | No lastmod, and the sitemap form has no trailing slash while the canonical is `https://www.amiradecocarpets.be/` | Host-level normalisation; likely cannot be changed. Google treats these as equivalent. Optional |
+| Low | All 78 URLs | changefreq and priority are uniform (monthly, 0.8), meaning nothing | Cannot be edited on Proxi probably; harmless |
+| Low | lastmod values | Likely bulk-set on one day per batch (e.g. 2026-02-10 across several pages). Accuracy cannot be proven offline | Nothing to do on a hosted platform. Keep content edits real |
+
+## Coverage observations
+- Sitemap composition: 70 URLs under /nl/catalog-14 (60 product pages, 10 category-depth pages), 8 other pages (home, tapijten-2, kunstgras-3, vloerkleden, amira-deco-carpets, decoratiewinkel, bestellen-en-betalen, algemene-voorwaarden).
+- Important pages missing: none found. No contact or about page is absent from what the crawl returned beyond those listed.
+- Only /nl/ (Dutch) exists, so hreflang is not needed.
+
+## Image sitemap
+Worth adding in principle for a product catalogue (rug photos drive Google Images traffic), but on Proxi the sitemap is generated by the platform and cannot be edited. Recommendation (Low):
+1. Ask Proxi support whether image tags can be enabled.
+2. Otherwise make sure product pages carry descriptive alt text, crawlable img tags (not CSS backgrounds) and Product structured data with image. Google discovers images from the page itself, so a sitemap is optional.
+
+## Actions in priority order
+1. Medium: fix doubled-path (/nl/nl/..., /nl/catalog-14/nl/...) and {url} placeholder links at the source.
+2. Medium: make internal links use canonical category URLs; check the kunstgras-18 and tapijten overlap.
+3. Low: ignore changefreq/priority; confirm robots.txt keeps declaring the sitemap.
+4. Low: image-related items above.

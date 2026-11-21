@@ -1,0 +1,447 @@
+{
+  "summary": {
+    "health_score": 45,
+    "business_type": "Lokale winkel met webshop (tapijten, vloerkleden en kunstgras) in Wetteren, op het Proxi-platform",
+    "top_findings": [
+      "Productpagina's (69) hebben geen beschrijving, geen meta-description en titels met enkel de productnaam (bv. 'MALAGHA'); 27 producten tonen geen prijs.",
+      "De pagina 'Bestellen en betalen' is leeg: levering, betaling en retour staan alleen in juridische taal in de algemene voorwaarden.",
+      "Op bijna elke pagina staan template-links naar een letterlijke '{url}' die een 404-fout geven; daarnaast bestaan categorieën onder twee URL-patronen en verwijst /nl/kunstgras-18 naar de tapijtencategorie.",
+      "Trage mobiele weergave: LCP 4,7 s en TBT 650 ms door 22 blokkerende stylesheets, 38 scripts, dubbel geladen jQuery/GSAP en HTML met 'no-store'.",
+      "Kunstgras en Marokkaanse vintage sluiten niet aan op de zoekintentie: geen kunstgrasproducten of prijzen, en de vintagecategorie is leeg maar wel geïndexeerd."
+    ],
+    "quick_wins": [
+      "Homepage-H1 herstellen: één H1 'Tapijten en kunstgras in Wetteren' in plaats van een lege en twee dubbele H1's.",
+      "Meta-descriptions en nieuwe titels invullen voor de homepage en de 10 belangrijkste pagina's (kant-en-klare Nederlandse teksten in dit rapport).",
+      "LocalBusiness/HomeGoodsStore-JSON-LD op de homepage plaatsen (code klaar in findings/schema.md).",
+      "De lege categorie 'Marrokaanse vintage' uit menu en sitemap halen of vullen, en de spelling corrigeren naar 'Marokkaanse'.",
+      "Openingsuren volledig tonen (inclusief 'woensdag gesloten') en een gewone route-link naar Google Maps toevoegen, los van de cookie-toestemming."
+    ]
+  },
+  "categories": [
+    {
+      "name": "Technische SEO",
+      "score": 66,
+      "what_works": [
+        "robots.txt laat alle zoekmachines en AI-crawlers toe en verwijst naar de sitemap.",
+        "Geldige XML-sitemap met 78 unieke, indexeerbare URL's die allemaal status 200 en een eigen canonical hebben.",
+        "Server-side gerenderde HTML met viewport-meta; inhoud is leesbaar zonder JavaScript.",
+        "Niet-bestaande URL's geven een correcte 404; enkel /nl/confidentiality_ws staat bewust op noindex.",
+        "HTTPS met HSTS; alle varianten van het domein komen uiteindelijk uit op https://www."
+      ],
+      "findings": [
+        {
+          "title": "Kapotte '{url}'-links op bijna elke pagina",
+          "severity": "High",
+          "description": "De template bevat links naar /{url}, /nl/catalog-14/{url}, /nl/nl/{url} en /catalog/c/review/form/ca/14/ar/{url}. Ze geven allemaal een 404 en verspillen crawlbudget.",
+          "recommendation": "Melden bij de Proxi-support met voorbeeld-URL's; de placeholder moet door de echte link vervangen worden."
+        },
+        {
+          "title": "Dubbele categorie-URL's en foutieve canonicals",
+          "severity": "High",
+          "description": "Het menu linkt naar /nl/dekens, /nl/lopers enz., terwijl de canonieke versie /nl/catalog-14/... is. Dubbele paden zoals /nl/nl/online-shop geven 200. /nl/kunstgras-18 heeft als canonical /nl/catalog-14/tapijten (verkeerde categorie) en /nl/catalog-14 verwijst naar de homepage.",
+          "recommendation": "Menu en interne links naar de canonieke /nl/catalog-14/-URL's laten wijzen, dubbele paden met 301 doorsturen en de canonical van kunstgras-18 laten corrigeren."
+        },
+        {
+          "title": "Omweg bij doorverwijzingen",
+          "severity": "Medium",
+          "description": "https://amiradecocarpets.be stuurt eerst naar http://www. en pas daarna naar https://www. (2 stappen).",
+          "recommendation": "Eén 301 rechtstreeks naar https://www.amiradecocarpets.be/ laten instellen."
+        },
+        {
+          "title": "Beveiligingsheaders en caching",
+          "severity": "Medium",
+          "description": "De Content-Security-Policy staat alles toe, HSTS mist includeSubDomains, HTML wordt met 'no-store' verstuurd en de server verbreekt af en toe verbindingen.",
+          "recommendation": "Bij Proxi vragen om een strengere CSP, HSTS met includeSubDomains, korte publieke caching van HTML en een controle van de rate limiting."
+        },
+        {
+          "title": "robots.txt-regels in de verkeerde groep",
+          "severity": "Low",
+          "description": "Uitsluitingen voor wishlist- en accountpagina's staan alleen in de groep voor AhrefsBot, waardoor andere crawlers ze wel bezoeken.",
+          "recommendation": "Deze Disallow-regels ook onder 'User-agent: *' plaatsen."
+        },
+        {
+          "title": "Geen IndexNow",
+          "severity": "Low",
+          "description": "/indexnow.txt geeft 404; Bing en andere zoekmachines worden niet automatisch op de hoogte gebracht van wijzigingen.",
+          "recommendation": "Indien Proxi het ondersteunt, IndexNow activeren; anders Bing Webmaster Tools koppelen."
+        }
+      ]
+    },
+    {
+      "name": "Contentkwaliteit",
+      "score": 32,
+      "what_works": [
+        "Alle inhoud is in het Nederlands met lang='nl'.",
+        "De locatie Wetteren staat in de belangrijkste titels en koppen.",
+        "Er is een llms.txt-bestand dat AI-systemen een overzicht van de site geeft."
+      ],
+      "findings": [
+        {
+          "title": "Productpagina's zonder beschrijving",
+          "severity": "Critical",
+          "description": "Alle 69 productpagina's hebben 0 woorden beschrijving: geen materiaal, onderhoud of maattabel. Ook de description in de productschema is leeg.",
+          "recommendation": "Per product 80-150 woorden schrijven met materiaal, poolhoogte, maten, onderhoud en geschikte ruimtes; begin met de 10 best verkopende producten."
+        },
+        {
+          "title": "Lege pagina 'Bestellen en betalen'",
+          "severity": "Critical",
+          "description": "/nl/bestellen-en-betalen bevat alleen een kop. Levering, kosten, termijnen, afhalen en retour zijn voor klanten en AI-systemen niet te vinden.",
+          "recommendation": "De pagina vullen met betaalmethodes, leveringskosten en -termijnen, afhalen in Wetteren en het retourbeleid (14 dagen); ontwerptekst staat in findings/geo.md."
+        },
+        {
+          "title": "Te dunne 'Over ons'-pagina",
+          "severity": "High",
+          "description": "/nl/amira-deco-carpets telt ongeveer 90-100 woorden en vertelt niet wie achter de winkel zit, sinds wanneer en waarom.",
+          "recommendation": "Uitbreiden met het verhaal van de zaak, de mensen, foto's van de winkel, ervaring en de merken of herkomst van de tapijten."
+        },
+        {
+          "title": "Algemene, uitwisselbare marketingtekst",
+          "severity": "High",
+          "description": "Alle landingspagina's volgen hetzelfde stramien met algemene zinnen en claims zoals 'tot 70% goedkoper' zonder onderbouwing.",
+          "recommendation": "Herschrijven met concrete feiten (prijzen vanaf, maten, materialen, herkomst, diensten) en ongefundeerde claims schrappen of onderbouwen."
+        },
+        {
+          "title": "Geen veelgestelde vragen",
+          "severity": "High",
+          "description": "Geen enkele pagina beantwoordt vragen als 'Welke maat vloerkleed kies ik?' of 'Leggen jullie kunstgras?'. Dat beperkt de kans om in AI-antwoorden en Google AI Overviews te verschijnen.",
+          "recommendation": "Een FAQ-blok toevoegen op de homepage en de categoriepagina's; 8 Nederlandse voorbeeldvragen staan in findings/geo.md."
+        },
+        {
+          "title": "Taal en consistentie",
+          "severity": "Medium",
+          "description": "De site wisselt tussen 'je' en 'u', 'Marrokaanse' is fout gespeld en drie lege categorieën zijn geïndexeerd.",
+          "recommendation": "Eén aanspreekvorm kiezen, spelling corrigeren en lege categorieën verbergen of op noindex zetten tot ze gevuld zijn."
+        },
+        {
+          "title": "Bijna identieke kleurvarianten",
+          "severity": "Medium",
+          "description": "Kleurvarianten (HARMONY x4, TUNIS x3, MALAGHA 2226-2233) zijn aparte pagina's die voor 93% gelijk zijn.",
+          "recommendation": "Varianten op één productpagina met kleurkeuze samenbrengen, of elke variant een eigen beschrijving geven."
+        }
+      ]
+    },
+    {
+      "name": "On-page SEO",
+      "score": 35,
+      "what_works": [
+        "Elke pagina heeft een title-tag en de homepage-titel bevat de hoofdzoekterm 'Tapijtenwinkel Wetteren'.",
+        "De homepage heeft een goede meta-description en Open Graph-tags."
+      ],
+      "findings": [
+        {
+          "title": "Meta-descriptions ontbreken",
+          "severity": "High",
+          "description": "83 van de 102 gecontroleerde URL's hebben geen meta-description, waaronder alle productpagina's.",
+          "recommendation": "Meta-descriptions invullen; voorstellen voor de homepage en 10 kernpagina's staan in het volledige rapport, plus een sjabloon voor producten."
+        },
+        {
+          "title": "Producttitels zijn alleen de productnaam",
+          "severity": "High",
+          "description": "Titels als 'MALAGHA' of 'LOPERS' bevatten geen producttype, kleur of winkelnaam.",
+          "recommendation": "Sjabloon gebruiken: '{Modelnaam} {producttype} {kleur} | Amira Deco-Carpets', bv. 'Harmony vloerkleed grijs | Amira Deco-Carpets'."
+        },
+        {
+          "title": "Problemen met de H1 op de homepage",
+          "severity": "High",
+          "description": "De homepage heeft drie H1's: één lege en twee identieke met '||'-animatiecode, laag op de pagina. De zichtbare hero-kop is geen H1.",
+          "recommendation": "Eén H1 bovenaan: 'Tapijten en kunstgras in Wetteren'; de animatiekoppen omzetten naar gewone tekst of H2."
+        },
+        {
+          "title": "Dubbele titels en kannibalisatie",
+          "severity": "High",
+          "description": "'Tapijt bestellen | Amira Deco-Carpets' en 'Online shop' komen elk 4 keer voor; /nl/tapijten-2 en /nl/catalog-14/tapijten concurreren op dezelfde zoekterm.",
+          "recommendation": "Elke pagina een unieke titel geven: de infopagina richt zich op 'tapijtenwinkel Wetteren', de shopcategorie op 'tapijten online kopen'."
+        },
+        {
+          "title": "Verkeerde interne links",
+          "severity": "High",
+          "description": "De kunstgraslink op /nl/kunstgras-3 leidt naar de tapijtenlijst; producttegels linken enkel via de afbeelding zonder tekst.",
+          "recommendation": "Links laten wijzen naar de juiste categorie en beschrijvende ankerteksten toevoegen."
+        },
+        {
+          "title": "Prijs in de H1 van producten",
+          "severity": "Medium",
+          "description": "De H1 van productpagina's bevat de prijs en de kopstructuur wordt vervuild door widgets ('Inloggen', 'Winkelmandje').",
+          "recommendation": "H1 alleen met modelnaam, producttype en kleur; widgetkoppen omzetten naar gewone tekst."
+        }
+      ]
+    },
+    {
+      "name": "Gestructureerde data (schema)",
+      "score": 52,
+      "what_works": [
+        "97 van de 100 pagina's hebben JSON-LD.",
+        "Productpagina's hebben Product- en BreadcrumbList-markup; infopagina's hebben LocalBusiness met adres en openingsuren."
+      ],
+      "findings": [
+        {
+          "title": "Geen gestructureerde data op de homepage",
+          "severity": "High",
+          "description": "De belangrijkste pagina heeft geen JSON-LD. Het LocalBusiness-blok verwijst naar de homepage maar staat alleen op 8 infopagina's.",
+          "recommendation": "HomeGoodsStore + Organization + WebSite op de homepage plaatsen; de kant-en-klare code staat in findings/schema.md."
+        },
+        {
+          "title": "Onvolledige Product-markup",
+          "severity": "High",
+          "description": "69 van de 205 Product-blokken hebben een Offer zonder prijs of valuta, 'brand' is een leeg object en 'description' is leeg in 190 blokken. Pagina's bevatten 2-3 dubbele blokken.",
+          "recommendation": "Bij Proxi één Product-blok per pagina laten genereren met prijs, EUR, merk, beschrijving en correcte beschikbaarheid."
+        },
+        {
+          "title": "Verzend- en retourinformatie ontbreekt",
+          "severity": "Medium",
+          "description": "Geen shippingDetails, hasMerchantReturnPolicy, sku of reviews in de productschema.",
+          "recommendation": "Toevoegen zodra de leverings- en retourvoorwaarden vastliggen; vereist voor rijke resultaten en Google Shopping."
+        },
+        {
+          "title": "Afwijkende URL's in de markup",
+          "severity": "Medium",
+          "description": "Breadcrumb- en Offer-URL's gebruiken /nl/malagha terwijl de pagina /nl/catalog-14/tapijten/malagha is.",
+          "recommendation": "Overal de canonieke URL gebruiken."
+        },
+        {
+          "title": "LocalBusiness onvolledig",
+          "severity": "Medium",
+          "description": "Geen geo-coördinaten, logo of kaartlink; openingHours en openingHoursSpecification dubbelen elkaar.",
+          "recommendation": "geo, logo, hasMap en sameAs (sociale profielen) toevoegen en één vorm van openingsuren behouden."
+        }
+      ]
+    },
+    {
+      "name": "Prestaties (Core Web Vitals)",
+      "score": 38,
+      "what_works": [
+        "De LCP-afbeelding op de homepage wordt vooraf geladen met fetchpriority='high'.",
+        "CLS op de homepage is goed (0,01-0,06).",
+        "Afbeeldingen worden als WebP geleverd."
+      ],
+      "findings": [
+        {
+          "title": "Trage weergave op mobiel",
+          "severity": "Critical",
+          "description": "Labmeting (gesimuleerd mobiel): LCP 4,7 s (doel ≤ 2,5 s) en TBT 650 ms. Desktop: LCP 2,9 s. Geen velddata beschikbaar.",
+          "recommendation": "De onderstaande punten aanpakken; na de wijzigingen opnieuw meten met PageSpeed Insights."
+        },
+        {
+          "title": "HTML zonder caching en trage serverrespons",
+          "severity": "Critical",
+          "description": "Alle HTML wordt met 'no-store' verstuurd; TTFB is 0,6-0,86 s en bfcache/CDN-caching werkt niet.",
+          "recommendation": "Bij Proxi vragen om publieke caching van niet-persoonlijke pagina's en een snellere serverrespons."
+        },
+        {
+          "title": "Te veel blokkerende bestanden",
+          "severity": "Critical",
+          "description": "22 blokkerende stylesheets en 38 scripts (89-95 verzoeken per pagina) vertragen de eerste weergave met 1,2-2,1 s.",
+          "recommendation": "CSS bundelen en kritieke CSS inline zetten; niet-essentiële scripts met defer laden."
+        },
+        {
+          "title": "Dubbele bibliotheken",
+          "severity": "High",
+          "description": "jQuery 1.7.2 én 1.9.1, GSAP twee keer en drie Font Awesome-bestanden worden geladen.",
+          "recommendation": "Eén versie van elke bibliotheek behouden en ongebruikte bestanden verwijderen."
+        },
+        {
+          "title": "Zware hero-afbeelding en slider",
+          "severity": "High",
+          "description": "De desktop-hero weegt 951 KB zonder srcset; de slider wisselt van afbeelding waardoor het LCP-element varieert.",
+          "recommendation": "Responsieve afbeeldingen (srcset) gebruiken en de eerste slide vast tonen."
+        },
+        {
+          "title": "Verspringende productrasters",
+          "severity": "High",
+          "description": "Op categoriepagina's verspringt de layout (CLS 0,27 tot 1,46, deels verstoord door de meetomgeving) door lazy-loaded tegels zonder vaste afmetingen.",
+          "recommendation": "Breedte en hoogte (of aspect-ratio) op productafbeeldingen zetten en het equal-height-script vervangen door CSS."
+        }
+      ]
+    },
+    {
+      "name": "AI-zoekgereedheid",
+      "score": 44,
+      "what_works": [
+        "AI-crawlers (ChatGPT, Claude, Perplexity, Gemini) zijn bewust toegelaten in robots.txt.",
+        "llms.txt is aanwezig (3 KB).",
+        "Inhoud is server-side gerenderd en leesbaar zonder JavaScript."
+      ],
+      "findings": [
+        {
+          "title": "Weinig citeerbare feiten",
+          "severity": "High",
+          "description": "Teksten bevatten bijna geen controleerbare gegevens (prijzen, merken, maten, diensten), dus AI-systemen hebben weinig om te citeren.",
+          "recommendation": "Korte feitelijke openingsparagrafen schrijven per pagina; voorbeelden in findings/geo.md."
+        },
+        {
+          "title": "Zwakke aanwezigheid buiten de site",
+          "severity": "High",
+          "description": "Geen reviews of vermeldingen gevonden; de site linkt alleen naar een Facebook-groep en er bestaan twee dubbele Facebook-pagina's. Voor 'kunstgras Wetteren' verschijnt de winkel niet.",
+          "recommendation": "Google-bedrijfsprofiel en vermeldingen in lokale gidsen op orde brengen, reviews verzamelen en de officiële sociale profielen koppelen."
+        },
+        {
+          "title": "Formulieren moeilijk bruikbaar voor AI-agents",
+          "severity": "High",
+          "description": "Agent-UX-score 48/100: 7 invoervelden zonder label, 4 klikbare div's in plaats van knoppen en 4 naamloze interactieve elementen.",
+          "recommendation": "Bij Proxi vragen om labels op alle velden en echte <button>-elementen in winkelmandje, zoeken en login."
+        }
+      ]
+    },
+    {
+      "name": "Afbeeldingen",
+      "score": 48,
+      "what_works": [
+        "Afbeeldingen worden als WebP geleverd.",
+        "Lazy loading is actief voor afbeeldingen onder de vouw."
+      ],
+      "findings": [
+        {
+          "title": "Ontbrekende alt-teksten",
+          "severity": "Medium",
+          "description": "Ongeveer 34% van de afbeeldingen op productpagina's heeft geen alt-tekst (vooral de galerij in de template); productfoto's hebben alleen de kale naam als alt.",
+          "recommendation": "Beschrijvende alt-teksten gebruiken, bv. 'Malagha vloerkleed beige in woonkamer'."
+        },
+        {
+          "title": "Te zware miniaturen",
+          "severity": "Medium",
+          "description": "Miniaturen wegen ca. 125 KB, even zwaar als de volledige afbeelding; er is geen srcset.",
+          "recommendation": "Echte miniaturen (ca. 20-30 KB) genereren en srcset gebruiken."
+        },
+        {
+          "title": "Placeholders en ontbrekende og:image",
+          "severity": "Medium",
+          "description": "4 van de eerste 12 tapijten tonen een placeholder-afbeelding; productpagina's hebben geen og:image voor sociale media.",
+          "recommendation": "Echte foto's uploaden en og:image per product instellen."
+        }
+      ]
+    },
+    {
+      "name": "Lokale SEO (aanvullend, niet gewogen)",
+      "score": 44,
+      "what_works": [
+        "Naam, adres en telefoon (Westremstraat 59, 9230 Wetteren) zijn consistent op de hele site.",
+        "Wetteren staat in titels, H1's en meta-descriptions."
+      ],
+      "findings": [
+        {
+          "title": "Afwijkende vermelding in Gouden Gids",
+          "severity": "High",
+          "description": "Gouden Gids vermeldt de zaak als 'Amira Deco' in 'Westrem (Wetteren)', anders dan op de website.",
+          "recommendation": "De vermelding laten aanpassen naar 'Amira Deco-Carpets', Wetteren, met dezelfde telefoon en website."
+        },
+        {
+          "title": "Geen reviews en geen bedrijfspagina",
+          "severity": "High",
+          "description": "Er worden geen reviews getoond of gevraagd en de enige sociale link is een Facebook-groep. Het Google-bedrijfsprofiel kon niet geverifieerd worden.",
+          "recommendation": "Google-bedrijfsprofiel claimen en volledig invullen, na elke aankoop om een review vragen en een officiële Facebook-pagina koppelen."
+        },
+        {
+          "title": "Kaart en openingsuren",
+          "severity": "Medium",
+          "description": "De kaart verschijnt pas na cookie-toestemming en de openingsuren tonen woensdag niet (vermoedelijk gesloten; te bevestigen).",
+          "recommendation": "Een gewone link 'Routebeschrijving' toevoegen en 'woensdag gesloten' expliciet vermelden."
+        },
+        {
+          "title": "Geen pagina's voor het verzorgingsgebied",
+          "severity": "Medium",
+          "description": "Gent, Aalst en Dendermonde worden maar in één zin vermeld; leveringszones staan nergens.",
+          "recommendation": "Een pagina 'Levering en plaatsing in Oost-Vlaanderen' maken met gemeenten en kosten."
+        }
+      ]
+    },
+    {
+      "name": "Webshop en zoekintentie (aanvullend, niet gewogen)",
+      "score": 37,
+      "what_works": [
+        "De tapijten-shoplijst is het juiste paginatype voor 'vloerkleed kopen'.",
+        "Productpagina's hebben maatkeuze en een winkelmandje."
+      ],
+      "findings": [
+        {
+          "title": "Ontbrekende prijzen en onjuiste voorraad",
+          "severity": "Critical",
+          "description": "27 van de 69 producten tonen geen prijs; alle producten staan als 'op voorraad', ook in 'Laatste stock'. Eén maat van MALAGHA kan niet in het winkelmandje.",
+          "recommendation": "Prijzen en voorraad per maat invullen en de bestelflow testen."
+        },
+        {
+          "title": "Kunstgras sluit niet aan op de zoekintentie",
+          "severity": "Critical",
+          "description": "Zoekers verwachten prijs per m² en info over plaatsing. /nl/kunstgras-3 heeft geen producten of prijzen en de webshop heeft geen kunstgrascategorie.",
+          "recommendation": "Een kunstgraspagina met soorten, prijs per m², plaatsingsservice en een offerteformulier maken."
+        },
+        {
+          "title": "Lege categorie 'Marrokaanse vintage'",
+          "severity": "Critical",
+          "description": "De categorie toont 'Geen product gevonden' maar staat in het hoofdmenu en in de sitemap, onder twee URL's.",
+          "recommendation": "Vullen of tijdelijk uit menu en sitemap halen (noindex) en de spelling corrigeren."
+        },
+        {
+          "title": "Niet klaar voor Google Shopping",
+          "severity": "High",
+          "description": "Geen merk, GTIN/MPN, verzend- of retourgegevens; categoriepagina's hebben een intro van één zin en paginering die alleen via JavaScript werkt.",
+          "recommendation": "Productgegevens aanvullen, Google Merchant Center koppelen en crawlbare paginering vragen bij Proxi."
+        },
+        {
+          "title": "Geen pagina voor 'tapijt op maat'",
+          "severity": "High",
+          "description": "Maatwerk wordt alleen als label op één product vermeld.",
+          "recommendation": "Een pagina 'Tapijt op maat' maken met mogelijkheden, levertijd en prijsindicatie."
+        },
+        {
+          "title": "Onnodig verplicht veld",
+          "severity": "Medium",
+          "description": "Het infoformulier maakt 'Bedrijf' verplicht, wat particuliere klanten afschrikt.",
+          "recommendation": "Het veld optioneel maken."
+        }
+      ]
+    }
+  ],
+  "action_plan": {
+    "phases": [
+      {
+        "name": "Fase 1: Kritieke problemen",
+        "timeframe": "Week 1",
+        "items": [
+          "Pagina 'Bestellen en betalen' vullen met levering, betaling, afhalen en retour.",
+          "Prijzen en voorraad invullen voor alle 27 producten zonder prijs; bestelflow testen.",
+          "Lege categorie 'Marrokaanse vintage' vullen of uit menu en sitemap halen.",
+          "Proxi-support contacteren voor: '{url}'-links, canonical van kunstgras-18, dubbele bibliotheken en caching van HTML.",
+          "Homepage: één correcte H1 en LocalBusiness/HomeGoodsStore-JSON-LD."
+        ]
+      },
+      {
+        "name": "Fase 2: Verbeteringen met grote impact",
+        "timeframe": "Week 2-3",
+        "items": [
+          "Nieuwe titels en meta-descriptions voor de homepage en 10 kernpagina's; productsjabloon toepassen.",
+          "Beschrijvingen schrijven voor de 10 belangrijkste producten.",
+          "Kunstgraspagina herwerken: soorten, prijs per m², plaatsing, offerte.",
+          "Menu en interne links naar canonieke /nl/catalog-14/-URL's laten wijzen.",
+          "Google-bedrijfsprofiel claimen en invullen; Gouden Gids-vermelding corrigeren.",
+          "Cookiebanner minder opdringerig maken op mobiel en een duidelijke CTA-knop in de hero."
+        ]
+      },
+      {
+        "name": "Fase 3: Inhoud en autoriteit",
+        "timeframe": "Maand 2",
+        "items": [
+          "'Over ons' uitbreiden met het verhaal en de mensen achter de winkel.",
+          "FAQ-blokken toevoegen (maten, onderhoud, levering, kunstgras plaatsen).",
+          "Pagina's 'Tapijt op maat' en 'Levering in Oost-Vlaanderen' maken.",
+          "Beschrijvingen voor alle overige producten; kleurvarianten samenvoegen.",
+          "Reviews verzamelen en links vragen bij leveranciers, UNIZO en lokale pers.",
+          "Afbeeldingen optimaliseren: alt-teksten, echte miniaturen, srcset."
+        ]
+      },
+      {
+        "name": "Fase 4: Opvolging",
+        "timeframe": "Doorlopend",
+        "items": [
+          "Google Search Console en Bing Webmaster Tools koppelen en maandelijks opvolgen.",
+          "Core Web Vitals opnieuw meten na de technische aanpassingen.",
+          "Google Merchant Center koppelen voor gratis productvermeldingen.",
+          "Elk kwartaal een nieuwe SEO-controle uitvoeren."
+        ]
+      }
+    ]
+  },
+  "artifacts": {
+    "findings_dir": "findings/",
+    "screenshots_dir": "screenshots/"
+  }
+}
