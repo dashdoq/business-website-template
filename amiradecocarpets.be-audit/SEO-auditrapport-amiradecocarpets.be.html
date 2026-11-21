@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<style>
+  @page {
+    size: A4;
+    margin: 22mm 18mm 25mm 18mm;
+    @bottom-center {
+      content: "Pagina " counter(page) " of " counter(pages);
+      font-size: 9pt;
+      color: #6b7280;
+      font-family: 'DejaVu Serif', 'Times New Roman', Georgia, serif;
+    }
+    @bottom-left {
+      content: "Vertrouwelijk";
+      font-size: 7pt;
+      color: #d6d3cc;
+      font-family: 'DejaVu Serif', 'Times New Roman', Georgia, serif;
+    }
+    @bottom-right {
+      content: "amiradecocarpets.be SEO-auditrapport";
+      font-size: 8pt;
+      color: #cbd5e1;
+      font-family: 'DejaVu Serif', 'Times New Roman', Georgia, serif;
+    }
+  }
+
+  @page :first {
+    margin: 0;
+    @bottom-left { content: none; }
+    @bottom-center { content: none; }
+    @bottom-right { content: none; }
+  }
+
+  @page toc {
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #6b7280;
+    }
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Times New Roman', 'DejaVu Serif', Georgia, serif;
+    font-size: 10pt;
+    line-height: 1.55;
+    color: #1e293b;
+    background: white;
+  }
+
+  /* ─── Title Page (Clean White) ─── */
+  .title-page {
+    page: first;
+    width: 210mm;
+    height: 297mm;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #1a1a2e;
+    position: relative;
+    padding: 50mm 30mm 40mm 30mm;
+    border-top: 6mm solid #1e3a5f;
+  }
+
+  .title-page .badge {
+    background: #f7f6f3;
+    border: 1px solid #d6d3cc;
+    border-radius: 20px;
+    padding: 6px 18px;
+    font-size: 9pt;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 15mm;
+    color: #1e3a5f;
+  }
+
+  .title-page h1 {
+    font-size: 28pt;
+    font-weight: bold;
+    margin-bottom: 5mm;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    color: #1a1a2e;
+  }
+
+  .title-page .subtitle {
+    font-size: 13pt;
+    color: #6b7280;
+    margin-bottom: 12mm;
+    font-weight: 300;
+  }
+
+  .title-page .url {
+    font-size: 12pt;
+    color: #1e3a5f;
+    margin-bottom: 15mm;
+    padding: 4mm 8mm;
+    border: 1px solid #d6d3cc;
+    border-radius: 6px;
+    background: #faf9f7;
+  }
+
+  .title-page .score-box {
+    background: #faf9f7;
+    border: 2px solid #d6d3cc;
+    border-radius: 12px;
+    padding: 6mm 12mm;
+    margin-bottom: 15mm;
+  }
+
+  .title-page .score-number {
+    font-size: 42pt;
+    font-weight: bold;
+    color: #1e3a5f;
+    line-height: 1;
+  }
+
+  .title-page .score-label {
+    font-size: 10pt;
+    color: #6b7280;
+    margin-top: 2mm;
+  }
+
+  .title-page .meta {
+    font-size: 9pt;
+    color: #6b7280;
+    margin-top: 8mm;
+    padding-top: 5mm;
+    border-top: 1px solid #d6d3cc;
+  }
+
+  .title-page .meta span {
+    margin: 0 8px;
+  }
+
+  /* ─── Inhoudsopgave ─── */
+  .toc-page {
+    page: toc;
+    page-break-before: always;
+  }
+
+  .toc-page h2 {
+    font-size: 18pt;
+    color: #1e3a5f;
+    margin-bottom: 8mm;
+    padding-bottom: 3mm;
+    border-bottom: 2px solid #1e3a5f;
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .toc-list li {
+    padding: 2mm 0;
+    border-bottom: 1px solid #f1f5f9;
+    overflow: hidden;
+  }
+
+  .toc-list li.toc-section {
+    font-weight: bold;
+    font-size: 11pt;
+    padding-top: 4mm;
+    color: #0f172a;
+  }
+
+  .toc-list li.toc-sub {
+    padding-left: 8mm;
+    font-size: 9.5pt;
+    color: #475569;
+  }
+
+  .toc-score {
+    display: inline-block;
+    float: right;
+    padding: 1px 8px;
+    border-radius: 10px;
+    font-size: 9pt;
+    font-weight: bold;
+    color: white;
+  }
+
+  .score-good { background: #2d6a4f; }
+  .score-warn { background: #d4740e; }
+  .score-bad { background: #c53030; }
+
+  /* ─── Section Styles ─── */
+  div.section {
+    page-break-before: always;
+  }
+
+  .section-header {
+    background: #faf9f7;
+    border-left: 4px solid #1e3a5f;
+    padding: 5mm 6mm;
+    margin-bottom: 6mm;
+    page-break-after: avoid;
+  }
+
+  .section-header h2 {
+    font-size: 16pt;
+    color: #0f172a;
+    margin-bottom: 1mm;
+  }
+
+  .section-header .section-score {
+    font-size: 12pt;
+    font-weight: bold;
+    float: right;
+    margin-top: -6mm;
+  }
+
+  h3 {
+    font-size: 12pt;
+    color: #1e3a5f;
+    margin-top: 6mm;
+    margin-bottom: 3mm;
+    padding-bottom: 1.5mm;
+    border-bottom: 1px solid #d6d3cc;
+    page-break-after: avoid;
+  }
+
+  h4 {
+    font-size: 10.5pt;
+    color: #334155;
+    margin-top: 4mm;
+    margin-bottom: 2mm;
+    page-break-after: avoid;
+  }
+
+  p {
+    margin-bottom: 3mm;
+    color: #334155;
+  }
+
+  .highlight {
+    background: #fef3c7;
+    border-left: 3px solid #d4740e;
+    padding: 3mm 4mm;
+    margin: 4mm 0;
+    font-size: 9.5pt;
+    /* allow page breaks to prevent white gaps */
+  }
+
+  .critical-box {
+    background: #fef2f2;
+    border-left: 3px solid #c53030;
+    padding: 3mm 4mm;
+    margin: 4mm 0;
+    font-size: 9.5pt;
+    /* allow page breaks to prevent white gaps */
+  }
+
+  .success-box {
+    background: #f0fdf4;
+    border-left: 3px solid #2d6a4f;
+    padding: 3mm 4mm;
+    margin: 4mm 0;
+    font-size: 9.5pt;
+    /* allow page breaks to prevent white gaps */
+  }
+
+  /* ─── Tables ─── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 4mm 0 6mm 0;
+    font-size: 9pt;
+  }
+
+  thead th {
+    background: #f7f6f3;
+    color: #0f172a;
+    font-weight: bold;
+    padding: 3mm 4mm;
+    text-align: left;
+    border-bottom: 2px solid #d6d3cc;
+    font-size: 9pt;
+  }
+
+  tbody td {
+    padding: 2.5mm 3mm;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: top;
+  }
+
+  tbody tr:nth-child(even) {
+    background: #fdfcfa;
+  }
+
+  .status-pass {
+    color: #2d6a4f;
+    font-weight: bold;
+  }
+
+  .status-fail {
+    color: #c53030;
+    font-weight: bold;
+  }
+
+  .status-warn {
+    color: #d4740e;
+    font-weight: bold;
+  }
+
+  .status-partial {
+    color: #4a5568;
+    font-weight: bold;
+  }
+
+  /* ─── Charts ─── */
+  .chart-container {
+    text-align: center;
+    margin: 4mm 0;
+  }
+
+  .chart-container img {
+    max-width: 100%;
+    max-height: 120mm;
+    height: auto;
+  }
+
+  .chart-caption {
+    font-size: 8.5pt;
+    color: #6b7280;
+    font-style: italic;
+    margin-top: 2mm;
+    text-align: center;
+  }
+
+  .chart-half {
+    display: inline-block;
+    width: 48%;
+    vertical-align: top;
+    text-align: center;
+    margin: 2mm 0;
+  }
+
+  .chart-half img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* ─── Two column layout ─── */
+  .two-col {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    margin: 3mm 0;
+  }
+
+  .two-col .col {
+    display: table-cell;
+    vertical-align: top;
+    padding: 0 2mm;
+  }
+
+  .four-col {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    margin: 3mm 0;
+  }
+
+  .four-col .col {
+    display: table-cell;
+    vertical-align: top;
+    padding: 0 1.5mm;
+  }
+
+  /* ─── Metric Cards ─── */
+  .metric-card {
+    background: #faf9f7;
+    border: 1px solid #d6d3cc;
+    border-radius: 6px;
+    padding: 2.5mm 3mm;
+    text-align: center;
+    margin: 2mm 0;
+  }
+
+  .metric-card .value {
+    font-size: 14pt;
+    font-weight: bold;
+    line-height: 1.2;
+  }
+
+  .metric-card .label {
+    font-size: 7.5pt;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 1mm;
+  }
+
+  /* ─── Action Plan ─── */
+  .action-item {
+    background: #faf9f7;
+    border-radius: 4px;
+    padding: 3mm 4mm;
+    margin: 3mm 0;
+    border-left: 3px solid #cbd5e1;
+    /* allow page breaks to prevent white gaps */
+  }
+
+  .action-item.critical {
+    border-left-color: #c53030;
+    background: #fdf2f2;
+  }
+
+  .action-item.high {
+    border-left-color: #d4740e;
+    background: #fdf8ef;
+  }
+
+  .action-item.medium {
+    border-left-color: #1e3a5f;
+    background: #f0f4f8;
+  }
+
+  .action-item.low {
+    border-left-color: #94a3b8;
+  }
+
+  .action-item h4 {
+    margin-top: 0;
+    margin-bottom: 1.5mm;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .action-item .effort {
+    font-size: 8.5pt;
+    color: #64748b;
+    float: right;
+  }
+
+  .priority-tag {
+    display: inline-block;
+    padding: 0.5mm 3mm;
+    border-radius: 3px;
+    font-size: 8pt;
+    font-weight: bold;
+    color: white;
+    margin-right: 2mm;
+    vertical-align: middle;
+  }
+
+  .priority-critical { background: #c53030; }
+  .priority-high { background: #d4740e; }
+  .priority-medium { background: #1e3a5f; }
+  .priority-low { background: #94a3b8; }
+
+  /* ─── Code blocks ─── */
+  .code-block {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 3mm 4mm;
+    border-radius: 4px;
+    font-family: 'DejaVu Sans Mono', monospace;
+    font-size: 8pt;
+    line-height: 1.6;
+    margin: 3mm 0;
+    white-space: pre-wrap;
+    word-break: break-all;
+    /* allow page breaks to prevent white gaps */
+  }
+
+  /* ─── Divider ─── */
+  .divider {
+    border: none;
+    border-top: 1px solid #d6d3cc;
+    margin: 5mm 0;
+  }
+
+  /* ─── Roadmap ─── */
+  .roadmap-phase {
+    background: #faf9f7;
+    border-radius: 6px;
+    padding: 4mm 5mm;
+    margin: 4mm 0;
+    border: 1px solid #d6d3cc;
+    /* allow page breaks to prevent white gaps */
+  }
+
+  .roadmap-phase h4 {
+    margin-top: 0;
+    border-bottom: none;
+    color: #1e3a5f;
+  }
+
+  .roadmap-phase ul {
+    margin: 2mm 0 0 5mm;
+    padding: 0;
+  }
+
+  .roadmap-phase li {
+    margin-bottom: 1.5mm;
+    font-size: 9.5pt;
+    color: #334155;
+  }
+
+  /* ─── Lists ─── */
+  ul {
+    margin-left: 5mm;
+    margin-bottom: 3mm;
+  }
+
+  li {
+    margin-bottom: 1.5mm;
+  }
+
+  /* ─── Data freshness ─── */
+  .data-freshness {
+    font-size: 8pt;
+    color: #6b7280;
+    font-style: italic;
+    margin-top: 4mm;
+    padding-top: 2mm;
+    border-top: 1px solid #d6d3cc;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ======================================================= TITLE PAGE === -->
+<div class="title-page">
+  <div class="badge">Volledig SEO-auditrapport</div>
+  <h1>amiradecocarpets.be</h1>
+  <div class="subtitle">Opgesteld met Claude SEO</div>
+  <div class="score-box">
+    <div class="score-number">45<span style="font-size: 20pt; color: #94a3b8;">/100</span></div>
+    <div class="score-label">SEO-gezondheidsscore</div>
+  </div>
+  <div class="meta">
+    <span>21 november 2026</span>
+    <span>Volledige audit</span>
+  </div>
+</div>
+
+
+<!-- ======================================================= TABLE OF CONTENTS === -->
+<div class="toc-page">
+  <h2>Inhoudsopgave</h2>
+  <ul class="toc-list">
+    <li class="toc-section"><span>1. Samenvatting</span></li>
+    <li class="toc-sub"><span>Kerncijfers, kritieke problemen en snelle verbeteringen</span></li>
+    <li class="toc-section"><span>2. Auditcategorieën</span></li>
+    <li class="toc-sub"><span>Wat goed werkt</span></li>
+    <li class="toc-sub"><span>Bevindingen per ernst</span></li>
+    <li class="toc-section"><span>3. Actieplan</span></li>
+    <li class="toc-sub"><span>Stappenplan in fasen</span></li>
+    <li class="toc-section"><span>4. Gegevensbronnen en methode</span></li>
+  </ul>
+</div>
+
+
+<!-- ======================================================= 1. EXECUTIVE SUMMARY === -->
+<div class="section">
+  <div class="section-header">
+    <h2>1. Samenvatting</h2>
+  </div>
+
+  <p>Dit rapport bevat een volledige SEO-audit van <strong>amiradecocarpets.be</strong> (<strong>Lokale winkel met webshop (tapijten, vloerkleden en kunstgras) in Wetteren, op het Proxi-platform</strong>), uitgevoerd op 21 november 2026. De bevindingen combineren technische analyse, inhoud, gestructureerde data, prestaties, visuele controle, lokale SEO, webshop en AI-zoekgereedheid. De gezondheidsscore is een gewogen gemiddelde van zeven categorieën; lokale SEO en webshop/zoekintentie zijn aanvullend en tellen niet mee.</p>
+
+  <div class="two-col">
+    <div class="col">
+      <div class="metric-card">
+        <div class="value" style="color: #c53030;">45/100</div>
+        <div class="label">SEO-gezondheidsscore</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="critical-box">
+    <strong>Kritieke problemen:</strong>
+    <ol>
+      <li>Productpagina&#x27;s (69) hebben geen beschrijving, geen meta-description en titels met enkel de productnaam (bv. &#x27;MALAGHA&#x27;); 27 producten tonen geen prijs.</li>
+      <li>De pagina &#x27;Bestellen en betalen&#x27; is leeg: levering, betaling en retour staan alleen in juridische taal in de algemene voorwaarden.</li>
+      <li>Op bijna elke pagina staan template-links naar een letterlijke &#x27;{url}&#x27; die een 404-fout geven; daarnaast bestaan categorieën onder twee URL-patronen en verwijst /nl/kunstgras-18 naar de tapijtencategorie.</li>
+      <li>Trage mobiele weergave: LCP 4,7 s en TBT 650 ms door 22 blokkerende stylesheets, 38 scripts, dubbel geladen jQuery/GSAP en HTML met &#x27;no-store&#x27;.</li>
+      <li>Kunstgras en Marokkaanse vintage sluiten niet aan op de zoekintentie: geen kunstgrasproducten of prijzen, en de vintagecategorie is leeg maar wel geïndexeerd.</li>
+    </ol>
+  </div>
+
+  <div class="success-box">
+    <strong>Snelle verbeteringen:</strong>
+    <ol>
+      <li>Homepage-H1 herstellen: één H1 &#x27;Tapijten en kunstgras in Wetteren&#x27; in plaats van een lege en twee dubbele H1&#x27;s.</li>
+      <li>Meta-descriptions en nieuwe titels invullen voor de homepage en de 10 belangrijkste pagina&#x27;s (kant-en-klare Nederlandse teksten in dit rapport).</li>
+      <li>LocalBusiness/HomeGoodsStore-JSON-LD op de homepage plaatsen (code klaar in findings/schema.md).</li>
+      <li>De lege categorie &#x27;Marrokaanse vintage&#x27; uit menu en sitemap halen of vullen, en de spelling corrigeren naar &#x27;Marokkaanse&#x27;.</li>
+      <li>Openingsuren volledig tonen (inclusief &#x27;woensdag gesloten&#x27;) en een gewone route-link naar Google Maps toevoegen, los van de cookie-toestemming.</li>
+    </ol>
+  </div>
+
+</div>
+
+<!-- ======================================================= 2. AUDIT CATEGORIES === -->
+<div class="section">
+  <div class="section-header">
+    <h2>2. Auditcategorieën</h2>
+  </div>
+
+  <h3>2.1 Technische SEO</h3>
+  <p><strong>Score:</strong> <span class="status-warn">66/100</span></p>
+  <h4>Wat goed werkt</h4>
+  <ul>
+    <li>robots.txt laat alle zoekmachines en AI-crawlers toe en verwijst naar de sitemap.</li>
+    <li>Geldige XML-sitemap met 78 unieke, indexeerbare URL&#x27;s die allemaal status 200 en een eigen canonical hebben.</li>
+    <li>Server-side gerenderde HTML met viewport-meta; inhoud is leesbaar zonder JavaScript.</li>
+    <li>Niet-bestaande URL&#x27;s geven een correcte 404; enkel /nl/confidentiality_ws staat bewust op noindex.</li>
+    <li>HTTPS met HSTS; alle varianten van het domein komen uiteindelijk uit op https://www.</li>
+  </ul>
+  <h4>Bevindingen</h4>
+  <div class="action-item high">
+    <h4>Kapotte &#x27;{url}&#x27;-links op bijna elke pagina <span class="status-fail">Hoog</span></h4>
+    <p>De template bevat links naar /{url}, /nl/catalog-14/{url}, /nl/nl/{url} en /catalog/c/review/form/ca/14/ar/{url}. Ze geven allemaal een 404 en verspillen crawlbudget.</p>
+    <p><strong>Aanbeveling:</strong> Melden bij de Proxi-support met voorbeeld-URL&#x27;s; de placeholder moet door de echte link vervangen worden.</p>
+  </div>
+  <div class="action-item high">
+    <h4>Dubbele categorie-URL&#x27;s en foutieve canonicals <span class="status-fail">Hoog</span></h4>
+    <p>Het menu linkt naar /nl/dekens, /nl/lopers enz., terwijl de canonieke versie /nl/catalog-14/... is. Dubbele paden zoals /nl/nl/online-shop geven 200. /nl/kunstgras-18 heeft als canonical /nl/catalog-14/tapijten (verkeerde categorie) en /nl/catalog-14 verwijst naar de homepage.</p>
+    <p><strong>Aanbeveling:</strong> Menu en interne links naar de canonieke /nl/catalog-14/-URL&#x27;s laten wijzen, dubbele paden met 301 doorsturen en de canonical van kunstgras-18 laten corrigeren.</p>
+  </div>
+  <div class="action-item medium">
+    <h4>Omweg bij doorverwijzingen <span class="status-warn">Gemiddeld</span></h4>
+    <p>https://amiradecocarpets.be stuurt eerst naar http://www. en pas daarna naar https://www. (2 stappen).</p>
+    <p><strong>Aanbeveling:</strong> Eén 301 rechtstreeks naar https://www.amiradecocarpets.be/ laten instellen.</p>
+  </div>
+  <div class="action-item medium">
+    <h4>Beveiligingsheaders en caching <span class="status-warn">Gemiddeld</span></h4>
+    <p>De Content-Security-Policy staat alles toe, HSTS mist includeSubDomains, HTML wordt met &#x27;no-store&#x27; verstuurd en de server verbreekt af en toe verbindingen.</p>
+    <p><strong>Aanbeveling:</strong> Bij Proxi vragen om een strengere CSP, HSTS met includeSubDomains, korte publieke caching van HTML en een controle van de rate limiting.</p>
+  </div>
+  <div class="action-item low">
+    <h4>robots.txt-regels in de verkeerde groep <span class="status-partial">Laag</span></h4>
+    <p>Uitsluitingen voor wishlist- en accountpagina&#x27;s staan alleen in de groep voor AhrefsBot, waardoor andere crawlers ze wel bezoeken.</p>
+    <p><strong>Aanbeveling:</strong> Deze Disallow-regels ook onder &#x27;User-agent: *&#x27; plaatsen.</p>
+  </div>
+  <div class="action-item low">
+    <h4>Geen IndexNow <span class="status-partial">Laag</span></h4>
+    <p>/indexnow.txt geeft 404; Bing en andere zoekmachines worden niet automatisch op de hoogte gebracht van wijzigingen.</p>
+    <p><strong>Aanbeveling:</strong> Indien Proxi het ondersteunt, IndexNow activeren; anders Bing Webmaster Tools koppelen.</p>
+  </div>
+  <hr class="divider">
+  <h3>2.2 Contentkwaliteit</h3>
+  <p><strong>Score:</strong> <span class="status-fail">32/100</span></p>
+  <h4>Wat goed werkt</h4>
+  <ul>
+    <li>Alle inhoud is in het Nederlands met lang=&#x27;nl&#x27;.</li>
+    <li>De locatie Wetteren staat in de belangrijkste titels en koppen.</li>
+    <li>Er is een llms.txt-bestand dat AI-systemen een overzicht van de site geeft.</li>
+  </ul>
+  <h4>Bevindingen</h4>
+  <div class="action-item critical">
+    <h4>Productpagina&#x27;s zonder beschrijving <span class="status-fail">Kritiek</span></h4>
+    <p>Alle 69 productpagina&#x27;s hebben 0 woorden beschrijving: geen materiaal, onderhoud of maattabel. Ook de description in de productschema is leeg.</p>
+    <p><strong>Aanbeveling:</strong> Per product 80-150 woorden schrijven met materiaal, poolhoogte, maten, onderhoud en geschikte ruimtes; begin met de 10 best verkopende producten.</p>
+  </div>
+  <div class="action-item critical">
+    <h4>Lege pagina &#x27;Bestellen en betalen&#x27; <span class="status-fail">Kritiek</span></h4>
+    <p>/nl/bestellen-en-betalen bevat alleen een kop. Levering, kosten, termijnen, afhalen en retour zijn voor klanten en AI-systemen niet te vinden.</p>
+    <p><strong>Aanbeveling:</strong> De pagina vullen met betaalmethodes, leveringskosten en -termijnen, afhalen in Wetteren en het retourbeleid (14 dagen); ontwerptekst staat in findings/geo.md.</p>
+  </div>
+  <div class="action-item high">
+    <h4>Te dunne &#x27;Over ons&#x27;-pagina <span class="status-fail">Hoog</span></h4>
+    <p>/nl/amira-deco-carpets telt ongeveer 90-100 woorden en vertelt niet wie achter de winkel zit, sinds wanneer en waarom.</p>
+    <p><strong>Aanbeveling:</strong> Uitbreiden met het verhaal van de zaak, de mensen, foto&#x27;s van de winkel, ervaring en de merken of herkomst van de tapijten.</p>
+  </div>
+  <div class="action-item high">
+    <h4>Algemene, uitwisselbare marketingtekst <span class="status-fail">Hoog</span></h4>
+    <p>Alle landingspagina&#x27;s volgen hetzelfde stramien met algemene zinnen en claims zoals &#x27;tot 70% goedkoper&#x27; zonder onderbouwing.</p>
+    <p><strong>Aanbeveling:</strong> Herschrijven met concrete feiten (prijzen vanaf, maten, materialen, herkomst, diensten) en ongefundeerde claims schrappen of onderbouwen.</p>
+  </div>
+  <div class="action-item high">
+    <h4>Geen veelgestelde vragen <span class="status-fail">Hoog</span></h4>
+    <p>Geen enkele pagina beantwoordt vragen als &#x27;Welke maat vloerkleed kies ik?&#x27; of &#x27;Leggen jullie kunstgras?&#x27;. Dat beperkt de kans om in AI-antwoorden en Google AI Overviews te verschijnen.</p>
+    <p><strong>Aanbeveling:</strong> Een FAQ-blok toevoegen op de homepage en de categoriepagina&#x27;s; 8 Nederlandse voorbeeldvragen staan in findings/geo.md.</p>
+  </div>
+  <div class="action-item medium">
+    <h4>Taal en consistentie <span class="status-warn">Gemiddeld</span></h4>
+    <p>De site wisselt tussen &#x27;je&#x27; en &#x27;u&#x27;, &#x27;Marrokaanse&#x27; is fout gespeld en drie lege categorieën zijn geïndexeerd.</p>
+    <p><strong>Aanbeveling:</strong> Eén aanspreekvorm kiezen, spelling corrigeren en lege categorieën verbergen of op noindex zetten tot ze gevuld zijn.</p>
+  </div>
+  <div class="action-item medium">
+    <h4>Bijna identieke kleurvarianten <span class="status-warn">Gemiddeld</span></h4>
+    <p>Kleurvarianten (HARMONY x4, TUNIS x3, MALAGHA 2226-2233) zijn aparte pagina&#x27;s die voor 93% gelijk zijn.</p>
+    <p><strong>Aanbeveling:</strong> Varianten op één productpagina met kleurkeuze samenbrengen, of elke variant een eigen beschrijving geven.</p>
+  </div>
+  <hr class="divider">
+  <h3>2.3 On-page SEO</h3>
+  <p><strong>Score:</strong> <span class="status-fail">35/100</span></p>
+  <h4>Wat goed werkt</h4>
+  <ul>
+    <li>Elke pagina heeft een title-tag en de homepage-titel bevat de hoofdzoekterm &#x27;Tapijtenwinkel Wetteren&#x27;.</li>
+    <li>De homepage heeft een goede meta-description en Open Graph-tags.</li>
+  </ul>
+  <h4>Bevindingen</h4>
+  <div class="action-item high">
+    <h4>Meta-descriptions ontbreken <span class="status-fail">Hoog</span></h4>
+    <p>83 van de 102 gecontroleerde URL&#x27;s hebben geen meta-description, waaronder alle productpagina&#x27;s.</p>
+    <p><strong>Aanbeveling:</strong> Meta-descriptions invullen; voorstellen voor de homepage en 10 kernpagina&#x27;s staan in het volledige rapport, plus een sjabloon voor producten.</p>
+  </div>
+  <div class="action-item high">
+    <h4>Producttitels zijn alleen de productnaam <span class="status-fail">Hoog</span></h4>
+    <p>Titels als &#x27;MALAGHA&#x27; of &#x27;LOPERS&#x27; bevatten geen producttype, kleur of winkelnaam.</p>
+    <p><strong>Aanbeveling:</strong> Sjabloon gebruiken: &#x27;{Modelnaam} {producttype} {kleur} | Amira Deco-Carpets&#x27;, bv. &#x27;Harmony vloerkleed grijs | Amira Deco-Carpets&#x27;.</p>
+  </div>
+  <div class="action-item high">
+    <h4>Problemen met de H1 op de homepage <span class="status-fail">Hoog</span></h4>
+    <p>De homepage heeft drie H1&#x27;s: één lege en twee identieke met &#x27;||&#x27;-animatiecode, laag op de pagina. De zichtbare hero-kop is geen H1.</p>
+    <p><strong>Aanbeveling:</strong> Eén H1 bovenaan: &#x27;Tapijten en kunstgras in Wetteren&#x27;; de animatiekoppen omzetten naar gewone tekst of H2.</p>
+  </div>
+  <div class="action-item high">
+    <h4>Dubbele titels en kannibalisatie <span class="status-fail">Hoog</span></h4>
+    <p>&#x27;Tapijt bestellen | Amira Deco-Carpets&#x27; en &#x27;Online shop&#x27; komen elk 4 keer voor; /nl/tapijten-2 en /nl/catalog-14/tapijten concurreren op dezelfde zoekterm.</p>
+    <p><strong>Aanbeveling:</strong> Elke pagina een unieke titel geven: de infopagina richt zich op &#x27;tapijtenwinkel Wetteren&#x27;, de shopcategorie op &#x27;tapijten online kopen&#x27;.</p>
+  </div>
+  <div class="action-item high">
+    <h4>Verkeerde interne links <span class="status-fail">Hoog</span></h4>
+    <p>De kunstgraslink op /nl/kunstgras-3 leidt naar de tapijtenlijst; producttegels linken enkel via de afbeelding zonder tekst.</p>
+    <p><strong>Aanbeveling:</strong> Links laten wijzen naar de juiste categorie en beschrijvende ankerteksten toevoegen.</p>
+  </div>
+  <div class="action-item medium">
+    <h4>Prijs in de H1 van producten <span class="status-warn">Gemiddeld</span></h4>
+    <p>De H1 van productpagina&#x27;s bevat de prijs en de kopstructuur wordt vervuild door widgets (&#x27;Inloggen&#x27;, &#x27;Winkelmandje&#x27;).</p>
+    <p><strong>Aanbeveling:</strong> H1 alleen met modelnaam, producttype en kleur; widgetkoppen omzetten naar gewone tekst.</p>
+  </div>
+  <hr class="divider">
+  <h3>2.4 Gestructureerde data (schema)</h3>
+  <p><strong>Score:</strong> <span class="status-warn">52/100</span></p>
+  <h4>Wat goed werkt</h4>
+  <ul>
+    <li>97 van de 100 pagina&#x27;s hebben JSON-LD.</li>
+    <li>Productpagina&#x27;s hebben Product- en BreadcrumbList-markup; infopagina&#x27;s hebben LocalBusiness met adres en openingsuren.</li>
+  </ul>
+  <h4>Bevindingen</h4>
+  <div class="action-item high">
+    <h4>Geen gestructureerde data op de homepage <span class="status-fail">Hoog</span></h4>
+    <p>De belangrijkste pagina heeft geen JSON-LD. Het LocalBusiness-blok verwijst naar de homepage maar staat alleen op 8 infopagina&#x27;s.</p>
+    <p><strong>Aanbeveling:</strong> HomeGoodsStore + Organization + WebSite op de homepage plaatsen; de kant-en-klare code staat in findings/schema.md.</p>
+  </div>
+  <div class="action-item high">
+    <h4>Onvolledige Product-markup <span class="status-fail">Hoog</span></h4>
+    <p>69 van de 205 Product-blokken hebben een Offer zonder prijs of valuta, &#x27;brand&#x27; is een leeg object en &#x27;description&#x27; is leeg in 190 blokken. Pagina&#x27;s bevatten 2-3 dubbele blokken.</p>
+    <p><strong>Aanbeveling:</strong> Bij Proxi één Product-blok per pagina laten genereren met prijs, EUR, merk, beschrijving en correcte beschikbaarheid.</p>
+  </div>
+  <div class="action-item medium">
+    <h4>Verzend- en retourinformatie ontbreekt <span class="status-warn">Gemiddeld</span></h4>
+    <p>Geen shippingDetails, hasMerchantReturnPolicy, sku of reviews in de productschema.</p>
+    <p><strong>Aanbeveling:</strong> Toevoegen zodra de leverings- en retourvoorwaarden vastliggen; vereist voor rijke resultaten en Google Shopping.</p>
+  </div>
+  <div class="action-item medium">
+    <h4>Afwijkende URL&#x27;s in de markup <span class="status-warn">Gemiddeld</span></h4>
+    <p>Breadcrumb- en Offer-URL&#x27;s gebruiken /nl/malagha terwijl de pagina /nl/catalog-14/tapijten/malagha is.</p>
+    <p><strong>Aanbeveling:</strong> Overal de canonieke URL gebruiken.</p>
+  </div>
+  <div class="action-item medium">
+    <h4>LocalBusiness onvolledig <span class="status-warn">Gemiddeld</span></h4>
+    <p>Geen geo-coördinaten, logo of kaartlink; openingHours en openingHoursSpecification dubbelen elkaar.</p>
+    <p><strong>Aanbeveling:</strong> geo, logo, hasMap en sameAs (sociale profielen) toevoegen en één vorm van openingsuren behouden.</p>
+  </div>
+  <hr class="divider">
+  <h3>2.5 Prestaties (Core Web Vitals)</h3>
+  <p><strong>Score:</strong> <span class="status-fail">38/100</span></p>
+  <h4>Wat goed werkt</h4>
+  <ul>
+    <li>De LCP-afbeelding op de homepage wordt vooraf geladen met fetchpriority=&#x27;high&#x27;.</li>
+    <li>CLS op de homepage is goed (0,01-0,06).</li>
+    <li>Afbeeldingen worden als WebP geleverd.</li>
+  </ul>
+  <h4>Bevindingen</h4>
+  <div class="action-item critical">
+    <h4>Trage weergave op mobiel <span class="status-fail">Kritiek</span></h4>
+    <p>Labmeting (gesimuleerd mobiel): LCP 4,7 s (doel ≤ 2,5 s) en TBT 650 ms. Desktop: LCP 2,9 s. Geen velddata beschikbaar.</p>
+    <p><strong>Aanbeveling:</strong> De onderstaande punten aanpakken; na de wijzigingen opnieuw meten met PageSpeed Insights.</p>
+  </div>
+  <div class="action-item critical">
+    <h4>HTML zonder caching en trage serverrespons <span class="status-fail">Kritiek</span></h4>
+    <p>Alle HTML wordt met &#x27;no-store&#x27; verstuurd; TTFB is 0,6-0,86 s en bfcache/CDN-caching werkt niet.</p>
+    <p><strong>Aanbeveling:</strong> Bij Proxi vragen om publieke caching van niet-persoonlijke pagina&#x27;s en een snellere serverrespons.</p>
+  </div>
+  <div class="action-item critical">
+    <h4>Te veel blokkerende bestanden <span class="status-fail">Kritiek</span></h4>
+    <p>22 blokkerende stylesheets en 38 scripts (89-95 verzoeken per pagina) vertragen de eerste weergave met 1,2-2,1 s.</p>
+    <p><strong>Aanbeveling:</strong> CSS bundelen en kritieke CSS inline zetten; niet-essentiële scripts met defer laden.</p>
+  </div>
+  <div class="action-item high">
+    <h4>Dubbele bibliotheken <span class="status-fail">Hoog</span></h4>
+    <p>jQuery 1.7.2 én 1.9.1, GSAP twee keer en drie Font Awesome-bestanden worden geladen.</p>
+    <p><strong>Aanbeveling:</strong> Eén versie van elke bibliotheek behouden en ongebruikte bestanden verwijderen.</p>
+  </div>
+  <div class="action-item high">
+    <h4>Zware hero-afbeelding en slider <span class="status-fail">Hoog</span></h4>
+    <p>De desktop-hero weegt 951 KB zonder srcset; de slider wisselt van afbeelding waardoor het LCP-element varieert.</p>
+    <p><strong>Aanbeveling:</strong> Responsieve afbeeldingen (srcset) gebruiken en de eerste slide vast tonen.</p>
+  </div>
+  <div class="action-item high">
+    <h4>Verspringende productrasters <span class="status-fail">Hoog</span></h4>
+    <p>Op categoriepagina&#x27;s verspringt de layout (CLS 0,27 tot 1,46, deels verstoord door de meetomgeving) door lazy-loaded tegels zonder vaste afmetingen.</p>
+    <p><strong>Aanbeveling:</strong> Breedte en hoogte (of aspect-ratio) op productafbeeldingen zetten en het equal-height-script vervangen door CSS.</p>
+  </div>
+  <hr class="divider">
+  <h3>2.6 AI-zoekgereedheid</h3>
+  <p><strong>Score:</strong> <span class="status-fail">44/100</span></p>
+  <h4>Wat goed werkt</h4>
+  <ul>
+    <li>AI-crawlers (ChatGPT, Claude, Perplexity, Gemini) zijn bewust toegelaten in robots.txt.</li>
+    <li>llms.txt is aanwezig (3 KB).</li>
+    <li>Inhoud is server-side gerenderd en leesbaar zonder JavaScript.</li>
+  </ul>
+  <h4>Bevindingen</h4>
+  <div class="action-item high">
+    <h4>Weinig citeerbare feiten <span class="status-fail">Hoog</span></h4>
+    <p>Teksten bevatten bijna geen controleerbare gegevens (prijzen, merken, maten, diensten), dus AI-systemen hebben weinig om te citeren.</p>
+    <p><strong>Aanbeveling:</strong> Korte feitelijke openingsparagrafen schrijven per pagina; voorbeelden in findings/geo.md.</p>
+  </div>
+  <div class="action-item high">
+    <h4>Zwakke aanwezigheid buiten de site <span class="status-fail">Hoog</span></h4>
+    <p>Geen reviews of vermeldingen gevonden; de site linkt alleen naar een Facebook-groep en er bestaan twee dubbele Facebook-pagina&#x27;s. Voor &#x27;kunstgras Wetteren&#x27; verschijnt de winkel niet.</p>
+    <p><strong>Aanbeveling:</strong> Google-bedrijfsprofiel en vermeldingen in lokale gidsen op orde brengen, reviews verzamelen en de officiële sociale profielen koppelen.</p>
+  </div>
+  <div class="action-item high">
+    <h4>Formulieren moeilijk bruikbaar voor AI-agents <span class="status-fail">Hoog</span></h4>
+    <p>Agent-UX-score 48/100: 7 invoervelden zonder label, 4 klikbare div&#x27;s in plaats van knoppen en 4 naamloze interactieve elementen.</p>
+    <p><strong>Aanbeveling:</strong> Bij Proxi vragen om labels op alle velden en echte &lt;button&gt;-elementen in winkelmandje, zoeken en login.</p>
+  </div>
+  <hr class="divider">
+  <h3>2.7 Afbeeldingen</h3>
+  <p><strong>Score:</strong> <span class="status-fail">48/100</span></p>
+  <h4>Wat goed werkt</h4>
+  <ul>
+    <li>Afbeeldingen worden als WebP geleverd.</li>
+    <li>Lazy loading is actief voor afbeeldingen onder de vouw.</li>
+  </ul>
+  <h4>Bevindingen</h4>
+  <div class="action-item medium">
+    <h4>Ontbrekende alt-teksten <span class="status-warn">Gemiddeld</span></h4>
+    <p>Ongeveer 34% van de afbeeldingen op productpagina&#x27;s heeft geen alt-tekst (vooral de galerij in de template); productfoto&#x27;s hebben alleen de kale naam als alt.</p>
+    <p><strong>Aanbeveling:</strong> Beschrijvende alt-teksten gebruiken, bv. &#x27;Malagha vloerkleed beige in woonkamer&#x27;.</p>
+  </div>
+  <div class="action-item medium">
+    <h4>Te zware miniaturen <span class="status-warn">Gemiddeld</span></h4>
+    <p>Miniaturen wegen ca. 125 KB, even zwaar als de volledige afbeelding; er is geen srcset.</p>
+    <p><strong>Aanbeveling:</strong> Echte miniaturen (ca. 20-30 KB) genereren en srcset gebruiken.</p>
+  </div>
+  <div class="action-item medium">
+    <h4>Placeholders en ontbrekende og:image <span class="status-warn">Gemiddeld</span></h4>
+    <p>4 van de eerste 12 tapijten tonen een placeholder-afbeelding; productpagina&#x27;s hebben geen og:image voor sociale media.</p>
+    <p><strong>Aanbeveling:</strong> Echte foto&#x27;s uploaden en og:image per product instellen.</p>
+  </div>
+  <hr class="divider">
+  <h3>2.8 Lokale SEO (aanvullend, niet gewogen)</h3>
+  <p><strong>Score:</strong> <span class="status-fail">44/100</span></p>
+  <h4>Wat goed werkt</h4>
+  <ul>
+    <li>Naam, adres en telefoon (Westremstraat 59, 9230 Wetteren) zijn consistent op de hele site.</li>
+    <li>Wetteren staat in titels, H1&#x27;s en meta-descriptions.</li>
+  </ul>
+  <h4>Bevindingen</h4>
+  <div class="action-item high">
+    <h4>Afwijkende vermelding in Gouden Gids <span class="status-fail">Hoog</span></h4>
+    <p>Gouden Gids vermeldt de zaak als &#x27;Amira Deco&#x27; in &#x27;Westrem (Wetteren)&#x27;, anders dan op de website.</p>
+    <p><strong>Aanbeveling:</strong> De vermelding laten aanpassen naar &#x27;Amira Deco-Carpets&#x27;, Wetteren, met dezelfde telefoon en website.</p>
+  </div>
+  <div class="action-item high">
+    <h4>Geen reviews en geen bedrijfspagina <span class="status-fail">Hoog</span></h4>
+    <p>Er worden geen reviews getoond of gevraagd en de enige sociale link is een Facebook-groep. Het Google-bedrijfsprofiel kon niet geverifieerd worden.</p>
+    <p><strong>Aanbeveling:</strong> Google-bedrijfsprofiel claimen en volledig invullen, na elke aankoop om een review vragen en een officiële Facebook-pagina koppelen.</p>
+  </div>
+  <div class="action-item medium">
+    <h4>Kaart en openingsuren <span class="status-warn">Gemiddeld</span></h4>
+    <p>De kaart verschijnt pas na cookie-toestemming en de openingsuren tonen woensdag niet (vermoedelijk gesloten; te bevestigen).</p>
+    <p><strong>Aanbeveling:</strong> Een gewone link &#x27;Routebeschrijving&#x27; toevoegen en &#x27;woensdag gesloten&#x27; expliciet vermelden.</p>
+  </div>
+  <div class="action-item medium">
+    <h4>Geen pagina&#x27;s voor het verzorgingsgebied <span class="status-warn">Gemiddeld</span></h4>
+    <p>Gent, Aalst en Dendermonde worden maar in één zin vermeld; leveringszones staan nergens.</p>
+    <p><strong>Aanbeveling:</strong> Een pagina &#x27;Levering en plaatsing in Oost-Vlaanderen&#x27; maken met gemeenten en kosten.</p>
+  </div>
+  <hr class="divider">
+  <h3>2.9 Webshop en zoekintentie (aanvullend, niet gewogen)</h3>
+  <p><strong>Score:</strong> <span class="status-fail">37/100</span></p>
+  <h4>Wat goed werkt</h4>
+  <ul>
+    <li>De tapijten-shoplijst is het juiste paginatype voor &#x27;vloerkleed kopen&#x27;.</li>
+    <li>Productpagina&#x27;s hebben maatkeuze en een winkelmandje.</li>
+  </ul>
+  <h4>Bevindingen</h4>
+  <div class="action-item critical">
+    <h4>Ontbrekende prijzen en onjuiste voorraad <span class="status-fail">Kritiek</span></h4>
+    <p>27 van de 69 producten tonen geen prijs; alle producten staan als &#x27;op voorraad&#x27;, ook in &#x27;Laatste stock&#x27;. Eén maat van MALAGHA kan niet in het winkelmandje.</p>
+    <p><strong>Aanbeveling:</strong> Prijzen en voorraad per maat invullen en de bestelflow testen.</p>
+  </div>
+  <div class="action-item critical">
+    <h4>Kunstgras sluit niet aan op de zoekintentie <span class="status-fail">Kritiek</span></h4>
+    <p>Zoekers verwachten prijs per m² en info over plaatsing. /nl/kunstgras-3 heeft geen producten of prijzen en de webshop heeft geen kunstgrascategorie.</p>
+    <p><strong>Aanbeveling:</strong> Een kunstgraspagina met soorten, prijs per m², plaatsingsservice en een offerteformulier maken.</p>
+  </div>
+  <div class="action-item critical">
+    <h4>Lege categorie &#x27;Marrokaanse vintage&#x27; <span class="status-fail">Kritiek</span></h4>
+    <p>De categorie toont &#x27;Geen product gevonden&#x27; maar staat in het hoofdmenu en in de sitemap, onder twee URL&#x27;s.</p>
+    <p><strong>Aanbeveling:</strong> Vullen of tijdelijk uit menu en sitemap halen (noindex) en de spelling corrigeren.</p>
+  </div>
+  <div class="action-item high">
+    <h4>Niet klaar voor Google Shopping <span class="status-fail">Hoog</span></h4>
+    <p>Geen merk, GTIN/MPN, verzend- of retourgegevens; categoriepagina&#x27;s hebben een intro van één zin en paginering die alleen via JavaScript werkt.</p>
+    <p><strong>Aanbeveling:</strong> Productgegevens aanvullen, Google Merchant Center koppelen en crawlbare paginering vragen bij Proxi.</p>
+  </div>
+  <div class="action-item high">
+    <h4>Geen pagina voor &#x27;tapijt op maat&#x27; <span class="status-fail">Hoog</span></h4>
+    <p>Maatwerk wordt alleen als label op één product vermeld.</p>
+    <p><strong>Aanbeveling:</strong> Een pagina &#x27;Tapijt op maat&#x27; maken met mogelijkheden, levertijd en prijsindicatie.</p>
+  </div>
+  <div class="action-item medium">
+    <h4>Onnodig verplicht veld <span class="status-warn">Gemiddeld</span></h4>
+    <p>Het infoformulier maakt &#x27;Bedrijf&#x27; verplicht, wat particuliere klanten afschrikt.</p>
+    <p><strong>Aanbeveling:</strong> Het veld optioneel maken.</p>
+  </div>
+  <hr class="divider">
+</div>
+
+<!-- ======================================================= 3. ACTION PLAN === -->
+<div class="section">
+  <div class="section-header">
+    <h2>3. Actieplan</h2>
+  </div>
+
+  <div class="roadmap-phase">
+    <h4>Fase 1: Kritieke problemen <span class="effort">&nbsp;— Week 1</span></h4>
+    <ul>
+      <li>Pagina &#x27;Bestellen en betalen&#x27; vullen met levering, betaling, afhalen en retour.</li>
+      <li>Prijzen en voorraad invullen voor alle 27 producten zonder prijs; bestelflow testen.</li>
+      <li>Lege categorie &#x27;Marrokaanse vintage&#x27; vullen of uit menu en sitemap halen.</li>
+      <li>Proxi-support contacteren voor: &#x27;{url}&#x27;-links, canonical van kunstgras-18, dubbele bibliotheken en caching van HTML.</li>
+      <li>Homepage: één correcte H1 en LocalBusiness/HomeGoodsStore-JSON-LD.</li>
+    </ul>
+  </div>
+  <div class="roadmap-phase">
+    <h4>Fase 2: Verbeteringen met grote impact <span class="effort">&nbsp;— Week 2-3</span></h4>
+    <ul>
+      <li>Nieuwe titels en meta-descriptions voor de homepage en 10 kernpagina&#x27;s; productsjabloon toepassen.</li>
+      <li>Beschrijvingen schrijven voor de 10 belangrijkste producten.</li>
+      <li>Kunstgraspagina herwerken: soorten, prijs per m², plaatsing, offerte.</li>
+      <li>Menu en interne links naar canonieke /nl/catalog-14/-URL&#x27;s laten wijzen.</li>
+      <li>Google-bedrijfsprofiel claimen en invullen; Gouden Gids-vermelding corrigeren.</li>
+      <li>Cookiebanner minder opdringerig maken op mobiel en een duidelijke CTA-knop in de hero.</li>
+    </ul>
+  </div>
+  <div class="roadmap-phase">
+    <h4>Fase 3: Inhoud en autoriteit <span class="effort">&nbsp;— Maand 2</span></h4>
+    <ul>
+      <li>&#x27;Over ons&#x27; uitbreiden met het verhaal en de mensen achter de winkel.</li>
+      <li>FAQ-blokken toevoegen (maten, onderhoud, levering, kunstgras plaatsen).</li>
+      <li>Pagina&#x27;s &#x27;Tapijt op maat&#x27; en &#x27;Levering in Oost-Vlaanderen&#x27; maken.</li>
+      <li>Beschrijvingen voor alle overige producten; kleurvarianten samenvoegen.</li>
+      <li>Reviews verzamelen en links vragen bij leveranciers, UNIZO en lokale pers.</li>
+      <li>Afbeeldingen optimaliseren: alt-teksten, echte miniaturen, srcset.</li>
+    </ul>
+  </div>
+  <div class="roadmap-phase">
+    <h4>Fase 4: Opvolging <span class="effort">&nbsp;— Doorlopend</span></h4>
+    <ul>
+      <li>Google Search Console en Bing Webmaster Tools koppelen en maandelijks opvolgen.</li>
+      <li>Core Web Vitals opnieuw meten na de technische aanpassingen.</li>
+      <li>Google Merchant Center koppelen voor gratis productvermeldingen.</li>
+      <li>Elk kwartaal een nieuwe SEO-controle uitvoeren.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ======================================================= DATA SOURCES & METHODOLOGY === -->
+<div class="section" style="text-align: center; padding-top: 15mm;">
+  <hr class="divider">
+  <h3 style="text-align: left;">Gegevensbronnen en methode</h3>
+  <table>
+    <thead>
+      <tr><th>Bron</th><th>Wat is gemeten</th><th>Beperking</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Eigen crawl</td>
+          <td>216 pagina's, waaronder alle 78 URL's uit de sitemap: statuscodes, titels, meta-descriptions, koppen, canonicals, JSON-LD, afbeeldingen en interne links</td>
+          <td>Gestopt na de sitemap en ontdekte varianten; max. 4 verzoeken tegelijk</td></tr>
+      <tr><td>Labmetingen (Playwright/Chromium)</td>
+          <td>LCP, CLS en TBT op mobiel (gesimuleerd) en desktop, plus schermafbeeldingen</td>
+          <td>Geen velddata (CrUX); PageSpeed Insights gaf een quotumfout. Waarden zijn indicatief</td></tr>
+      <tr><td>robots.txt, sitemap.xml, llms.txt</td>
+          <td>Toegang voor zoekmachines en AI-crawlers, sitemapkwaliteit</td>
+          <td>-</td></tr>
+      <tr><td>Common Crawl</td>
+          <td>Linkautoriteit op domeinniveau</td>
+          <td>Domein niet gevonden; geen gegevens over individuele backlinks</td></tr>
+      <tr><td>Webzoekopdrachten en Gouden Gids</td>
+          <td>Zoekintentie, concurrentie en lokale vermeldingen</td>
+          <td>Geen google.be-rangschikking; Google-bedrijfsprofiel niet gecontroleerd</td></tr>
+    </tbody>
+  </table>
+  <p style="color: #94a3b8; font-size: 9pt; margin-top: 5mm;">
+    Rapport opgesteld met Claude SEO, 21 november 2026. Niet gebruikt: Google Search Console, Google Analytics,
+    CrUX-velddata, Moz en DataForSEO (niet gekoppeld).<br>
+    Drempels volgens Google Web Vitals (LCP ≤ 2,5 s, INP ≤ 200 ms, CLS ≤ 0,1).
+  </p>
+</div>
+
+</body>
+</html>
